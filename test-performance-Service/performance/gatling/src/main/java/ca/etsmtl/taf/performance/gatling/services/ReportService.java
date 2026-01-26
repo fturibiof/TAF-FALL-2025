@@ -14,7 +14,7 @@ import java.util.Comparator;
 
 @Service
 public class ReportService {
-    private final String REPORT_PATH = "/reports/performance/gatling/dashboard/";
+    private final String REPORT_PATH = "/team3/reports/performance/gatling/dashboard/";
 
     public GatlingTestResult getLatestReportResult() throws IOException {
         File reportsDirFile = getReportsDir();
@@ -24,7 +24,7 @@ public class ReportService {
             if (reportFile.exists()) {
                 return buildReportResult(reportFile);
             } else {
-                throw new RuntimeException("Aucun rapport de résultats n’a été trouvé dans le dernier répertoire.");
+                throw new RuntimeException("Aucun rapport de résultats n’a été trouvé dans le dernier répertoire: " + latestReportDir.getName());
             }
         } else {
             throw new RuntimeException("Aucun répertoire de rapport trouvé.");

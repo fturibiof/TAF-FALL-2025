@@ -30,8 +30,10 @@ public class GatlingApiController {
     @PostMapping(value = "/runSimulation")
     public ResponseEntity<MessageResponse> runSimulation(@RequestBody GatlingTestRequest gatlingRequest) {
         MessageResponse response = gatlingFacade.runSimulation(gatlingRequest);
+        if (response.getMessage() != null && response.getMessage().startsWith("Error")) {
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
         return new ResponseEntity<>(response, HttpStatus.OK);
-
     }
 
     @GetMapping("/latest-report")

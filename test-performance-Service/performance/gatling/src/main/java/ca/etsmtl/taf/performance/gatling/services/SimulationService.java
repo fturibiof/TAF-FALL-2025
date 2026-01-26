@@ -34,23 +34,34 @@ public class SimulationService {
         // Run Gatling simulation in a separate thread
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Future<?> future = executor.submit(() -> {
+            @SuppressWarnings("java:S106")
+            PrintStream originalOut = System.out;
+            PrintStream originalErr = System.err;
             try {
-                @SuppressWarnings("java:S106")
-                PrintStream originalOut = System.out;
                 System.setOut(new PrintStream(pipedOut));
-                try {
-                    logger.info("Executing Gatling with request: {}", testRequest);
-                    System.setProperty("requestJson", testRequest);
-                    GatlingPropertiesBuilder props = new GatlingPropertiesBuilder();
-                    props.resultsDirectory(GatlingConfigurator.getGatlingResultsFolder());
-                    props.simulationClass(new SimulationFactory().getSimulationName(gatlingRequest.getSimulationStrategy()));
-                    Gatling.fromMap(props.build());
-                } finally {
-                    System.setOut(originalOut);
-                    pipedOut.close();
+                System.setErr(new PrintStream(pipedOut));
+                logger.info("Executing Gatling with request: {}", testRequest);
+                System.setProperty("requestJson", testRequest);
+                GatlingPropertiesBuilder props = new GatlingPropertiesBuilder();
+                props.resultsDirectory(GatlingConfigurator.getGatlingResultsFolder());
+                props.simulationClass(new SimulationFactory().getSimulationName(gatlingRequest.getSimulationStrategy()));
+                int exitCode = Gatling.fromMap(props.build());
+                if (exitCode == 1) {
+                    throw new RuntimeException("Gatling simulation failed to start or encountered a fatal error (exit code 1)");
+                } else if (exitCode != 0) {
+                    logger.warn("Gatling simulation finished with non-zero exit code: {}", exitCode);
                 }
             } catch (Exception e) {
                 logger.error("Error happened executing Gatling", e);
+                throw new RuntimeException(e);
+            } finally {
+                System.setOut(originalOut);
+                System.setErr(originalErr);
+                try {
+                    pipedOut.close();
+                } catch (IOException e) {
+                    logger.error("Error closing piped output stream", e);
+                }
             }
         });
 
@@ -60,8 +71,16 @@ public class SimulationService {
             output.append(line).append("\n");
         }
 
-        reader.close();
-        executor.shutdown();
+        try {
+            future.get(); // Wait for the simulation to finish and catch any exception
+        } catch (Exception e) {
+            Throwable cause = e.getCause();
+            String errorMessage = (cause != null) ? cause.getMessage() : e.getMessage();
+            throw new IOException("Gatling simulation failed: " + errorMessage, e);
+        } finally {
+            reader.close();
+            executor.shutdown();
+        }
 
         return output.toString();
     }

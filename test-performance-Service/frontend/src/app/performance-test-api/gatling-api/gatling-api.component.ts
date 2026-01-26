@@ -1,19 +1,18 @@
-import {Component, OnInit} from '@angular/core';
-import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
-import {Subscription} from 'rxjs';
-import {PerformanceTestApiService} from 'src/app/_services/performance-test-api.service';
+import { Component, OnInit } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { Subscription } from 'rxjs';
+import { PerformanceTestApiService } from 'src/app/_services/performance-test-api.service';
 import Swal from 'sweetalert2';
-import {GatlingRequest, ResponseTimePerPercentile} from './gatling-request';
-import {ApiResponse, GatlingAssertionResult, GatlingTestResult} from "../../models/gatlingTestResult";
-import {GATLING_SCENARIOS} from "../../models/gatling-scenarios";
+import { GatlingRequest, ResponseTimePerPercentile } from './gatling-request';
+import { ApiResponse, GatlingAssertionResult, GatlingTestResult } from "../../models/gatlingTestResult";
+import { GATLING_SCENARIOS } from "../../models/gatling-scenarios";
 
-enum SIMULATION_STRATEGY
-{
-  DEFAULT="DEFAULT",
-  SMOKE_TEST="SMOKE_TEST",
-  LOAD_TEST="LOAD_TEST",
-  STRESS_TEST="STRESS_TEST",
-  SPIKE_TEST="SPIKE_TEST",
+enum SIMULATION_STRATEGY {
+  DEFAULT = "DEFAULT",
+  SMOKE_TEST = "SMOKE_TEST",
+  LOAD_TEST = "LOAD_TEST",
+  STRESS_TEST = "STRESS_TEST",
+  SPIKE_TEST = "SPIKE_TEST",
 }
 
 @Component({
@@ -59,28 +58,42 @@ export class GatlingApiComponent implements OnInit {
   validateForm(): boolean {
     let isValid = true;
     const requiredFields = [
-      {element: 'testScenarioName', errorMessage: 'Veuillez entrer une valeur'},
-      {element: 'testBaseUrl', errorMessage: 'Veuillez entrer une valeur'},
-      {element: 'testUri', errorMessage: 'Veuillez entrer une valeur'},
-      {element: 'testMethodType', errorMessage: 'Veuillez sélectionner un type de requête'},
-      {element: 'userNumber', errorMessage: 'Veuillez entrer ou sélectionner une valeur'}
+      { element: 'testScenarioName', errorMessage: 'Veuillez entrer une valeur', type: 'text' },
+      { element: 'testBaseUrl', errorMessage: 'Veuillez entrer une valeur', type: 'text' },
+      { element: 'testUri', errorMessage: 'Veuillez entrer une valeur', type: 'text' },
+      { element: 'testMethodType', errorMessage: 'Veuillez sélectionner un type de requête', type: 'text' },
+      { element: 'testUsersNumber', errorMessage: 'Le nombre d\'utilisateurs doit être supérieur à 0', type: 'number', min: 1 },
+      { element: 'testRampUpDuration', errorMessage: 'La durée de montée doit être supérieure ou égale à 0', type: 'number', min: 0 }
     ];
 
     requiredFields.forEach(field => {
       const inputElement = document.getElementsByName(field.element)[0] as HTMLInputElement | null;
+      if (!inputElement) return;
+
       const errorDiv = document.createElement('div');
       errorDiv.className = 'text-danger';
 
-      if (inputElement?.nextElementSibling) {
+      if (inputElement.nextElementSibling?.className === 'text-danger') {
         inputElement.nextElementSibling.remove();
       }
-      if (inputElement && inputElement.value.trim() === '') {
+
+      let isFieldInvalid = false;
+      if (field.type === 'text' && inputElement.value.trim() === '') {
+        isFieldInvalid = true;
+      } else if (field.type === 'number') {
+        const val = parseInt(inputElement.value);
+        if (isNaN(val) || (field.min !== undefined && val < field.min)) {
+          isFieldInvalid = true;
+        }
+      }
+
+      if (isFieldInvalid) {
         isValid = false;
         inputElement.classList.add('is-invalid');
         errorDiv.innerText = field.errorMessage;
         inputElement.insertAdjacentElement('afterend', errorDiv);
       } else {
-        inputElement?.classList.remove('is-invalid');
+        inputElement.classList.remove('is-invalid');
       }
     });
 
@@ -95,6 +108,14 @@ export class GatlingApiComponent implements OnInit {
 
     this.busy = this.performanceTestApiService.sendGatlingRequest(this.request)
       .subscribe((response: any) => {
+        if (response.message && response.message.startsWith('Error')) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Erreur de simulation',
+            text: response.message,
+          });
+          return;
+        }
         this.modal!.style.display = "block";
 
         // Extraction des messages de la réponse de l'API
@@ -122,10 +143,16 @@ export class GatlingApiComponent implements OnInit {
         }
 
       }, (error: any) => {
+        let errorMessage = "Le test a échoué, révisez votre configuration de test";
+        if (error.error && typeof error.error === 'string') {
+          errorMessage = error.error;
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
         Swal.fire({
           icon: 'error',
           title: 'Erreur',
-          text: "Le test a échoué, révisez votre configuration de test",
+          text: errorMessage,
         })
       });
   }
@@ -176,16 +203,16 @@ export class GatlingApiComponent implements OnInit {
   }
 
   onStrategySelect() {
-    if(this.selectedStrategy == null)
+    if (this.selectedStrategy == null)
       this.selectedStrategy = SIMULATION_STRATEGY.DEFAULT.valueOf()
 
-    if(this.strategies.includes(this.selectedStrategy))
+    if (this.strategies.includes(this.selectedStrategy))
       this.request = GATLING_SCENARIOS.filter(scenario => scenario.name == this.selectedStrategy).map(it => it.config)[0]
   }
 
   addPercentile(): void {
     console.log("HERE")
-    console.log(`newPercentile: ${this.newPercentile} and newResponseTime: ${this.newResponseTime}` )
+    console.log(`newPercentile: ${this.newPercentile} and newResponseTime: ${this.newResponseTime}`)
 
     if (this.newPercentile && this.newResponseTime) {
 
