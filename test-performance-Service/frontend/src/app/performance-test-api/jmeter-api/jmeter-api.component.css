@@ -285,3 +285,125 @@ input:checked + .slider:before {
 .text-danger {
   color: red;
 }
+/* Scenario Toggle Styles */
+.scenario-toggle-container {
+  margin: 20px 0;
+  text-align: left;
+}
+
+.btn-scenario-toggle {
+  background-color: transparent;
+  border: 2px solid #007bff;
+  color: #007bff;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  outline: none;
+}
+
+.btn-scenario-toggle:hover {
+  background-color: #007bff;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0,123,255,0.2);
+}
+
+.btn-scenario-toggle i {
+  transition: transform 0.3s ease;
+}
+
+/* Test Types Glossary Styles */
+.test-types-glossary {
+  background-color: #f8f9fa;
+  border-left: 4px solid #007bff;
+  padding: 20px;
+  margin-top: 10px;
+  margin-bottom: 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.glossary-header {
+  margin-bottom: 15px;
+}
+
+.glossary-header h3 {
+  margin: 0;
+  font-size: 1.15em;
+  color: #333;
+}
+
+.glossary-hint {
+  font-size: 0.85em;
+  color: #666;
+  font-style: italic;
+}
+
+.glossary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px;
+}
+
+.glossary-item {
+  position: relative;
+  background: white;
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.glossary-item:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 15px rgba(0,123,255,0.15);
+  border-color: #007bff;
+}
+
+.glossary-item:active {
+  transform: translateY(-2px);
+}
+
+.glossary-item strong {
+  display: block;
+  margin-bottom: 6px;
+  color: #0056b3;
+  font-size: 1.05em;
+}
+
+.glossary-item span {
+  font-size: 0.9em;
+  color: #555;
+  line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+.apply-badge {
+  align-self: flex-start;
+  font-size: 0.75em;
+  padding: 4px 8px;
+  background-color: #e7f3ff;
+  color: #007bff;
+  border-radius: 4px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.glossary-item:hover .apply-badge {
+  opacity: 1;
+}

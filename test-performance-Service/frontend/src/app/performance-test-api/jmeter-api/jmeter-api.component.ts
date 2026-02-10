@@ -39,13 +39,12 @@ export class JmeterApiComponent implements OnInit {
   };
 
   formType: string = 'http';
-
-  http_uri: string = '';
+  isGlossaryVisible: boolean = false;
 
   filteredScenarios: any[] = [];
   selectedScenario: string | null = null;
   scenarioConfigurations = JMETER_SCENARIOS;
-  
+
   http_description = document.getElementById('http-description');
   ftp_description = document.getElementById('ftp-description');
 
@@ -81,6 +80,11 @@ export class JmeterApiComponent implements OnInit {
 
     this.updateButtonVisibility();
     this.updateScenariosFilter();
+
+    // Set default methods
+    this.http_request.method = 'GET';
+    this.ftp_request.method = 'Retrieve';
+    this.http_request.protocol = 'HTTP';
   }
 
   toggleHttpSidebar() {
@@ -176,7 +180,7 @@ export class JmeterApiComponent implements OnInit {
       s => s.name === this.selectedScenario
     );
     if (!scenario) return;
-  
+
     const target = this.requestTargets[scenario.type];
     this.applyScenario(target, scenario.config);
   }
@@ -196,19 +200,48 @@ export class JmeterApiComponent implements OnInit {
     return target;
   }
 
-  parseUri() {
-    if (this.http_uri) {
-      try {
-        const url = new URL(this.http_uri);
-
-        this.http_request.domain = url.hostname;
-        this.http_request.port = url.port || '';
-        this.http_request.protocol = url.protocol.replace(':', '');
-        this.http_request.path = url.pathname;
-
-      } catch (error) {
-        console.error('Invalid URI:', error);
+  onProtocolChange() {
+    if (this.http_request.protocol === 'FTP') {
+      // Toggle to FTP form
+      if (this.switchCheckbox) {
+        this.switchCheckbox.checked = true;
+        this.toggleForms();
       }
+    }
+  }
+
+  toggleGlossary() {
+    this.isGlossaryVisible = !this.isGlossaryVisible;
+  }
+
+  selectTestType(type: string) {
+    const target = this.formType === 'http' ? this.http_request : this.ftp_request;
+
+    switch (type) {
+      case 'smoke':
+        target.nbThreads = '5';
+        target.rampTime = '1';
+        target.duration = '60';
+        target.loop = '1';
+        break;
+      case 'load':
+        target.nbThreads = '50';
+        target.rampTime = '10';
+        target.duration = '300';
+        target.loop = '1';
+        break;
+      case 'stress':
+        target.nbThreads = '200';
+        target.rampTime = '20';
+        target.duration = '600';
+        target.loop = '1';
+        break;
+      case 'spike':
+        target.nbThreads = '500';
+        target.rampTime = '5';
+        target.duration = '120';
+        target.loop = '1';
+        break;
     }
   }
 
