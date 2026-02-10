@@ -31,9 +31,8 @@ export class PerformanceTestApiService {
     return response;
   }
 
-  getLatestReportUrl(): URL {
-    // Appelle l'API pour récupérer le contenu du dernier rapport Gatling
-    return new URL(LATEST_REPORT_API);
+  getLatestReportUrl(): string {
+    return LATEST_REPORT_API;
   }
 
   sendHttpJMeterRequest(

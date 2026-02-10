@@ -4,7 +4,6 @@ package ca.etsmtl.taf.performance.gatling.controllers;
 import java.net.URI;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -37,12 +36,14 @@ public class GatlingApiController {
     }
 
     @GetMapping("/latest-report")
-    public ResponseEntity<String> getLatestGatlingReport() {
+    public ResponseEntity<?> getLatestGatlingReport() {
         try {
             String reportPath = gatlingFacade.getLatestReportPath();
-            HttpHeaders headers = new HttpHeaders();
-            headers.setLocation(URI.create(reportPath));
-            return new ResponseEntity<>(headers, HttpStatus.FOUND);
+            org.slf4j.LoggerFactory.getLogger(GatlingApiController.class)
+                .info("Redirecting browser to report at: {}", reportPath);
+            return ResponseEntity.status(HttpStatus.FOUND)
+                    .location(URI.create(reportPath))
+                    .build();
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         } catch (Exception e) {

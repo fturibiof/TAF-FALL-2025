@@ -39,9 +39,9 @@ export class GatlingApiComponent implements OnInit {
 
   request: GatlingRequest = new GatlingRequest({});
 
-  strategies: string[] = Object.keys(SIMULATION_STRATEGY).filter(k => isNaN(Number(k)));
+  strategies: string[] = ["DEFAULT", "SMOKE_TEST", "LOAD_TEST", "STRESS_TEST", "SPIKE_TEST"];
   strategiesEnum = SIMULATION_STRATEGY;
-  selectedStrategy: string | null = null;
+  selectedStrategy: string = "DEFAULT";
 
   constructor(
     private readonly performanceTestApiService: PerformanceTestApiService,
@@ -57,31 +57,56 @@ export class GatlingApiComponent implements OnInit {
 
   validateForm(): boolean {
     let isValid = true;
-    const requiredFields = [
+
+    // Clear all previous errors
+    const existingErrors = document.querySelectorAll('.text-danger');
+    existingErrors.forEach(err => err.remove());
+    const invalidInputs = document.querySelectorAll('.is-invalid');
+    invalidInputs.forEach(input => input.classList.remove('is-invalid'));
+
+    interface ValidationField {
+      element: string;
+      errorMessage: string;
+      type: string;
+      min?: number;
+    }
+
+    const requiredFields: ValidationField[] = [
       { element: 'testScenarioName', errorMessage: 'Veuillez entrer une valeur', type: 'text' },
       { element: 'testBaseUrl', errorMessage: 'Veuillez entrer une valeur', type: 'text' },
       { element: 'testUri', errorMessage: 'Veuillez entrer une valeur', type: 'text' },
-      { element: 'testMethodType', errorMessage: 'Veuillez sélectionner un type de requête', type: 'text' },
-      { element: 'testUsersNumber', errorMessage: 'Le nombre d\'utilisateurs doit être supérieur à 0', type: 'number', min: 1 },
-      { element: 'testRampUpDuration', errorMessage: 'La durée de montée doit être supérieure ou égale à 0', type: 'number', min: 0 }
+      { element: 'testMethodType', errorMessage: 'Veuillez sélectionner un type de requête', type: 'text' }
     ];
 
+    // Add strategy-specific fields
+    if (this.selectedStrategy === SIMULATION_STRATEGY.DEFAULT || this.selectedStrategy === SIMULATION_STRATEGY.LOAD_TEST) {
+      requiredFields.push({ element: 'testUsersNumber', errorMessage: 'Le nombre d\'utilisateurs doit être supérieur à 0', type: 'number', min: 1 });
+      requiredFields.push({ element: 'testRampUpDuration', errorMessage: 'La durée de montée doit être supérieure ou égale à 0', type: 'number', min: 0 });
+    } else if (this.selectedStrategy === SIMULATION_STRATEGY.STRESS_TEST) {
+      requiredFields.push({ element: 'testUserRampUpPerSecondMin', errorMessage: 'Min users doit être >= 0', type: 'number', min: 0 });
+      requiredFields.push({ element: 'testUserRampUpPerSecondMax', errorMessage: 'Max users doit être >= 1', type: 'number', min: 1 });
+      requiredFields.push({ element: 'testUserRampUpPerSecondDuration', errorMessage: 'Durée doit être >= 1', type: 'number', min: 1 });
+    } else if (this.selectedStrategy === SIMULATION_STRATEGY.SPIKE_TEST) {
+      requiredFields.push({ element: 'testConstantUsers', errorMessage: 'Users constants doit être >= 0', type: 'number', min: 0 });
+      requiredFields.push({ element: 'testConstantUsersDuration', errorMessage: 'Durée doit être >= 1', type: 'number', min: 1 });
+      requiredFields.push({ element: 'testUsersAtOnce', errorMessage: 'At once users doit être >= 1', type: 'number', min: 1 });
+    } else if (this.selectedStrategy === SIMULATION_STRATEGY.SMOKE_TEST) {
+      requiredFields.push({ element: 'testUsersAtOnce', errorMessage: 'Users doit être >= 1', type: 'number', min: 1 });
+    }
+
     requiredFields.forEach(field => {
-      const inputElement = document.getElementsByName(field.element)[0] as HTMLInputElement | null;
-      if (!inputElement) return;
+      const inputElements = document.getElementsByName(field.element);
+      if (!inputElements || inputElements.length === 0) return;
 
-      const errorDiv = document.createElement('div');
-      errorDiv.className = 'text-danger';
-
-      if (inputElement.nextElementSibling?.className === 'text-danger') {
-        inputElement.nextElementSibling.remove();
-      }
+      const inputElement = inputElements[0] as HTMLInputElement;
 
       let isFieldInvalid = false;
-      if (field.type === 'text' && inputElement.value.trim() === '') {
+      const value = inputElement.value;
+
+      if (field.type === 'text' && (!value || value.trim() === '')) {
         isFieldInvalid = true;
       } else if (field.type === 'number') {
-        const val = parseInt(inputElement.value);
+        const val = parseInt(value);
         if (isNaN(val) || (field.min !== undefined && val < field.min)) {
           isFieldInvalid = true;
         }
@@ -90,10 +115,10 @@ export class GatlingApiComponent implements OnInit {
       if (isFieldInvalid) {
         isValid = false;
         inputElement.classList.add('is-invalid');
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'text-danger';
         errorDiv.innerText = field.errorMessage;
         inputElement.insertAdjacentElement('afterend', errorDiv);
-      } else {
-        inputElement.classList.remove('is-invalid');
       }
     });
 
@@ -101,65 +126,70 @@ export class GatlingApiComponent implements OnInit {
   }
 
   onSubmit() {
-
     if (!this.validateForm()) {
       return;
     }
 
+    // Ensure simulationStrategy matches selectedStrategy
+    this.request.simulationStrategy = this.selectedStrategy;
+
+    console.log("Sending Gatling Request:", this.request);
+
     this.busy = this.performanceTestApiService.sendGatlingRequest(this.request)
-      .subscribe((response: any) => {
-        if (response.message && response.message.startsWith('Error')) {
+      .subscribe({
+        next: (response: ApiResponse) => {
+          console.log("Gatling Response Received:", response);
+          if (response.message && (response.message.startsWith('Error') || response.message.includes('failed to execute') || response.message.includes('Simulation failed'))) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Erreur de simulation',
+              text: response.message,
+              footer: 'Veuillez vérifier les logs serveur pour plus de détails.'
+            });
+            return;
+          }
+
+          this.testResult = response.testResult;
+          const output = response.message || "";
+          const hasReport = output.includes('Generated Report') || output.includes('Please open');
+
+          if (this.testResult) {
+            (this.testResult as any).reportGenerated = hasReport;
+          }
+
+          this.modal!.style.display = "block";
+        },
+        error: (error: any) => {
+          console.error("Gatling Request Error:", error);
+          let errorMessage = "Le test a échoué, révisez votre configuration de test";
+          if (error.error) {
+            if (typeof error.error === 'string') {
+              errorMessage = error.error;
+            } else if (error.error.message) {
+              errorMessage = error.error.message;
+            }
+          } else if (error.message) {
+            errorMessage = error.message;
+          }
+
           Swal.fire({
             icon: 'error',
-            title: 'Erreur de simulation',
-            text: response.message,
-          });
-          return;
-        }
-        this.modal!.style.display = "block";
-
-        // Extraction des messages de la réponse de l'API
-        const pattern = /(.+)\n?/g;
-        const matches: string[] = Array.from(response.message?.matchAll(pattern));
-        const arrayOfStrings = matches.map(match => match[0]);
-
-        // Filtrer les messages pour ne conserver que ceux indiquant le succès ou l'échec global
-        const successMessage = arrayOfStrings.find(message => message.includes('request count'));
-        const reportGeneratedMessage = arrayOfStrings.find(message => message.includes('Generated Report'));
-
-        // Détermination du succès ou de l'échec global
-        this.testResult = [{
-          success: !!successMessage
-        }];
-
-        this.testResult = (response as ApiResponse).testResult
-
-        // Ajouter un message indiquant que le rapport a été généré
-        if (reportGeneratedMessage) {
-          this.testResult.push({
-            message: 'Le rapport a été généré avec succès.',
-            success: true
+            title: 'Erreur Serveur (500)',
+            text: errorMessage,
+            footer: 'Assurez-vous que le backend est accessible et que la configuration est correcte.'
           });
         }
-
-      }, (error: any) => {
-        let errorMessage = "Le test a échoué, révisez votre configuration de test";
-        if (error.error && typeof error.error === 'string') {
-          errorMessage = error.error;
-        } else if (error.message) {
-          errorMessage = error.message;
-        }
-        Swal.fire({
-          icon: 'error',
-          title: 'Erreur',
-          text: errorMessage,
-        })
       });
   }
 
   //  Afficher le dernier rapport
   showLatestReport() {
-    const reportWindow = window.open(this.performanceTestApiService.getLatestReportUrl().toString(), '_blank');
+    const url = this.performanceTestApiService.getLatestReportUrl();
+    window.open(url, '_blank');
+  }
+
+  getLatestReportUrl(): string {
+    return this.performanceTestApiService.getLatestReportUrl();
   }
 
   openReportModal() {
@@ -197,17 +227,24 @@ export class GatlingApiComponent implements OnInit {
   }
 
   isSuccessfull(): boolean {
+    if (!this.testResult || !this.testResult.assertions) {
+      return false;
+    }
     const failures = this.testResult.assertions.filter((assertion: GatlingAssertionResult) => assertion.result == false);
-    console.log("Failures" + failures)
+    console.log("Failures" + JSON.stringify(failures))
     return failures.length == 0;
   }
 
   onStrategySelect() {
-    if (this.selectedStrategy == null)
-      this.selectedStrategy = SIMULATION_STRATEGY.DEFAULT.valueOf()
+    if (!this.selectedStrategy) {
+      this.selectedStrategy = "DEFAULT";
+    }
 
-    if (this.strategies.includes(this.selectedStrategy))
-      this.request = GATLING_SCENARIOS.filter(scenario => scenario.name == this.selectedStrategy).map(it => it.config)[0]
+    const match = GATLING_SCENARIOS.find(scenario => scenario.name === this.selectedStrategy);
+    if (match) {
+      // Create a new GatlingRequest based on the template to ensure all properties exist
+      this.request = new GatlingRequest(match.config);
+    }
   }
 
   addPercentile(): void {

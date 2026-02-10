@@ -269,13 +269,15 @@ select {
   color: red;
 }
 
-.showbutton {
+.showbutton, .linkbutton {
   background-color: #007bff;
   color: white;
   border: none;
   padding: 10px 20px;
   border-radius: 4px;
   font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
 }
 .newtestbutton {
   margin-right: 15px;
