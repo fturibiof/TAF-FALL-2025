@@ -39,6 +39,15 @@ public class RequestController {
 
         this.execute();
         Answer answer = new Answer();
+
+    // If request failed (connection refused, timeout, etc.)
+    if (this.response == null) {
+        answer.answer = false;
+        answer.statusCode = -1;
+        answer.output = "";
+        answer.messages.add("❌ Erreur: Impossible de joindre l'API cible à " + this.request.getApiUrl());
+        return answer;
+    }
         answer.statusCode = this.response.getStatusCode();
         answer.output = this.response.getBody().asPrettyString();
 
@@ -83,9 +92,14 @@ public class RequestController {
 
 
 
-    private void execute() {
+private void execute() {
+    try {
         this.response = this.request.getMethod().execute(this.httpRequest, this.request.getApiUrl());
+    } catch (Exception e) {
+        System.out.println("ERROR: Failed to execute request to " + this.request.getApiUrl() + " : " + e.getMessage());
+        this.response = null;
     }
+}
 
     private boolean checkStatusCode() {
         System.out.println("Expected Status Code: " + this.request.getStatusCode());
@@ -170,6 +184,9 @@ public class RequestController {
 
     private boolean checkResponseHeaders() {
         boolean ok = true;
+        if (request.getExpectedHeaders() == null || request.getExpectedHeaders().isEmpty()) {
+            return true;
+        }    
 
         for (Map.Entry<String, String> expected : request.getExpectedHeaders().entrySet()) {
             String foundValue = response.header(expected.getKey());
