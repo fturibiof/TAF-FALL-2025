@@ -234,6 +234,9 @@ services:
     restart: unless-stopped
     ports:
       - "8086:8082"
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
     networks:
       - taf-local
     healthcheck:
