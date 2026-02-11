@@ -37,7 +37,7 @@
 		<java.version>17</java.version>
 		<lombok.version>1.18.24</lombok.version>
         <!-- spring-boot.version>2.6.6</spring-boot.version -->
-        <spring-boot.version>3.3.5</spring-boot.version>
+        <spring-boot.version>3.5.3</spring-boot.version>
     </properties>
     <packaging>pom</packaging>
     <modules>
