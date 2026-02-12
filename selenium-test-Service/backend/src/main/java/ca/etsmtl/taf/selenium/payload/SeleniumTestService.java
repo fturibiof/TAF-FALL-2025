@@ -22,19 +22,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import java.net.URL;
+import java.net.URI;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+
 @Component
 public class SeleniumTestService {
 
     @Autowired
     private SeleniumCaseRepository seleniumCaseRepository;
     private static final Logger logger = LoggerFactory.getLogger(SeleniumTestService.class);
+
+    @SuppressWarnings("deprecation")
     public SeleniumResponse executeTestCase(SeleniumCase seleniumCase) {
         logger.info("im Executing Selenium case");
         List<SeleniumAction> seleniumActions = seleniumCase.getActions();
-        //List<SeleniumAction> seleniumActionRequests = seleniumActions;
+        // List<SeleniumAction> seleniumActionRequests = seleniumActions;
         // Convertir les SeleniumActions en SeleniumActionRequest
         List<SeleniumActionRequest> seleniumActionRequests = convertToSeleniumActionRequests(seleniumActions);
-        
+
         SeleniumResponse seleniumResponse = new SeleniumResponse();
         seleniumResponse.setCase_id(seleniumCase.getCase_id());
         seleniumResponse.setCaseName(seleniumCase.getCaseName());
@@ -42,16 +49,14 @@ public class SeleniumTestService {
         long currentTimestamp = (new Timestamp(System.currentTimeMillis())).getTime();
         seleniumResponse.setTimestamp(currentTimestamp / 1000);
         ChromeOptions options = new ChromeOptions();
-        //WebDriver driver = new ChromeDriver();
+        // WebDriver driver = new ChromeDriver();
         // Must run headless in Docker/WSL2
-        options.addArguments("--headless=new");  // "--headless-new" is recommended for Chrome 109+
-        options.addArguments("--no-sandbox");    // Required in containers
+        options.addArguments("--headless=new"); // "--headless-new" is recommended for Chrome 109+
+        options.addArguments("--no-sandbox"); // Required in containers
         options.addArguments("--disable-dev-shm-usage"); // Avoid /dev/shm issues
-        options.addArguments("--disable-gpu");   // Optional
+        options.addArguments("--disable-gpu"); // Optional
         options.addArguments("--remote-allow-origins=*"); // Needed for Selenium 4.19+
         WebDriver driver = new ChromeDriver(options);
-
-
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
 
@@ -71,42 +76,63 @@ public class SeleniumTestService {
             logger.info("2.ste p 2Executing Selenium case: {}", seleniumCase.getCase_id());
             logger.info("SeleniumActionRequest: {}", seleniumActionRequests);
             logger.info("Finished executing actions for case: {}", actionResults);
-             seleniumResponse.setSuccess(true);
+            seleniumResponse.setSuccess(true);
             for (SeleniumActionRequest seleniumActionRequest : seleniumActionRequests) {
                 String actionResult = "";
-                
+
                 try {
                     logger.info("changed Executing action type: {}", seleniumActionRequest.getAction_type_id());
-                    /*if (seleniumActionRequest.getAction_type_id() == 1) {
-                        driver.get(seleniumActionRequest.getInput());
-                        actionResult = "Success";
-                    }*/
+                    /*
+                     * if (seleniumActionRequest.getAction_type_id() == 1) {
+                     * driver.get(seleniumActionRequest.getInput());
+                     * actionResult = "Success";
+                     * }
+                     */
                     switch (seleniumActionRequest.getAction_type_id()) {
                         case 1: // goToUrl
-                            logger.info("go to : {}", seleniumActionRequest.getInput());
+                            logger.info("!go to : {}", seleniumActionRequest.getInput());
+                            String inputUrl = seleniumActionRequest.getInput();
+                            // --- URL VALIDATION BEFORE SELENIUM ---//
+                            try {
+                                new URL(inputUrl).toURI();
+                                // Validates both URL format + URI syntax
+                                //
+                            } catch (Exception e) {
+                                String outputMessage = "Invalid URL format: " + inputUrl;
+                                logger.info("outputMessage: {}", outputMessage);
+                                seleniumResponse.setSuccess(false);
+                                actionResult += "<br>Failure when executing test case goToUrl: " + outputMessage;
+                                break;
+                                // Stop here — do NOT call driver.get()
+                            }
                             driver.get(seleniumActionRequest.getInput());
-                            logger.info("Navigated to URL successfully.");
-                            if(!driver.getCurrentUrl().equals(seleniumActionRequest.getInput())) {
+                            logger.info("!Navigated to URL successfully.");
+                            
+                            if (!driver.getCurrentUrl().equals(seleniumActionRequest.getInput())) {
                                 String outputMessage = "Failed to navigate to URL: " + seleniumActionRequest.getInput();
                                 logger.info("outputMessage: {}", outputMessage);
                                 seleniumResponse.setSuccess(false);
                                 actionResult += "<br>Failure when executing test case goToUrl: " + outputMessage;
-                                //return finalizeTest(driver, seleniumResponse, startTime, false, outputMessage);
+                                // return finalizeTest(driver, seleniumResponse, startTime, false,
+                                // outputMessage);
                             }
                             // Utilisez Duration.ofSeconds si vous êtes en Selenium 4+
                             driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
                             break;
                         case 2: // FillField
-                            logger.info("fill : {} with {}", seleniumActionRequest.getObject(), seleniumActionRequest.getInput());
+                            logger.info("fill : {} with {}", seleniumActionRequest.getObject(),
+                                    seleniumActionRequest.getInput());
                             WebElement textBox = driver.findElement(By.name(seleniumActionRequest.getObject()));
                             logger.info("textBox found: {}", textBox != null);
                             textBox.sendKeys(seleniumActionRequest.getInput());
-                            if(!textBox.getAttribute("value").equals(seleniumActionRequest.getInput())) {
-                                String outputMessage = "Failed to fill the field " + seleniumActionRequest.getObject() + " with " + seleniumActionRequest.getInput();
+                            if (!textBox.getAttribute("value").equals(seleniumActionRequest.getInput())) {
+                                String outputMessage = "Failed to fill the field " + seleniumActionRequest.getObject()
+                                        + " with " + seleniumActionRequest.getInput();
                                 logger.info("outputMessage: {}", outputMessage);
                                 seleniumResponse.setSuccess(false);
                                 actionResult += "<br>Failure when executing test case FillField: " + outputMessage;
-                                //return finalizeTest(driver, seleniumResponse, startTime, false, outputMessage);
+                                // return finalizeTest(driver, seleniumResponse, startTime, false,
+                                // outputMessage);
                             }
                             break;
                         case 4: // GetPageTitle
@@ -121,17 +147,34 @@ public class SeleniumTestService {
                                 seleniumResponse.setSuccess(false);
 
                                 actionResult += "<br>Failure when executing test case  GetPageTitle " + outputMessage;
-                                //return finalizeTest(driver, seleniumResponse, startTime, false, outputMessage);
+                                // return finalizeTest(driver, seleniumResponse, startTime, false,
+                                // outputMessage);
+                            }
+                            break;
+                        case 3: // GetAttribute
+                            WebElement webElement = driver.findElement(By.name(seleniumActionRequest.getTarget()));
+                            String pageAttribute = webElement.getAttribute(seleniumActionRequest.getObject());
+                            logger.info("pageAttribute: {}", pageAttribute);
+                            logger.info("Expected attribute value: {}", seleniumActionRequest.getInput());
+
+                            if (!pageAttribute.equals(seleniumActionRequest.getInput())) {
+                                String outputMessage = "Attribute " + seleniumActionRequest.getObject()
+                                        + " of " + seleniumActionRequest.getTarget()
+                                        + " is " + pageAttribute
+                                        + " instead of " + seleniumActionRequest.getInput();
+                                seleniumResponse.setSuccess(false);
+                                logger.info("outputMessage: {}", outputMessage);
+                                actionResult += "<br>Failure when executing test case GetAttribute: " + outputMessage;
                             }
                             break;
                     }
                 } catch (Exception e) {
-                    //actionResult = "Failure: " + e.getMessage();
+                    // actionResult = "Failure: " + e.getMessage();
                 }
 
                 // Si actionResult est null, le remplacer par "Failed"
                 if (actionResult == null) {
-                    //actionResult = "Failed";
+                    // actionResult = "Failed";
                 }
 
                 actionResults.add(actionResult);
@@ -142,7 +185,7 @@ public class SeleniumTestService {
             driver.quit();
             seleniumResponse.setDuration(System.currentTimeMillis() - startTime);
             seleniumResponse.setOutput(String.join("\n", actionResults));
-            //seleniumResponse.setSuccess(true);
+            // seleniumResponse.setSuccess(true);
 
             // Ajouter les résultats des actions à l'objet SeleniumTestCase
             seleniumTestCase.setActionResults(actionResults);
@@ -175,7 +218,8 @@ public class SeleniumTestService {
         return seleniumActionRequests;
     }
 
-    private void setFailureResponse(SeleniumResponse seleniumResponse, WebDriver driver, long startTime, String message) {
+    private void setFailureResponse(SeleniumResponse seleniumResponse, WebDriver driver, long startTime,
+            String message) {
         driver.quit();
         seleniumResponse.setSuccess(false);
         seleniumResponse.setOutput(message);
