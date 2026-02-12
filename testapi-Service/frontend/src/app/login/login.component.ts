@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { TokenStorageService } from '../_services/token-storage.service';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-login',
@@ -50,5 +51,11 @@ export class LoginComponent implements OnInit {
 
   reloadPage(): void {
     window.location.reload();
+  }
+
+  loginWithGoogle(): void {
+    // Redirect browser directly to backend's OAuth2 endpoint
+    // Backend handles the full OAuth2 flow and redirects back to frontend with JWT
+    window.location.href = environment.oauth2BackendUrl + '/oauth2/authorization/google';
   }
 }
