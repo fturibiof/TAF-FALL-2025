@@ -20,13 +20,18 @@ FROM eclipse-temurin:17-jdk
 
 WORKDIR /code
 
-# Install wget and Chrome
-RUN apt-get update && apt-get install -y wget gnupg ca-certificates \
+# Install Google Chrome and ChromeDriver
+RUN apt-get update && apt-get install -y \
+    wget \
+    gnupg \
     && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg \
     && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" > /etc/apt/sources.list.d/google-chrome.list \
     && apt-get update \
     && apt-get install -y google-chrome-stable \
     && rm -rf /var/lib/apt/lists/*
+
+# Verify Chrome is installed
+RUN google-chrome --version
 
 # Copy Selenium jar from builder
 ARG JAR_FILE=target/selenium-1.0.0-SNAPSHOT.jar

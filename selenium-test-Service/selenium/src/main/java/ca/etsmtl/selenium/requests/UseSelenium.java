@@ -48,15 +48,46 @@ public class UseSelenium {
 
         try {
             logger.info("inside useSelenium 1");
-            // Initialisation du driver
-            System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver");
-
+            
+            // Vérifier les chemins disponibles
+            logger.info("Checking paths...");
+            String[] possibleChromePaths = {
+                "/usr/bin/google-chrome",
+                "/usr/bin/google-chrome-stable",
+                "/usr/bin/chromium",
+                "/usr/bin/chromium-browser"
+            };
+            
+            String chromePath = null;
+            for (String path : possibleChromePaths) {
+                java.io.File f = new java.io.File(path);
+                if (f.exists()) {
+                    chromePath = path;
+                    logger.info("Found Chrome/Chromium at: {}", path);
+                    break;
+                }
+            }
+            
+            if (chromePath == null) {
+                logger.error("Chrome/Chromium binary not found!");
+                throw new RuntimeException("Chrome/Chromium binary not found in any expected location");
+            }
+            
+            // Note: Selenium Manager (4.x+) will automatically download and manage ChromeDriver
+            // No need to set webdriver.chrome.driver manually
+            
             ChromeOptions options = new ChromeOptions();
+            options.setBinary(chromePath);
             options.addArguments("--no-sandbox");
-            options.addArguments("--headless");
+            options.addArguments("--headless=new");
             options.addArguments("--disable-dev-shm-usage");
+            options.addArguments("--disable-gpu");
+            options.addArguments("--remote-allow-origins=*");
             options.addArguments("--window-size=1920x1080");
-            driver = new ChromeDriver(options); // L'objet est initialisé ici
+            options.addArguments("--disable-software-rasterizer");
+            
+            logger.info("Creating ChromeDriver with binary: {}", chromePath);
+            driver = new ChromeDriver(options);
             logger.info("inside useSelenium ChromeDriver initialized successfully.");
             // Le temps d'attente implicite est mieux défini au niveau du driver
             // driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10)); // Exemple de bonne pratique

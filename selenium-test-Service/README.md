@@ -15,6 +15,13 @@ cd selenium-test-Service
 docker compose up
 ```
 
+**Prérequis** : Pour forcer le re-build
+
+```bash
+cd selenium-test-Service
+docker compose up --build --force-recreate
+```
+
 ### Accès
 
 - **Frontend** : http://localhost:4200/home
