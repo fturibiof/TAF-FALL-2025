@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/selenium")
 public class TestSeleniumController {
+     private static final Logger logger = LoggerFactory.getLogger(TestSeleniumController.class);
     private final SeleniumTestService seleniumTestService;
 
     public TestSeleniumController(SeleniumTestService seleniumTestService) {
@@ -23,11 +25,12 @@ public class TestSeleniumController {
 
     @PostMapping("/run")
     public ResponseEntity<List<SeleniumResponse>> runTests(@RequestBody List<SeleniumCase> seleniumCases) {
+        logger.info("Received {} Selenium cases", seleniumCases.size());
         // Exécute chaque cas de test avec SeleniumTestService
         List<SeleniumResponse> responses = seleniumCases.stream()
                 .map(seleniumTestService::executeTestCase)
                 .collect(Collectors.toList());
-
+        logger.info("Finished executing all Selenium cases. responses={}", responses);
         return ResponseEntity.ok(responses);
     }
 

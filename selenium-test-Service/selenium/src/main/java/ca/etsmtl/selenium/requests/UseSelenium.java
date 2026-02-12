@@ -24,11 +24,13 @@ import org.springframework.web.bind.annotation.*;
 
 import ca.etsmtl.selenium.requests.payload.request.*;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/microservice/selenium")
 public class UseSelenium {
-
+     private static final Logger logger = LoggerFactory.getLogger(UseSelenium.class);
     @PostMapping("/test")
     public SeleniumResponse testWithSelenium(@RequestBody SeleniumCase seleniumCase) {
         List<SeleniumAction> seleniumActions = seleniumCase.getActions();
@@ -45,6 +47,7 @@ public class UseSelenium {
         long startTime = System.currentTimeMillis();
 
         try {
+            logger.info("inside useSelenium 1");
             // Initialisation du driver
             System.setProperty("webdriver.chrome.driver", "src/main/resources/chromedriver");
 
@@ -54,7 +57,7 @@ public class UseSelenium {
             options.addArguments("--disable-dev-shm-usage");
             options.addArguments("--window-size=1920x1080");
             driver = new ChromeDriver(options); // L'objet est initialisé ici
-
+            logger.info("inside useSelenium ChromeDriver initialized successfully.");
             // Le temps d'attente implicite est mieux défini au niveau du driver
             // driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10)); // Exemple de bonne pratique
 
@@ -62,7 +65,7 @@ public class UseSelenium {
             try {
                 for (SeleniumAction seleniumAction : seleniumActions) {
                     System.out.println("action type name : " + seleniumAction.getAction_type_name());
-
+                    logger.info("inside useSelenium executing action type: {}", seleniumAction.getAction_type_name());
                     switch (seleniumAction.getAction_type_id()) {
                         case 1: // goToUrl
                             System.out.println("go to : " + seleniumAction.getInput());

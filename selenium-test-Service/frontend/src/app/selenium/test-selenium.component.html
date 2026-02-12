@@ -23,9 +23,11 @@
                             <tr *ngFor="let result of testResult">
                                 <td>{{result.case_id}}</td>
                                 <td>{{result.caseName}}</td>
+                                
                                 <td>
                                     <span class="badge bg-success" *ngIf="result.success==true">success</span>
                                     <span class="badge bg-danger" *ngIf="result.success==false">failed</span>
+                                    <div [innerHTML]="result.output"></div>
                                 </td>
                                 
                             </tr>
