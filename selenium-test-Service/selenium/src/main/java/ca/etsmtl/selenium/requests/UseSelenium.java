@@ -155,7 +155,7 @@ public class UseSelenium {
                             WebElement textBox;
 
                             try {
-                                textBox = driver.findElement(By.name(seleniumAction.getObject()));
+                                textBox = driver.findElement(By.cssSelector(seleniumAction.getObject()));
                             } catch (NoSuchElementException e) {
                                 return finalizeTest(driver, seleniumResponse, startTime, false,
                                         "Champ de saisie '" + seleniumAction.getObject() + "' introuvable.");
@@ -204,7 +204,7 @@ public class UseSelenium {
                             break;
                         case 5: // Clear
                             try {
-                                WebElement textBoxToClear = driver.findElement(By.name(seleniumAction.getObject()));
+                                WebElement textBoxToClear = driver.findElement(By.cssSelector(seleniumAction.getObject()));
 
                                 // Optional: check if interactable
                                 if (!textBoxToClear.isDisplayed() || !textBoxToClear.isEnabled()) {
@@ -223,7 +223,7 @@ public class UseSelenium {
                             break;
                         case 6: // Click
                             try {
-                                WebElement submitButton = driver.findElement(By.name(seleniumAction.getObject()));
+                                WebElement submitButton = driver.findElement(By.cssSelector(seleniumAction.getObject()));
 
                                 try {
                                     submitButton.click();
@@ -239,7 +239,7 @@ public class UseSelenium {
                             break;
                         case 7: // isDisplayed
                             try {
-                                WebElement message = driver.findElement(By.name(seleniumAction.getObject()));
+                                WebElement message = driver.findElement(By.cssSelector(seleniumAction.getObject()));
 
                                 // Optional: check if visible
                                 if (!message.isDisplayed()) {
@@ -264,7 +264,7 @@ public class UseSelenium {
 
                             try {
                                 // Step 1: find the element
-                                textElement = driver.findElement(By.name(seleniumAction.getObject()));
+                                textElement = driver.findElement(By.cssSelector(seleniumAction.getObject()));
                             } catch (NoSuchElementException ex) {
                                 return finalizeTest(driver, seleniumResponse, startTime, false,
                                         "L'Element '" + seleniumAction.getObject()
@@ -299,7 +299,7 @@ public class UseSelenium {
 
                             try {
                                 // premièrement : trouver le dropdown
-                                selectElement = driver.findElement(By.name(seleniumAction.getObject()));
+                                selectElement = driver.findElement(By.cssSelector(seleniumAction.getObject()));
                             } catch (NoSuchElementException ex) {
                                 return finalizeTest(driver, seleniumResponse, startTime, false,
                                         "Le dropdown'" + seleniumAction.getObject() + "' est introuvable.");
@@ -327,7 +327,7 @@ public class UseSelenium {
 
                             try {
                                 // Step 1: find the element
-                                hoverElement = driver.findElement(By.name(seleniumAction.getObject()));
+                                hoverElement = driver.findElement(By.cssSelector(seleniumAction.getObject()));
                             } catch (NoSuchElementException ex) {
                                 return finalizeTest(driver, seleniumResponse, startTime, false,
                                         "l'Element '" + seleniumAction.getObject() + "' est introuvable pour hover.");
@@ -354,7 +354,7 @@ public class UseSelenium {
 
                             try {
                                 // Étape 1 : rechercher la case à cocher
-                                checkbox = driver.findElement(By.name(seleniumAction.getObject()));
+                                checkbox = driver.findElement(By.cssSelector(seleniumAction.getObject()));
 
                             } catch (NoSuchElementException ex) {
                                 return finalizeTest(driver, seleniumResponse, startTime, false,
@@ -400,7 +400,7 @@ public class UseSelenium {
 
                             try {
                                 // Étape 1 : rechercher la case à cocher
-                                RadioButton = driver.findElement(By.name(seleniumAction.getObject()));
+                                RadioButton = driver.findElement(By.cssSelector(seleniumAction.getObject()));
                             } catch (NoSuchElementException ex) {
                                 return finalizeTest(driver, seleniumResponse, startTime, false,
                                         "Case à cocher '" + seleniumAction.getObject() + "' introuvable.");
@@ -444,7 +444,7 @@ public class UseSelenium {
                                     return finalizeTest(driver, seleniumResponse, startTime, false,
                                             "File not found: " + seleniumAction.getInput());
                                 }
-                                WebElement fileUploadElement = driver.findElement(By.name(seleniumAction.getObject()));
+                                WebElement fileUploadElement = driver.findElement(By.cssSelector(seleniumAction.getObject()));
                                 fileUploadElement.sendKeys(file.getAbsolutePath());
                             } catch (Exception ex) {
                                 return finalizeTest(driver, seleniumResponse, startTime, false,
@@ -469,7 +469,7 @@ public class UseSelenium {
                             try {
                                 System.out.println("Generic input action on : " + seleniumAction.getObject()
                                         + " with " + seleniumAction.getInput());
-                                WebElement genericInput = driver.findElement(By.name(seleniumAction.getObject()));
+                                WebElement genericInput = driver.findElement(By.cssSelector(seleniumAction.getObject()));
                                 genericInput.clear();
                                 genericInput.sendKeys(seleniumAction.getInput());
                             } catch (Exception ex) {

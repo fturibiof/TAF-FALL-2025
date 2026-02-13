@@ -49,7 +49,7 @@ try:
         
         input_field = driver.find_element(By.CSS_SELECTOR, "#input")
         time.sleep(0.5)
-        input_field.send_keys(f"https://www.google.com?q=test{i}")
+        input_field.send_keys(f"https://www.etsmtl.ca/")
         
         submit_action_btn = driver.find_element(By.CSS_SELECTOR, "input[value='Add Action']")
         time.sleep(0.5)
@@ -57,7 +57,8 @@ try:
         
         time.sleep(0.5)
         
-        # Add second action - GetPageTitle
+        
+        # Add second action - Click
         add_action_btn = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "#addActionButton")))
         time.sleep(0.5)
         add_action_btn.click()
@@ -66,14 +67,42 @@ try:
         time.sleep(0.5)
         action_select.click()
         time.sleep(0.5)
-        driver.find_element(By.CSS_SELECTOR, "option[value='4']").click()  # GetPageTitle
+        driver.find_element(By.CSS_SELECTOR, "option[value='6']").click()  #Click 
         
         time.sleep(0.3)
         
-        # Fill in target output for GetPageTitle
-        target_output_field = driver.find_element(By.CSS_SELECTOR, "#target")
+        # Fill in target output for Click action
+        target_output_field = driver.find_element(By.CSS_SELECTOR, "#object")
         time.sleep(1)
-        target_output_field.send_keys("Google" if random.random() < 0.60 else "Fail test")
+        target_output_field.send_keys("button.o-input")
+        
+        submit_action_btn = driver.find_element(By.CSS_SELECTOR, "input[value='Add Action']")
+        time.sleep(0.5)
+        submit_action_btn.click()
+        
+        # Add third action - FillField
+        add_action_btn = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "#addActionButton")))
+        time.sleep(0.5)
+        add_action_btn.click()
+        
+        action_select = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, "#action")))
+        time.sleep(0.5)
+        action_select.click()
+        time.sleep(0.5)
+        driver.find_element(By.CSS_SELECTOR, "option[value='2']").click()  #Click 
+        
+        time.sleep(0.3)
+        
+        # Fill in target output for FillField action
+        target_output_field = driver.find_element(By.CSS_SELECTOR, "#object")
+        time.sleep(1)
+        target_output_field.send_keys("input.o-input")
+        
+        target_output_field = driver.find_element(By.CSS_SELECTOR, "#input")
+        time.sleep(1)
+        target_output_field.send_keys("Test Input")
+        
+        
         
         submit_action_btn = driver.find_element(By.CSS_SELECTOR, "input[value='Add Action']")
         time.sleep(0.5)
