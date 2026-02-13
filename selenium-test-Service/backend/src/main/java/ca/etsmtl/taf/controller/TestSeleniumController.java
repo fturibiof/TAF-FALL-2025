@@ -110,25 +110,13 @@ public class TestSeleniumController {
             // Submit all test cases as separate tasks
             List<Future<?>> futures = new ArrayList<>();
             
-            int taskIndex = 0;
             for (SeleniumCase seleniumCase : seleniumCases) {
-                final int currentIndex = taskIndex;
-                
                 Future<?> future = executorService.submit(() -> {
-                    // Stagger driver initialization to reduce resource contention
-                    // Each thread waits a small amount before starting
-                    try {
-                        Thread.sleep(currentIndex * 200L); // 200ms delay between each driver startup
-                    } catch (InterruptedException e) {
-                        Thread.currentThread().interrupt();
-                        logger.warn("Stagger delay interrupted for test case {}", currentIndex);
-                    }
-                    
+                    // Execute test immediately without artificial delays
                     SeleniumResponse response = executeSingleTest(seleniumCase);
                     responses.add(response);
                 });
                 futures.add(future);
-                taskIndex++;
             }
             
             // Wait for all tasks to complete

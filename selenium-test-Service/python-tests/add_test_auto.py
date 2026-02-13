@@ -14,7 +14,7 @@ try:
     wait = WebDriverWait(driver, 10)
     
     # Number of test cases to create
-    num_test_cases = 4
+    num_test_cases = 2
     
     for i in range(1, num_test_cases + 1):
         print(f"Creating test case {i}...")
