@@ -56,6 +56,26 @@ public class SeleniumTestService {
         options.addArguments("--disable-dev-shm-usage"); // Avoid /dev/shm issues
         options.addArguments("--disable-gpu"); // Optional
         options.addArguments("--remote-allow-origins=*"); // Needed for Selenium 4.19+
+        
+        // Additional optimizations for parallel execution
+        options.addArguments("--disable-software-rasterizer"); // Reduce CPU usage
+        options.addArguments("--disable-extensions"); // Faster startup
+        options.addArguments("--disable-background-networking"); // Reduce network overhead
+        options.addArguments("--disable-sync"); // Disable sync services
+        options.addArguments("--disable-translate"); // Disable translate service
+        options.addArguments("--disable-default-apps"); // Don't load default apps
+        options.addArguments("--disable-background-timer-throttling"); // Better for test timing
+        options.addArguments("--disable-renderer-backgrounding"); // Keep renderer active
+        options.addArguments("--disable-backgrounding-occluded-windows"); // Maintain performance
+        options.addArguments("--disable-ipc-flooding-protection"); // Better for rapid actions
+        options.addArguments("--disable-hang-monitor"); // Prevent unnecessary checks
+        options.addArguments("--disable-popup-blocking"); // Allow popups if needed
+        options.addArguments("--disable-prompt-on-repost"); // Auto-confirm reposts
+        options.addArguments("--disable-domain-reliability"); // Reduce background requests
+        options.addArguments("--disable-component-extensions-with-background-pages"); // Less memory
+        options.addArguments("--window-size=1280,720"); // Smaller viewport = less memory
+        options.addArguments("--blink-settings=imagesEnabled=false"); // Disable images for faster loading
+        
         WebDriver driver = new ChromeDriver(options);
 
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));

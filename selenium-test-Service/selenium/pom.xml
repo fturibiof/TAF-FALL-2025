@@ -79,6 +79,23 @@
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
+            <!-- Maven Surefire Plugin pour exécuter les tests en parallèle -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0</version>
+                <configuration>
+                    <!-- Active la parallélisation des tests JUnit 5 -->
+                    <properties>
+                        <configurationParameters>
+                            junit.jupiter.execution.parallel.enabled = true
+                            junit.jupiter.execution.parallel.mode.default = concurrent
+                            junit.jupiter.execution.parallel.config.strategy = dynamic
+                            junit.jupiter.execution.parallel.config.dynamic.factor = 1.5
+                        </configurationParameters>
+                    </properties>
+                </configuration>
+            </plugin>
 		</plugins>
 	</build>
 

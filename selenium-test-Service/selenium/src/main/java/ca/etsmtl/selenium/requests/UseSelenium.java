@@ -36,15 +36,25 @@ import org.openqa.selenium.TimeoutException;
 
 import org.openqa.selenium.JavascriptExecutor;
 
+import ca.etsmtl.selenium.config.UiInstanceProvider;
+import org.springframework.beans.factory.annotation.Autowired;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/microservice/selenium")
 public class UseSelenium {
     private static final Logger logger = LoggerFactory.getLogger(UseSelenium.class);
+    
+    @Autowired
+    private UiInstanceProvider uiInstanceProvider;
 
     @PostMapping("/test")
     public SeleniumResponse testWithSelenium(@RequestBody SeleniumCase seleniumCase) {
         List<SeleniumAction> seleniumActions = seleniumCase.getActions();
+
+        // Sélectionner une instance UI pour ce test (load balancing round-robin)
+        String selectedUiUrl = uiInstanceProvider.getNextUiUrl();
+        logger.info("Test case '{}' assigned to UI instance: {}", seleniumCase.getCaseName(), selectedUiUrl);
 
         SeleniumResponse seleniumResponse = new SeleniumResponse();
         seleniumResponse.setCase_id(seleniumCase.getCase_id());
@@ -518,6 +528,25 @@ public class UseSelenium {
         }
     }
 
+    // Helper method to replace localhost/relative URLs with the selected UI instance
+    private String normalizeUrl(String inputUrl, String selectedUiUrl) {
+        if (inputUrl == null || inputUrl.isEmpty()) {
+            return inputUrl;
+        }
+        
+        // Remplacer localhost par l'instance UI sélectionnée
+        if (inputUrl.contains("localhost:4200") || inputUrl.contains("localhost:80")) {
+            return inputUrl.replaceAll("localhost:\\d+", selectedUiUrl.replaceAll("https?://", ""));
+        }
+        
+        // Si l'URL est relative (commence par /), ajouter l'instance UI
+        if (inputUrl.startsWith("/")) {
+            return selectedUiUrl + inputUrl;
+        }
+        
+        return inputUrl;
+    }
+
     // finalizeTest
     private SeleniumResponse finalizeTest(
             WebDriver driver,
@@ -542,6 +571,11 @@ public class UseSelenium {
             response.setOutput(output);
         }
         return response;
+    }
+
+    @GetMapping("/ui-instance")
+    public String getUiInstance() {
+        return uiInstanceProvider.getNextUiUrl();
     }
 
     @GetMapping("/all")

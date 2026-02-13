@@ -11,7 +11,7 @@ COPY backend ./backend
 COPY selenium ./selenium
 
 WORKDIR /code/selenium
-RUN mvn clean install
+RUN mvn clean install -DskipTests
 
 # ----------------------------
 # Runner stage

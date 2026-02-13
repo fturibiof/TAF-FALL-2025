@@ -31,6 +31,17 @@ services:
       dockerfile: ./selenium/Dockerfile
     env_file:
       - .docker_config.env
+    ports:
+      - "8090:8090"
+    shm_size: '2gb'          # Shared memory for Chrome (prevents crashes in parallel execution)
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'          # Allow up to 4 CPU cores
+          memory: 4G           # Limit to 4GB RAM (Chrome instances can be memory-intensive)
+        reservations:
+          cpus: '1.0'          # Reserve at least 1 CPU core
+          memory: 1G           # Reserve at least 1GB RAM
 
   testapi:
     image: ${REGISTRY_BASE}/lionel-test-team1-testapi:${TEST_API_VERSION}
