@@ -56,10 +56,6 @@ public class UseSelenium {
     public SeleniumResponse testWithSelenium(@RequestBody SeleniumCase seleniumCase) {
         List<SeleniumAction> seleniumActions = seleniumCase.getActions();
 
-        // Sélectionner une instance UI pour ce test (load balancing round-robin)
-        String selectedUiUrl = uiInstanceProvider.getNextUiUrl();
-        logger.info("Test case '{}' assigned to UI instance: {}", seleniumCase.getCaseName(), selectedUiUrl);
-
         SeleniumResponse seleniumResponse = new SeleniumResponse();
         seleniumResponse.setCase_id(seleniumCase.getCase_id());
         seleniumResponse.setCaseName(seleniumCase.getCaseName());
@@ -495,25 +491,6 @@ public class UseSelenium {
         }
     }
 
-    // Helper method to replace localhost/relative URLs with the selected UI instance
-    private String normalizeUrl(String inputUrl, String selectedUiUrl) {
-        if (inputUrl == null || inputUrl.isEmpty()) {
-            return inputUrl;
-        }
-        
-        // Remplacer localhost par l'instance UI sélectionnée
-        if (inputUrl.contains("localhost:4200") || inputUrl.contains("localhost:80")) {
-            return inputUrl.replaceAll("localhost:\\d+", selectedUiUrl.replaceAll("https?://", ""));
-        }
-        
-        // Si l'URL est relative (commence par /), ajouter l'instance UI
-        if (inputUrl.startsWith("/")) {
-            return selectedUiUrl + inputUrl;
-        }
-        
-        return inputUrl;
-    }
-
     // finalizeTest
     private SeleniumResponse finalizeTest(
             WebDriver driver,
@@ -522,9 +499,12 @@ public class UseSelenium {
             boolean success,
             String output) {
 
-        // Return driver to pool for reuse instead of quitting
         if (driver != null) {
-            webDriverPool.releaseDriver(driver);
+            try {
+                driver.quit();
+            } catch (Exception e) {
+                // TODO : Logger l’erreur si nécessaire
+            }
         }
 
         long totalTime = System.currentTimeMillis() - startTime;
@@ -535,11 +515,6 @@ public class UseSelenium {
             response.setOutput(output);
         }
         return response;
-    }
-
-    @GetMapping("/ui-instance")
-    public String getUiInstance() {
-        return uiInstanceProvider.getNextUiUrl();
     }
 
     @GetMapping("/all")

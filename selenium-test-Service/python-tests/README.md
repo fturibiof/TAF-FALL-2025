@@ -1,8 +1,10 @@
-To run the auto-test : 
+# Python Tests
 
-cd selenium-test-Service
-cd python-tests
+## Running the Automated Tests
 
-pip install uv 
-uv sync 
-run add_test_auto.py 
+```bash
+cd selenium-test-Service/python-tests
+pip install uv
+uv sync
+uv run add_test_auto.py
+``` 
