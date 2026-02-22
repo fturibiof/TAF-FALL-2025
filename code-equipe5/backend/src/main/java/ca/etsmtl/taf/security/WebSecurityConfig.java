@@ -22,7 +22,7 @@ import ca.etsmtl.taf.security.services.UserDetailsServiceImpl;
 
 
 
-
+@Profile("sql")   
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
