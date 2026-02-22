@@ -1,0 +1,3042 @@
+{
+  "_comment": "Dashboard mock data for MongoDB (collections: test_runs and test_cases). Generated for TAF project demo (Dec 2025 → Feb 2026). Safe to import with mongoimport or mongosh scripts.",
+  "meta": {
+    "project": "TAF",
+    "dateRange": {
+      "start": "2025-12-20",
+      "end": "2026-02-20"
+    },
+    "generatedAt": "2026-02-22T22:31:42.436519Z",
+    "notes": "Insert into MongoDB collections test_runs and test_cases for dashboard demo data. Dates are ISO-8601 strings."
+  },
+  "collections": {
+    "test_runs": [
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20251220"
+        },
+        "run": {
+          "status": "failed",
+          "stats": {
+            "total": 6,
+            "passed": 4,
+            "failed": 2,
+            "durationMs": 120000
+          }
+        },
+        "createdAt": "2025-12-20T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20251221"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 121000
+          }
+        },
+        "createdAt": "2025-12-21T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20251222"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 122000
+          }
+        },
+        "createdAt": "2025-12-22T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20251223"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 123000
+          }
+        },
+        "createdAt": "2025-12-23T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20251224"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 124000
+          }
+        },
+        "createdAt": "2025-12-24T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20251225"
+        },
+        "run": {
+          "status": "failed",
+          "stats": {
+            "total": 6,
+            "passed": 4,
+            "failed": 2,
+            "durationMs": 125000
+          }
+        },
+        "createdAt": "2025-12-25T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20251226"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 126000
+          }
+        },
+        "createdAt": "2025-12-26T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20251227"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 127000
+          }
+        },
+        "createdAt": "2025-12-27T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20251228"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 128000
+          }
+        },
+        "createdAt": "2025-12-28T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20251229"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 129000
+          }
+        },
+        "createdAt": "2025-12-29T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20251230"
+        },
+        "run": {
+          "status": "failed",
+          "stats": {
+            "total": 6,
+            "passed": 4,
+            "failed": 2,
+            "durationMs": 130000
+          }
+        },
+        "createdAt": "2025-12-30T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20251231"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 131000
+          }
+        },
+        "createdAt": "2025-12-31T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260101"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 132000
+          }
+        },
+        "createdAt": "2026-01-01T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260102"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 133000
+          }
+        },
+        "createdAt": "2026-01-02T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260103"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 134000
+          }
+        },
+        "createdAt": "2026-01-03T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260104"
+        },
+        "run": {
+          "status": "failed",
+          "stats": {
+            "total": 6,
+            "passed": 4,
+            "failed": 2,
+            "durationMs": 135000
+          }
+        },
+        "createdAt": "2026-01-04T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260105"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 136000
+          }
+        },
+        "createdAt": "2026-01-05T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260106"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 137000
+          }
+        },
+        "createdAt": "2026-01-06T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260107"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 138000
+          }
+        },
+        "createdAt": "2026-01-07T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260108"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 139000
+          }
+        },
+        "createdAt": "2026-01-08T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260109"
+        },
+        "run": {
+          "status": "failed",
+          "stats": {
+            "total": 6,
+            "passed": 4,
+            "failed": 2,
+            "durationMs": 140000
+          }
+        },
+        "createdAt": "2026-01-09T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260110"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 141000
+          }
+        },
+        "createdAt": "2026-01-10T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260111"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 142000
+          }
+        },
+        "createdAt": "2026-01-11T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260112"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 143000
+          }
+        },
+        "createdAt": "2026-01-12T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260113"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 144000
+          }
+        },
+        "createdAt": "2026-01-13T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260114"
+        },
+        "run": {
+          "status": "failed",
+          "stats": {
+            "total": 6,
+            "passed": 4,
+            "failed": 2,
+            "durationMs": 145000
+          }
+        },
+        "createdAt": "2026-01-14T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260115"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 146000
+          }
+        },
+        "createdAt": "2026-01-15T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260116"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 147000
+          }
+        },
+        "createdAt": "2026-01-16T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260117"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 148000
+          }
+        },
+        "createdAt": "2026-01-17T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260118"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 149000
+          }
+        },
+        "createdAt": "2026-01-18T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260119"
+        },
+        "run": {
+          "status": "failed",
+          "stats": {
+            "total": 6,
+            "passed": 4,
+            "failed": 2,
+            "durationMs": 150000
+          }
+        },
+        "createdAt": "2026-01-19T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260120"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 151000
+          }
+        },
+        "createdAt": "2026-01-20T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260121"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 152000
+          }
+        },
+        "createdAt": "2026-01-21T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260122"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 153000
+          }
+        },
+        "createdAt": "2026-01-22T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260123"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 154000
+          }
+        },
+        "createdAt": "2026-01-23T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260124"
+        },
+        "run": {
+          "status": "failed",
+          "stats": {
+            "total": 6,
+            "passed": 4,
+            "failed": 2,
+            "durationMs": 155000
+          }
+        },
+        "createdAt": "2026-01-24T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260125"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 156000
+          }
+        },
+        "createdAt": "2026-01-25T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260126"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 157000
+          }
+        },
+        "createdAt": "2026-01-26T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260127"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 158000
+          }
+        },
+        "createdAt": "2026-01-27T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260128"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 159000
+          }
+        },
+        "createdAt": "2026-01-28T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260129"
+        },
+        "run": {
+          "status": "failed",
+          "stats": {
+            "total": 6,
+            "passed": 4,
+            "failed": 2,
+            "durationMs": 160000
+          }
+        },
+        "createdAt": "2026-01-29T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260130"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 161000
+          }
+        },
+        "createdAt": "2026-01-30T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260131"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 162000
+          }
+        },
+        "createdAt": "2026-01-31T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260201"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 163000
+          }
+        },
+        "createdAt": "2026-02-01T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260202"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 164000
+          }
+        },
+        "createdAt": "2026-02-02T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260203"
+        },
+        "run": {
+          "status": "failed",
+          "stats": {
+            "total": 6,
+            "passed": 4,
+            "failed": 2,
+            "durationMs": 165000
+          }
+        },
+        "createdAt": "2026-02-03T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260204"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 166000
+          }
+        },
+        "createdAt": "2026-02-04T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260205"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 167000
+          }
+        },
+        "createdAt": "2026-02-05T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260206"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 168000
+          }
+        },
+        "createdAt": "2026-02-06T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260207"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 169000
+          }
+        },
+        "createdAt": "2026-02-07T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260208"
+        },
+        "run": {
+          "status": "failed",
+          "stats": {
+            "total": 6,
+            "passed": 4,
+            "failed": 2,
+            "durationMs": 170000
+          }
+        },
+        "createdAt": "2026-02-08T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260209"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 171000
+          }
+        },
+        "createdAt": "2026-02-09T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260210"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 172000
+          }
+        },
+        "createdAt": "2026-02-10T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260211"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 173000
+          }
+        },
+        "createdAt": "2026-02-11T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260212"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 174000
+          }
+        },
+        "createdAt": "2026-02-12T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260213"
+        },
+        "run": {
+          "status": "failed",
+          "stats": {
+            "total": 6,
+            "passed": 4,
+            "failed": 2,
+            "durationMs": 175000
+          }
+        },
+        "createdAt": "2026-02-13T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260214"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 176000
+          }
+        },
+        "createdAt": "2026-02-14T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260215"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 177000
+          }
+        },
+        "createdAt": "2026-02-15T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260216"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 178000
+          }
+        },
+        "createdAt": "2026-02-16T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260217"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 179000
+          }
+        },
+        "createdAt": "2026-02-17T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260218"
+        },
+        "run": {
+          "status": "failed",
+          "stats": {
+            "total": 6,
+            "passed": 4,
+            "failed": 2,
+            "durationMs": 180000
+          }
+        },
+        "createdAt": "2026-02-18T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260219"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 181000
+          }
+        },
+        "createdAt": "2026-02-19T12:00:00Z"
+      },
+      {
+        "project": {
+          "key": "TAF"
+        },
+        "pipeline": {
+          "runId": "RUN-20260220"
+        },
+        "run": {
+          "status": "passed",
+          "stats": {
+            "total": 6,
+            "passed": 6,
+            "failed": 0,
+            "durationMs": 182000
+          }
+        },
+        "createdAt": "2026-02-20T12:00:00Z"
+      }
+    ],
+    "test_cases": [
+      {
+        "project": "TAF",
+        "runId": "RUN-20251220",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "failed",
+        "durationMs": 900,
+        "executedAt": "2025-12-20T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251220",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2025-12-20T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251220",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "failed",
+        "durationMs": 5000,
+        "executedAt": "2025-12-20T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251221",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2025-12-21T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251221",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2025-12-21T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251221",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2025-12-21T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251222",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2025-12-22T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251222",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2025-12-22T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251222",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2025-12-22T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251223",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2025-12-23T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251223",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2025-12-23T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251223",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2025-12-23T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251224",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2025-12-24T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251224",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2025-12-24T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251224",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2025-12-24T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251225",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "failed",
+        "durationMs": 900,
+        "executedAt": "2025-12-25T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251225",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2025-12-25T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251225",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "failed",
+        "durationMs": 5000,
+        "executedAt": "2025-12-25T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251226",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2025-12-26T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251226",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2025-12-26T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251226",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2025-12-26T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251227",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2025-12-27T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251227",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2025-12-27T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251227",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2025-12-27T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251228",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2025-12-28T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251228",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2025-12-28T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251228",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2025-12-28T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251229",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2025-12-29T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251229",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2025-12-29T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251229",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2025-12-29T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251230",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "failed",
+        "durationMs": 900,
+        "executedAt": "2025-12-30T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251230",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2025-12-30T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251230",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "failed",
+        "durationMs": 5000,
+        "executedAt": "2025-12-30T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251231",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2025-12-31T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251231",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2025-12-31T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20251231",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2025-12-31T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260101",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-01-01T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260101",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-01T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260101",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-01T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260102",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-01-02T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260102",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-02T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260102",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-02T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260103",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-01-03T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260103",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-03T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260103",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-03T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260104",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "failed",
+        "durationMs": 900,
+        "executedAt": "2026-01-04T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260104",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-04T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260104",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "failed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-04T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260105",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-01-05T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260105",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-05T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260105",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-05T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260106",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-01-06T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260106",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-06T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260106",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-06T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260107",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-01-07T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260107",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-07T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260107",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-07T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260108",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-01-08T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260108",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-08T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260108",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-08T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260109",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "failed",
+        "durationMs": 900,
+        "executedAt": "2026-01-09T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260109",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-09T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260109",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "failed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-09T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260110",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-01-10T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260110",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-10T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260110",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-10T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260111",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-01-11T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260111",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-11T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260111",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-11T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260112",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-01-12T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260112",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-12T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260112",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-12T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260113",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-01-13T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260113",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-13T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260113",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-13T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260114",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "failed",
+        "durationMs": 900,
+        "executedAt": "2026-01-14T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260114",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-14T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260114",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "failed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-14T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260115",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-01-15T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260115",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-15T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260115",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-15T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260116",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-01-16T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260116",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-16T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260116",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-16T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260117",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-01-17T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260117",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-17T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260117",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-17T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260118",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-01-18T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260118",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-18T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260118",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-18T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260119",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "failed",
+        "durationMs": 900,
+        "executedAt": "2026-01-19T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260119",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-19T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260119",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "failed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-19T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260120",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-01-20T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260120",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-20T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260120",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-20T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260121",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-01-21T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260121",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-21T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260121",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-21T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260122",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-01-22T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260122",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-22T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260122",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-22T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260123",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-01-23T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260123",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-23T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260123",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-23T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260124",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "failed",
+        "durationMs": 900,
+        "executedAt": "2026-01-24T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260124",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-24T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260124",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "failed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-24T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260125",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-01-25T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260125",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-25T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260125",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-25T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260126",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-01-26T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260126",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-26T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260126",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-26T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260127",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-01-27T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260127",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-27T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260127",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-27T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260128",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-01-28T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260128",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-28T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260128",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-28T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260129",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "failed",
+        "durationMs": 900,
+        "executedAt": "2026-01-29T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260129",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-29T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260129",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "failed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-29T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260130",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-01-30T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260130",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-30T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260130",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-30T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260131",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-01-31T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260131",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-01-31T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260131",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-01-31T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260201",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-02-01T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260201",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-02-01T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260201",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-02-01T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260202",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-02-02T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260202",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-02-02T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260202",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-02-02T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260203",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "failed",
+        "durationMs": 900,
+        "executedAt": "2026-02-03T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260203",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-02-03T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260203",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "failed",
+        "durationMs": 5000,
+        "executedAt": "2026-02-03T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260204",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-02-04T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260204",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-02-04T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260204",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-02-04T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260205",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-02-05T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260205",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-02-05T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260205",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-02-05T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260206",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-02-06T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260206",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-02-06T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260206",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-02-06T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260207",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-02-07T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260207",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-02-07T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260207",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-02-07T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260208",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "failed",
+        "durationMs": 900,
+        "executedAt": "2026-02-08T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260208",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-02-08T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260208",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "failed",
+        "durationMs": 5000,
+        "executedAt": "2026-02-08T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260209",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-02-09T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260209",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-02-09T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260209",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-02-09T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260210",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-02-10T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260210",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-02-10T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260210",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-02-10T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260211",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-02-11T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260211",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-02-11T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260211",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-02-11T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260212",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-02-12T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260212",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-02-12T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260212",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-02-12T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260213",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "failed",
+        "durationMs": 900,
+        "executedAt": "2026-02-13T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260213",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-02-13T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260213",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "failed",
+        "durationMs": 5000,
+        "executedAt": "2026-02-13T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260214",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-02-14T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260214",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-02-14T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260214",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-02-14T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260215",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-02-15T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260215",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-02-15T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260215",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-02-15T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260216",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-02-16T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260216",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-02-16T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260216",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-02-16T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260217",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-02-17T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260217",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-02-17T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260217",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-02-17T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260218",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "failed",
+        "durationMs": 900,
+        "executedAt": "2026-02-18T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260218",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-02-18T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260218",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "failed",
+        "durationMs": 5000,
+        "executedAt": "2026-02-18T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260219",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-02-19T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260219",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-02-19T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260219",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-02-19T12:00:30Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260220",
+        "name": "Login API",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 900,
+        "executedAt": "2026-02-20T12:00:10Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260220",
+        "name": "Create Project",
+        "type": "API",
+        "tool": "JMeter",
+        "status": "passed",
+        "durationMs": 1100,
+        "executedAt": "2026-02-20T12:00:20Z"
+      },
+      {
+        "project": "TAF",
+        "runId": "RUN-20260220",
+        "name": "UI Smoke",
+        "type": "UI",
+        "tool": "Selenium",
+        "status": "passed",
+        "durationMs": 5000,
+        "executedAt": "2026-02-20T12:00:30Z"
+      }
+    ]
+  }
+}
