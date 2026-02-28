@@ -13,7 +13,6 @@ import { environment } from 'src/environments/environment';
   selector: 'app-jmeter-api',
   templateUrl: './jmeter-api.component.html',
   styleUrls: [
-    '../gatling-api/gatling-api.component.css',
     './jmeter-api.component.css',
   ],
 })
@@ -40,6 +39,11 @@ export class JmeterApiComponent implements OnInit {
 
   formType: string = 'http';
   isGlossaryVisible: boolean = false;
+
+  protocolFormGroup!: FormGroup;
+  detailsFormGroup!: FormGroup;
+  paramsFormGroup!: FormGroup;
+  configFormGroup!: FormGroup;
 
   filteredScenarios: any[] = [];
   selectedScenario: string | null = null;
@@ -74,17 +78,45 @@ export class JmeterApiComponent implements OnInit {
     this.http_description = document.getElementById('http-description');
     this.ftp_description = document.getElementById('ftp-description');
 
-    this.switchCheckbox = document.getElementById(
-      'formSwitch'
-    ) as HTMLInputElement;
-
-    this.updateButtonVisibility();
     this.updateScenariosFilter();
 
-    // Set default methods
+    // Initialize FormGroups for Stepper
+    this.protocolFormGroup = this.fb.group({
+      protocol: ['HTTP', Validators.required]
+    });
+
+    this.detailsFormGroup = this.fb.group({
+      domain: ['', Validators.required],
+      port: ['']
+    });
+
+    this.paramsFormGroup = this.fb.group({
+      method: ['GET', Validators.required],
+      path: ['', Validators.required],
+      data: ['']
+    });
+
+    this.configFormGroup = this.fb.group({
+      nbThreads: ['10', Validators.required],
+      rampTime: ['5'],
+      duration: ['60'],
+      loop: ['1', Validators.required]
+    });
+
+    // Set default methods on models
     this.http_request.method = 'GET';
     this.ftp_request.method = 'Retrieve';
     this.http_request.protocol = 'HTTP';
+
+    // Watch for protocol changes to update formType
+    this.protocolFormGroup.get('protocol')?.valueChanges.subscribe((value: string) => {
+      this.http_request.protocol = value;
+      this.onProtocolChange();
+    });
+  }
+
+  get selectedProtocol(): string {
+    return this.protocolFormGroup?.get('protocol')?.value || 'HTTP';
   }
 
   toggleHttpSidebar() {
@@ -113,58 +145,10 @@ export class JmeterApiComponent implements OnInit {
   }
 
   resetForms() {
-    const httpForm = document.getElementById('http-form') as HTMLFormElement;
-    const ftpForm = document.getElementById('ftp-form') as HTMLFormElement;
-
-    if (httpForm) {
-      httpForm.reset();
-    }
-    if (ftpForm) {
-      ftpForm.reset();
-    }
-  }
-
-  updateButtonVisibility() {
-    if (this.switchCheckbox?.checked) {
-      this.showHttpButton = false;
-      this.showFtpButton = true;
-    } else {
-      this.showHttpButton = true;
-      this.showFtpButton = false;
-    }
-  }
-
-  toggleForms() {
-    this.isHttpSidebarVisible = false;
-    this.isFtpSidebarVisible = false;
-    this.adjustFormMargin();
-
-    const httpForm = document.getElementById('http-form') as HTMLFormElement;
-    const ftpForm = document.getElementById('ftp-form') as HTMLFormElement;
-    const switchLabel = document.getElementById('switchLabel') as HTMLElement;
-
-    if (this.switchCheckbox?.checked) {
-      // Show FTP form
-      httpForm.style.display = 'none';
-      ftpForm.style.display = 'block';
-      this.showHttpButton = false;
-      this.showFtpButton = true;
-      switchLabel.innerText = 'FTP';
-    } else {
-      // Show HTTP form
-      httpForm.style.display = 'block';
-      ftpForm.style.display = 'none';
-      this.showHttpButton = true;
-      this.showFtpButton = false;
-      switchLabel.innerText = 'HTTP';
-    }
-
-    console.log('Switch checked:', this.switchCheckbox?.checked);
-    this.formType = this.switchCheckbox?.checked ? 'ftp' : 'http';
-
-    this.resetForms();
-    this.updateButtonVisibility();
-    this.updateScenariosFilter();
+    this.protocolFormGroup.reset({ protocol: 'HTTP' });
+    this.detailsFormGroup.reset();
+    this.paramsFormGroup.reset({ method: 'GET' });
+    this.configFormGroup.reset({ nbThreads: '10', rampTime: '5', duration: '60', loop: '1' });
   }
 
   updateScenariosFilter() {
@@ -201,12 +185,16 @@ export class JmeterApiComponent implements OnInit {
   }
 
   onProtocolChange() {
-    if (this.http_request.protocol === 'FTP') {
-      // Toggle to FTP form
-      if (this.switchCheckbox) {
-        this.switchCheckbox.checked = true;
-        this.toggleForms();
-      }
+    this.formType = this.selectedProtocol === 'FTP' ? 'ftp' : 'http';
+    this.updateScenariosFilter();
+
+    // Sync models
+    if (this.formType === 'http') {
+      this.http_request.protocol = this.selectedProtocol;
+    }
+
+    if (this.switchCheckbox) {
+      this.switchCheckbox.checked = (this.formType === 'ftp');
     }
   }
 
@@ -215,33 +203,67 @@ export class JmeterApiComponent implements OnInit {
   }
 
   selectTestType(type: string) {
-    const target = this.formType === 'http' ? this.http_request : this.ftp_request;
+    let config = {
+      nbThreads: '10',
+      rampTime: '5',
+      duration: '60',
+      loop: '1'
+    };
 
     switch (type) {
       case 'smoke':
-        target.nbThreads = '5';
-        target.rampTime = '1';
-        target.duration = '60';
-        target.loop = '1';
+        config = { nbThreads: '5', rampTime: '1', duration: '60', loop: '1' };
         break;
       case 'load':
-        target.nbThreads = '50';
-        target.rampTime = '10';
-        target.duration = '300';
-        target.loop = '1';
+        config = { nbThreads: '50', rampTime: '10', duration: '300', loop: '1' };
         break;
       case 'stress':
-        target.nbThreads = '200';
-        target.rampTime = '20';
-        target.duration = '600';
-        target.loop = '1';
+        config = { nbThreads: '200', rampTime: '20', duration: '600', loop: '1' };
         break;
       case 'spike':
-        target.nbThreads = '500';
-        target.rampTime = '5';
-        target.duration = '120';
-        target.loop = '1';
+        config = { nbThreads: '500', rampTime: '5', duration: '120', loop: '1' };
         break;
+    }
+
+    // Update models
+    const target = this.formType === 'http' ? this.http_request : this.ftp_request;
+    target.nbThreads = config.nbThreads;
+    target.rampTime = config.rampTime;
+    target.duration = config.duration;
+    target.loop = config.loop;
+
+    // Update form group
+    this.configFormGroup.patchValue(config);
+
+  }
+
+  onFinalSubmit() {
+    // Final sync from FormGroups to models
+    const target = this.formType === 'http' ? this.http_request : this.ftp_request;
+
+    // Details
+    target.domain = this.detailsFormGroup.get('domain')?.value;
+    target.port = this.detailsFormGroup.get('port')?.value;
+
+    // Params
+    target.method = this.paramsFormGroup.get('method')?.value;
+    if (this.formType === 'http') {
+      this.http_request.path = this.paramsFormGroup.get('path')?.value;
+      this.http_request.data = this.paramsFormGroup.get('data')?.value;
+      this.http_request.protocol = this.protocolFormGroup.get('protocol')?.value;
+    }
+
+    // Config
+    target.nbThreads = this.configFormGroup.get('nbThreads')?.value;
+    target.rampTime = this.configFormGroup.get('rampTime')?.value;
+    target.duration = this.configFormGroup.get('duration')?.value;
+    target.loop = this.configFormGroup.get('loop')?.value;
+
+    // Trigger specific submit
+    if (this.formType === 'http') {
+      this.onHttpSubmit();
+    } else {
+      this.onFtpSubmit();
     }
   }
 
@@ -279,40 +301,9 @@ export class JmeterApiComponent implements OnInit {
     return isValid;
   }
 
-  validateFtpForm(): boolean {
-    let isValid = true;
-
-    const requiredFields = [
-      { element: 'loopFtp', errorMessage: 'Veuillez entrer une valeur' },
-      { element: 'nbThreadsFtp', errorMessage: 'Veuillez entrer une valeur' },
-      { element: 'domainFtp', errorMessage: 'Veuillez entrer une valeur' },
-      { element: 'methodTypeFtp', errorMessage: 'Veuillez sélectionner un type de requête' }
-    ];
-
-    requiredFields.forEach(field => {
-      const inputElement = document.getElementsByName(field.element)[0] as HTMLInputElement | null;
-      const errorDiv = document.createElement('div');
-      errorDiv.className = 'text-danger';
-
-      if (inputElement?.nextElementSibling) {
-        inputElement.nextElementSibling.remove();
-      }
-
-      if (inputElement && inputElement.value.trim() === '') {
-        isValid = false;
-        inputElement.classList.add('is-invalid');
-        errorDiv.innerText = field.errorMessage;
-        inputElement.insertAdjacentElement('afterend', errorDiv);
-      } else {
-        inputElement?.classList.remove('is-invalid');
-      }
-    });
-
-    return isValid;
-  }
-
-  onHttpSubmit(showAlert: boolean = false) {
-    if (!this.validateHttpForm()) {
+  onHttpSubmit() {
+    if (!this.http_request.domain || !this.http_request.path) {
+      Swal.fire('Erreur', 'Veuillez remplir les champs obligatoires (URL et Chemin)', 'error');
       return;
     }
 
@@ -355,7 +346,8 @@ export class JmeterApiComponent implements OnInit {
   }
 
   onFtpSubmit() {
-    if (!this.validateFtpForm()) {
+    if (!this.ftp_request.domain || !this.ftp_request.remotefile) {
+      Swal.fire('Erreur', 'Veuillez remplir les champs obligatoires (URL et Fichier distant)', 'error');
       return;
     }
 
@@ -363,7 +355,7 @@ export class JmeterApiComponent implements OnInit {
       .sendFtpJMeterRequest(this.ftp_request)
       .subscribe((response: any) => {
         this.testResults = response;
-        this.testResult = response; // Ajoutez cette ligne
+        this.testResult = response;
         if (response.length != 0) {
           this.modal!.style.display = 'block';
         } else {
