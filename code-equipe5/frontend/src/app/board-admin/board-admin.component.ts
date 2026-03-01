@@ -92,7 +92,7 @@ export class BoardAdminComponent implements OnInit, OnDestroy {
 
 
 
-  /** Line chart Passrate journalier */
+  /** Graphique: Taux de réussite des tests */
   lineData: ChartConfiguration<'line'>['data'] = {
     labels: [],
     datasets: [{ label: 'Passrate (%)', data: [], tension: 0.35, pointRadius: 3, fill: false }]
