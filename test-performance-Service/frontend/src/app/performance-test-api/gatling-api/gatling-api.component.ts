@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { PerformanceTestApiService } from 'src/app/_services/performance-test-api.service';
 import Swal from 'sweetalert2';
 import { GatlingRequest, ResponseTimePerPercentile } from './gatling-request';
@@ -18,7 +19,9 @@ enum SIMULATION_STRATEGY {
 @Component({
   selector: 'app-gatling-api',
   templateUrl: './gatling-api.component.html',
-  styleUrls: ['./gatling-api.component.css']
+  styleUrls: [
+    './gatling-api.component.css'
+  ]
 })
 export class GatlingApiComponent implements OnInit {
   modal: HTMLElement | null = null;
@@ -29,11 +32,11 @@ export class GatlingApiComponent implements OnInit {
   gatlingTestResult: GatlingTestResult | null = null
 
   percentiles: number[] = [50, 75, 90, 95, 99, 99.9];
-  newPercentile: number = 0;
+  newPercentile: number = 50;
   newResponseTime: number = 0;
 
   testLog: string = "";
-  latestReportContent: SafeHtml | null = null; // Contenu du dernier rapport de test
+  latestReportContent: SafeHtml | null = null;
 
   busy: Subscription | undefined;
 
@@ -43,102 +46,128 @@ export class GatlingApiComponent implements OnInit {
   strategiesEnum = SIMULATION_STRATEGY;
   selectedStrategy: string = "DEFAULT";
 
+  // Stepper FormGroups
+  setupFormGroup!: FormGroup;
+  requestFormGroup!: FormGroup;
+  strategyFormGroup!: FormGroup;
+  criteriaFormGroup!: FormGroup;
+
+  isGlossaryVisible: boolean = false;
+
   constructor(
     private readonly performanceTestApiService: PerformanceTestApiService,
-    private sanitizer: DomSanitizer
-  ) {
-  }
+    private sanitizer: DomSanitizer,
+    private fb: FormBuilder
+  ) { }
 
   ngOnInit(): void {
     this.modal = document.getElementById("myModal");
-    this.reportModal = document.getElementById("reportModal"); // Initialisation de la modal du rapport
+    this.reportModal = document.getElementById("reportModal");
     this.span = document.getElementsByClassName("close")[0] as HTMLElement;
+
+    this.initFormGroups();
+
+    // Watch for strategy changes
+    this.strategyFormGroup.get('simulationStrategy')?.valueChanges.subscribe(value => {
+      this.selectedStrategy = value;
+      this.onStrategySelect();
+    });
   }
 
-  validateForm(): boolean {
-    let isValid = true;
-
-    // Clear all previous errors
-    const existingErrors = document.querySelectorAll('.text-danger');
-    existingErrors.forEach(err => err.remove());
-    const invalidInputs = document.querySelectorAll('.is-invalid');
-    invalidInputs.forEach(input => input.classList.remove('is-invalid'));
-
-    interface ValidationField {
-      element: string;
-      errorMessage: string;
-      type: string;
-      min?: number;
-    }
-
-    const requiredFields: ValidationField[] = [
-      { element: 'testScenarioName', errorMessage: 'Veuillez entrer une valeur', type: 'text' },
-      { element: 'testBaseUrl', errorMessage: 'Veuillez entrer une valeur', type: 'text' },
-      { element: 'testUri', errorMessage: 'Veuillez entrer une valeur', type: 'text' },
-      { element: 'testMethodType', errorMessage: 'Veuillez sélectionner un type de requête', type: 'text' }
-    ];
-
-    // Add strategy-specific fields
-    if (this.selectedStrategy === SIMULATION_STRATEGY.DEFAULT || this.selectedStrategy === SIMULATION_STRATEGY.LOAD_TEST) {
-      requiredFields.push({ element: 'testUsersNumber', errorMessage: 'Le nombre d\'utilisateurs doit être supérieur à 0', type: 'number', min: 1 });
-      requiredFields.push({ element: 'testRampUpDuration', errorMessage: 'La durée de montée doit être supérieure ou égale à 0', type: 'number', min: 0 });
-    } else if (this.selectedStrategy === SIMULATION_STRATEGY.STRESS_TEST) {
-      requiredFields.push({ element: 'testUserRampUpPerSecondMin', errorMessage: 'Min users doit être >= 0', type: 'number', min: 0 });
-      requiredFields.push({ element: 'testUserRampUpPerSecondMax', errorMessage: 'Max users doit être >= 1', type: 'number', min: 1 });
-      requiredFields.push({ element: 'testUserRampUpPerSecondDuration', errorMessage: 'Durée doit être >= 1', type: 'number', min: 1 });
-    } else if (this.selectedStrategy === SIMULATION_STRATEGY.SPIKE_TEST) {
-      requiredFields.push({ element: 'testConstantUsers', errorMessage: 'Users constants doit être >= 0', type: 'number', min: 0 });
-      requiredFields.push({ element: 'testConstantUsersDuration', errorMessage: 'Durée doit être >= 1', type: 'number', min: 1 });
-      requiredFields.push({ element: 'testUsersAtOnce', errorMessage: 'At once users doit être >= 1', type: 'number', min: 1 });
-    } else if (this.selectedStrategy === SIMULATION_STRATEGY.SMOKE_TEST) {
-      requiredFields.push({ element: 'testUsersAtOnce', errorMessage: 'Users doit être >= 1', type: 'number', min: 1 });
-    }
-
-    requiredFields.forEach(field => {
-      const inputElements = document.getElementsByName(field.element);
-      if (!inputElements || inputElements.length === 0) return;
-
-      const inputElement = inputElements[0] as HTMLInputElement;
-
-      let isFieldInvalid = false;
-      const value = inputElement.value;
-
-      if (field.type === 'text' && (!value || value.trim() === '')) {
-        isFieldInvalid = true;
-      } else if (field.type === 'number') {
-        const val = parseInt(value);
-        if (isNaN(val) || (field.min !== undefined && val < field.min)) {
-          isFieldInvalid = true;
-        }
-      }
-
-      if (isFieldInvalid) {
-        isValid = false;
-        inputElement.classList.add('is-invalid');
-        const errorDiv = document.createElement('div');
-        errorDiv.className = 'text-danger';
-        errorDiv.innerText = field.errorMessage;
-        inputElement.insertAdjacentElement('afterend', errorDiv);
-      }
+  initFormGroups() {
+    this.setupFormGroup = this.fb.group({
+      testScenarioName: ['', Validators.required],
+      testRequestName: [''],
+      testBaseUrl: ['', [Validators.required]]
     });
 
-    return isValid;
+    this.requestFormGroup = this.fb.group({
+      testUri: ['', Validators.required],
+      testMethodType: ['GET', Validators.required],
+      testRequestBody: ['']
+    });
+
+    this.strategyFormGroup = this.fb.group({
+      simulationStrategy: ['DEFAULT', Validators.required],
+      testUsersNumber: [10],
+      testRampUpDuration: [5],
+      testUserRampUpPerSecondMin: [0],
+      testUserRampUpPerSecondMax: [10],
+      testUserRampUpPerSecondDuration: [30],
+      testConstantUsers: [5],
+      testConstantUsersDuration: [60],
+      testUsersAtOnce: [1]
+    });
+
+    this.criteriaFormGroup = this.fb.group({
+      assertionMeanResponseTime: [50, Validators.required],
+      assertionFailedRequestsPercent: [2, Validators.required]
+    });
+  }
+
+  onStrategySelect() {
+    const match = GATLING_SCENARIOS.find(scenario => scenario.name === this.selectedStrategy);
+    if (match) {
+      // Create a fresh request model
+      this.request = new GatlingRequest(match.config);
+
+      // Patch form values
+      this.strategyFormGroup.patchValue({
+        testUsersNumber: match.config.testUsersNumber,
+        testRampUpDuration: match.config.testRampUpDuration,
+        testUserRampUpPerSecondMin: match.config.testUserRampUpPerSecondMin,
+        testUserRampUpPerSecondMax: match.config.testUserRampUpPerSecondMax,
+        testUserRampUpPerSecondDuration: match.config.testUserRampUpPerSecondDuration,
+        testConstantUsers: match.config.testConstantUsers,
+        testConstantUsersDuration: match.config.testConstantUsersDuration,
+        testUsersAtOnce: match.config.testUsersAtOnce
+      }, { emitEvent: false });
+
+      // Also patch criteria if they are in the scenario
+      this.criteriaFormGroup.patchValue({
+        assertionMeanResponseTime: match.config.assertionMeanResponseTime,
+        assertionFailedRequestsPercent: match.config.assertionFailedRequestsPercent
+      }, { emitEvent: false });
+    }
+  }
+
+  onFinalSubmit() {
+    // Sync all form values to the request model
+    const setup = this.setupFormGroup.value;
+    const req = this.requestFormGroup.value;
+    const strategy = this.strategyFormGroup.value;
+    const criteria = this.criteriaFormGroup.value;
+
+    this.request.testScenarioName = setup.testScenarioName;
+    this.request.testRequestName = setup.testRequestName;
+    this.request.testBaseUrl = setup.testBaseUrl;
+
+    this.request.testUri = req.testUri;
+    this.request.testMethodType = req.testMethodType;
+    this.request.testRequestBody = req.testRequestBody;
+
+    this.request.simulationStrategy = strategy.simulationStrategy;
+    this.request.testUsersNumber = strategy.testUsersNumber;
+    this.request.testRampUpDuration = strategy.testRampUpDuration;
+    this.request.testUserRampUpPerSecondMin = strategy.testUserRampUpPerSecondMin;
+    this.request.testUserRampUpPerSecondMax = strategy.testUserRampUpPerSecondMax;
+    this.request.testUserRampUpPerSecondDuration = strategy.testUserRampUpPerSecondDuration;
+    this.request.testConstantUsers = strategy.testConstantUsers;
+    this.request.testConstantUsersDuration = strategy.testConstantUsersDuration;
+    this.request.testUsersAtOnce = strategy.testUsersAtOnce;
+
+    this.request.assertionMeanResponseTime = criteria.assertionMeanResponseTime;
+    this.request.assertionFailedRequestsPercent = criteria.assertionFailedRequestsPercent;
+
+    this.onSubmit();
   }
 
   onSubmit() {
-    if (!this.validateForm()) {
-      return;
-    }
-
-    // Ensure simulationStrategy matches selectedStrategy
-    this.request.simulationStrategy = this.selectedStrategy;
-
     console.log("Sending Gatling Request:", this.request);
 
     this.busy = this.performanceTestApiService.sendGatlingRequest(this.request)
       .subscribe({
         next: (response: ApiResponse) => {
-          console.log("Gatling Response Received:", response);
           if (response.message && (response.message.startsWith('Error') || response.message.includes('failed to execute') || response.message.includes('Simulation failed'))) {
             Swal.fire({
               icon: 'error',
@@ -157,10 +186,9 @@ export class GatlingApiComponent implements OnInit {
             (this.testResult as any).reportGenerated = hasReport;
           }
 
-          this.modal!.style.display = "block";
+          if (this.modal) this.modal.style.display = "block";
         },
         error: (error: any) => {
-          console.error("Gatling Request Error:", error);
           let errorMessage = "Le test a échoué, révisez votre configuration de test";
           if (error.error) {
             if (typeof error.error === 'string') {
@@ -168,21 +196,16 @@ export class GatlingApiComponent implements OnInit {
             } else if (error.error.message) {
               errorMessage = error.error.message;
             }
-          } else if (error.message) {
-            errorMessage = error.message;
           }
-
           Swal.fire({
             icon: 'error',
-            title: 'Erreur Serveur (500)',
-            text: errorMessage,
-            footer: 'Assurez-vous que le backend est accessible et que la configuration est correcte.'
+            title: 'Erreur Serveur',
+            text: errorMessage
           });
         }
       });
   }
 
-  //  Afficher le dernier rapport
   showLatestReport() {
     const url = this.performanceTestApiService.getLatestReportUrl();
     window.open(url, '_blank');
@@ -193,21 +216,13 @@ export class GatlingApiComponent implements OnInit {
   }
 
   openReportModal() {
-    if (this.reportModal) {
-      this.reportModal.style.display = "block"; // Affiche la modal du rapport
-      console.log("Report modal opened"); // Ajout de log pour vérifier l'ouverture du modal
-    } else {
-      console.error("reportModal is not initialized");
-    }
+    if (this.reportModal) this.reportModal.style.display = "block";
   }
 
   closeReportModal() {
     if (this.reportModal) {
-      this.reportModal.style.display = "none"; // Ferme la modal du rapport
+      this.reportModal.style.display = "none";
       this.latestReportContent = null;
-      console.log("Report modal closed"); // Ajout de log pour vérifier la fermeture du modal
-    } else {
-      console.error("reportModal is not initialized");
     }
   }
 
@@ -215,55 +230,51 @@ export class GatlingApiComponent implements OnInit {
     if (this.modal) {
       this.modal.style.display = "none";
       this.latestReportContent = null;
-      console.log("Modal closed"); // Ajout de log pour vérifier la fermeture du modal
-    } else {
-      console.error("modal is not initialized");
     }
   }
 
   newTest() {
     this.request = new GatlingRequest({});
+    this.setupFormGroup.reset({ testScenarioName: '', testBaseUrl: '' });
+    this.requestFormGroup.reset({ testMethodType: 'GET', testUri: '' });
+    this.strategyFormGroup.reset({ simulationStrategy: 'DEFAULT' });
+    this.criteriaFormGroup.reset({ assertionMeanResponseTime: 50, assertionFailedRequestsPercent: 2 });
     this.closeModal();
   }
 
   isSuccessfull(): boolean {
-    if (!this.testResult || !this.testResult.assertions) {
-      return false;
-    }
+    if (!this.testResult || !this.testResult.assertions) return false;
     const failures = this.testResult.assertions.filter((assertion: GatlingAssertionResult) => assertion.result == false);
-    console.log("Failures" + JSON.stringify(failures))
     return failures.length == 0;
   }
 
-  onStrategySelect() {
-    if (!this.selectedStrategy) {
-      this.selectedStrategy = "DEFAULT";
-    }
-
-    const match = GATLING_SCENARIOS.find(scenario => scenario.name === this.selectedStrategy);
-    if (match) {
-      // Create a new GatlingRequest based on the template to ensure all properties exist
-      this.request = new GatlingRequest(match.config);
-    }
-  }
-
   addPercentile(): void {
-    console.log("HERE")
-    console.log(`newPercentile: ${this.newPercentile} and newResponseTime: ${this.newResponseTime}`)
-
     if (this.newPercentile && this.newResponseTime) {
-
-      console.log("HERE222")
       const newAssertion = new ResponseTimePerPercentile(this.newPercentile, this.newResponseTime);
-      console.log("assertion:" + newAssertion.percentile + "% - " + newAssertion.responseTime + "ms")
       this.request.assertionsResponseTimePerPercentile.push(newAssertion);
-
-      // Reset les champs
       this.newResponseTime = 0;
     }
   }
 
   removePercentile(index: number): void {
     this.request.assertionsResponseTimePerPercentile.splice(index, 1);
+  }
+
+  toggleGlossary(): void {
+    this.isGlossaryVisible = !this.isGlossaryVisible;
+  }
+
+  selectTestType(type: string): void {
+    let mapping: { [key: string]: string } = {
+      'smoke': SIMULATION_STRATEGY.SMOKE_TEST,
+      'load': SIMULATION_STRATEGY.LOAD_TEST,
+      'stress': SIMULATION_STRATEGY.STRESS_TEST,
+      'spike': SIMULATION_STRATEGY.SPIKE_TEST
+    };
+
+    const strategy = mapping[type];
+    if (strategy) {
+      this.strategyFormGroup.patchValue({ simulationStrategy: strategy });
+    }
   }
 }
