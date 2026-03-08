@@ -115,6 +115,12 @@ public class DashboardController {
     ) {
         return dashboardService.avgDuration(project, days, tool);
     }
-
+    @GetMapping("/summary/by-requirement")
+    public List<Map> byRequirement(
+            @RequestParam String project,
+            @RequestParam(defaultValue = "30") int days
+    ) {
+    return dashboardService.statsByRequirement(project, days);
+    }   
 
 }

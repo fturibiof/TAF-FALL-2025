@@ -375,9 +375,46 @@ public class DashboardService {
         return out;
     }
 
+// H) Impact / Health by requirement (Feature Health Cards)
+public List<Map> statsByRequirement(String project, int days) {
+    int win = (days <= 0 || days > 365) ? 30 : days;
 
+    Instant from = LocalDate.now(ZoneOffset.UTC)
+            .minusDays(win - 1L)
+            .atStartOfDay()
+            .toInstant(ZoneOffset.UTC);
 
+    Aggregation agg = newAggregation(
+            match(Criteria.where("project").is(project)),
 
+            // executedAt is stored as ISO String in our seed -> convert to Date
+            addFields().addField("execDate")
+                    .withValue(DateOperators.DateFromString.fromString("$executedAt"))
+                    .build(),
+
+            match(Criteria.where("execDate").gte(Date.from(from))),
+
+            // requirements is an array -> unwind so we can group per requirement
+            unwind("requirements"),
+
+            group("requirements")
+                    .sum(ConditionalOperators.when(Criteria.where("status").is("passed"))
+                            .then(1).otherwise(0)).as("passed")
+                    .sum(ConditionalOperators.when(Criteria.where("status").is("failed"))
+                            .then(1).otherwise(0)).as("failed")
+                    .addToSet("tool").as("tools"),
+
+            project()
+                    .and("_id").as("requirement")
+                    .and("passed").as("passed")
+                    .and("failed").as("failed")
+                    .and("tools").as("tools"),
+
+            sort(Sort.by(Sort.Direction.DESC, "failed"))
+    );
+
+    return mongo.aggregate(agg, "test_cases", Map.class).getMappedResults();
+}
 //    ---------------------- taux de succès par type
 // ---------------------- taux de succès par type
 public List<Map> passrateByType(String project, int days, String status, String tool) {

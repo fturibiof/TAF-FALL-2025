@@ -77,4 +77,11 @@ export class BoardAdminService {
     const p = new HttpParams().set('project', project).set('days', days).set('limit', limit);
     return this.http.get<NamedCount[]>(`${API}/summary/flaky`, { params: p });
   }
+  // Stats par requirement (ex: % pass par requirement, ou nombre de runs/cases par requirement)
+  getStatsByRequirement(project: string, days = 30) {
+  return this.http.get<any[]>(
+    `${environment.apiUrl}/dashboard/summary/by-requirement`,
+    { params: { project, days } }
+  );
+}
 }

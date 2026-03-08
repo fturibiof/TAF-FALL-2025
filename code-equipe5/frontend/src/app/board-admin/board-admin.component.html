@@ -29,7 +29,9 @@
           <button [class.active]="days===14" (click)="changeDays(14)">14 j</button>
           <button [class.active]="days===30" (click)="changeDays(30)">30 j</button>
           <button [class.active]="days===60" (click)="changeDays(60)">60 j</button>
-        </div>
+          <button [class.active]="days===90" (click)="changeDays(90)">90 j</button>
+           <button [class.active]="days===120" (click)="changeDays(120)">120 j</button>
+           </div>
       </div>
       <div class="col right">
         <button class="primary" (click)="loadAll()">Appliquer</button>
@@ -93,6 +95,7 @@
     </div>
   </div>
 
+  <app-feature-health-cards [project]="project" [days]="days"></app-feature-health-cards>
 
   <!-- Top échecs & Flaky -->
   <div class="two-cols">
