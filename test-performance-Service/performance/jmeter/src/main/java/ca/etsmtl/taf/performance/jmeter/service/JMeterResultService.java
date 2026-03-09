@@ -1,4 +1,4 @@
-package ca.etsmtl.taf.performance.jmeter.services;
+package ca.etsmtl.taf.performance.jmeter.service;
 
 import ca.etsmtl.taf.performance.jmeter.model.JMeterResponse;
 import ca.etsmtl.taf.performance.jmeter.model.JMeterTestDocument;
