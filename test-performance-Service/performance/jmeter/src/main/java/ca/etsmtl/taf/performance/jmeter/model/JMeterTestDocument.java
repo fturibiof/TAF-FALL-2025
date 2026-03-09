@@ -18,5 +18,6 @@ public class JMeterTestDocument {
     private ObjectId id;
 
     private TestPlanBase testRequest;
+    private JMeterResponse testResult;
     // TODO: test results
 }
