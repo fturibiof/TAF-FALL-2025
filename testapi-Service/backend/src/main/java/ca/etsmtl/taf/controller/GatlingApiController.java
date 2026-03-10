@@ -11,9 +11,12 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/gatling")
+@SecurityRequirement(name = "bearerAuth")
 public class GatlingApiController {
 
     @PostMapping("/runSimulation")

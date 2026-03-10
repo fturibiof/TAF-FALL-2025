@@ -11,7 +11,7 @@ spring:
       uri: ${DB_URI}
       authentication-database: ${DB_AUTH}
       database: ${DB_NAME}
-      auto-index-creation: true
+      auto-index-creation: false
 
   jpa:
     hibernate:

@@ -1,21 +1,29 @@
 package ca.etsmtl.taf.payload.request;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import java.util.Map;
 
 public class TestApiRequest {
     @NotBlank
+    @Schema(example = "GET")
     private String method;
 
     @NotBlank
+    @Schema(example = "https://jsonplaceholder.typicode.com/posts/1")
     private String apiUrl;
 
+    @Schema(example = "200")
     private int statusCode;
-    
+
+    @Schema(example = "")
     private String input;
-    
+
+    @Schema(example = "")
     private String expectedOutput;
 
-    private Map<String, String> headers; // Ajout du champ manquant
+    @Schema(example = "{}")
+    private Map<String, String> headers;
 
     // Getters et setters
     public String getMethod() { return this.method; }

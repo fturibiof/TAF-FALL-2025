@@ -16,11 +16,12 @@ import java.net.http.HttpResponse.BodyHandlers;
 
 import org.springframework.beans.factory.annotation.Value;
 
-
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/testapi")
+@SecurityRequirement(name = "bearerAuth")
 public class TestApiController {
     @Value("${taf.app.testAPI_url}")
     String Test_API_microservice_url;

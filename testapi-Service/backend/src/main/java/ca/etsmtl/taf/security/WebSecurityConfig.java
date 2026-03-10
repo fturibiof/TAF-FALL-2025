@@ -53,7 +53,12 @@ public class WebSecurityConfig {
         .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
         .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
         .authorizeHttpRequests((authz) -> authz
-          .requestMatchers("/**").permitAll()
+          .requestMatchers("/api/auth/**").permitAll()
+          .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/api-docs/**", "/v3/api-docs/**").permitAll()
+          .requestMatchers("/actuator/**").permitAll()
+          .requestMatchers("/api/test/**").permitAll()
+          .requestMatchers("/error").permitAll()
+          .anyRequest().authenticated()
         );
 
       http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);

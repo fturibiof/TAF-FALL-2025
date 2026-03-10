@@ -223,6 +223,30 @@ services:
       start_period: 90s
 
   # ============================================
+  # TESTAPI - TEAM 2 (REST-Assured Test Executor)
+  # ============================================
+  
+  testapi-team2:
+    build:
+      context: ./testapi-Service/testapi
+      dockerfile: Dockerfile
+    container_name: taf-testapi-team2
+    restart: unless-stopped
+    ports:
+      - "8086:8082"
+    dns:
+      - 8.8.8.8
+      - 8.8.4.4
+    networks:
+      - taf-local
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 90s
+
+  # ============================================
   # TESTING BACKEND - TEAM 2 (TESTAPI-SERVICE)
   # ============================================
   
@@ -249,12 +273,14 @@ services:
       SELENIUM_URL: http://selenium-team2
       SELENIUM_PORT: 4444
       TEST_API_SERVICE_URL: http://testapi-team2
-      TEST_API_SERVICE_PORT: 8080
+      TEST_API_SERVICE_PORT: 8082
     depends_on:
       mongodb:
         condition: service_healthy
       registry:
         condition: service_healthy
+      testapi-team2:
+        condition: service_started
     networks:
       - taf-local
     healthcheck:
