@@ -46,6 +46,10 @@ services:
 
   test-generation:
     image: ${REGISTRY_BASE}/lionel-test-team3-test-generation:${TEST_GENERATION_VERSION}
+    env_file:
+      - .env
+    environment:
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
     build:
       context: ./
       dockerfile: ./test-generation-service/Dockerfile

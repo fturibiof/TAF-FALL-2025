@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import re
 from typing import Optional
+from urllib.parse import urlparse
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
 
 JMX_TEST_GENERATION_ENDPOINT = "/api/performance/test-generation/jmeter"
@@ -33,7 +35,17 @@ class LLMGenerateResponse(BaseModel):
 
 
 app = FastAPI(title="Test Generation Service", version="0.1.0")
+# TODO: Restrict access to only the frontend app's domain in production
+origins = ['*']
 
+# 2. Add the middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],    # This allows POST, OPTIONS, etc.
+    allow_headers=["*"],    # This allows Content-Type
+)
 
 def _baml_generate(prompt: str) -> Optional[JMeterHttpPlan]:
     """
@@ -44,7 +56,7 @@ def _baml_generate(prompt: str) -> Optional[JMeterHttpPlan]:
     - baml_src/jmeter_generation.baml (prompt + contract)
     """
     try:
-        from baml_client import b  
+        from baml_client import b  # type: ignore
 
         result = b.GenerateJMeterPlan(prompt=prompt)
         return JMeterHttpPlan(**result)
@@ -71,11 +83,24 @@ def _fallback_generate(prompt: str) -> JMeterHttpPlan:
 
     protocol = "HTTPS" if "https" in lower else "HTTP"
 
-    path_match = re.search(r"(/[-a-zA-Z0-9_./{}]*)", prompt)
-    path = path_match.group(1) if path_match else "/"
+    domain = "api.example.com"
+    path = "/"
 
-    domain_match = re.search(r"([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})", prompt)
-    domain = domain_match.group(1) if domain_match else "api.example.com"
+    url_match = re.search(r"https?://[^\s]+", prompt, flags=re.IGNORECASE)
+    if url_match:
+        parsed = urlparse(url_match.group(0))
+        if parsed.hostname:
+            domain = parsed.hostname
+        if parsed.path:
+            path = parsed.path
+    else:
+        domain_match = re.search(r"([a-zA-Z0-9.-]+\.[a-zA-Z]{2,})", prompt)
+        if domain_match:
+            domain = domain_match.group(1)
+
+        path_match = re.search(r"\bpath\s*[:=]?\s*(/[-a-zA-Z0-9_./{}]*)", prompt, flags=re.IGNORECASE)
+        if path_match:
+            path = path_match.group(1)
 
     plan = JMeterHttpPlan(
         protocol=protocol,
