@@ -63,6 +63,9 @@ export class JmeterApiComponent implements OnInit {
 
   selectedTest: any = null;
 
+  showAIPrompt = false;
+  aiPrompt = '';
+  aiGenerating = false;
 
   constructor(
     private fb: FormBuilder,
@@ -235,6 +238,67 @@ export class JmeterApiComponent implements OnInit {
     // Update form group
     this.configFormGroup.patchValue(config);
 
+  }
+
+
+  toggleAIPrompt() {
+    this.showAIPrompt = !this.showAIPrompt;
+  }
+
+  generateFromPrompt() {
+    if (!this.aiPrompt.trim()) {
+      Swal.fire('Erreur', 'Veuillez décrire le test à générer.', 'error');
+      return;
+    }
+
+    this.aiGenerating = true;
+    this.busy = this.performanceTestApiService.generateTestPlan(this.aiPrompt).subscribe({
+      next: (response: any) => {
+        const plan = response?.test_plan || response?.testPlan || {};
+        this.formType = 'http';
+
+        const protocol = (plan.protocol || 'HTTP').toUpperCase();
+        this.protocolFormGroup.patchValue({ protocol });
+        this.detailsFormGroup.patchValue({
+          domain: plan.domain || '',
+          port: plan.port || ''
+        });
+        this.paramsFormGroup.patchValue({
+          method: plan.method || 'GET',
+          path: plan.path || '',
+          data: plan.data || ''
+        });
+        this.configFormGroup.patchValue({
+          nbThreads: plan.nbThreads || '10',
+          rampTime: plan.rampTime || '5',
+          duration: plan.duration || '60',
+          loop: plan.loop || '1'
+        });
+
+        this.http_request = {
+          ...this.http_request,
+          nbThreads: this.configFormGroup.get('nbThreads')?.value,
+          rampTime: this.configFormGroup.get('rampTime')?.value,
+          duration: this.configFormGroup.get('duration')?.value,
+          domain: this.detailsFormGroup.get('domain')?.value,
+          port: this.detailsFormGroup.get('port')?.value,
+          protocol: this.protocolFormGroup.get('protocol')?.value,
+          path: this.paramsFormGroup.get('path')?.value,
+          method: this.paramsFormGroup.get('method')?.value,
+          loop: this.configFormGroup.get('loop')?.value,
+          data: this.paramsFormGroup.get('data')?.value
+        };
+
+        Swal.fire('Succès', 'Le test JMeter a été généré. Vérifiez et lancez le test.', 'success');
+      },
+      error: () => {
+        this.aiGenerating = false;
+        Swal.fire('Erreur', 'Impossible de générer le test depuis la description.', 'error');
+      },
+      complete: () => {
+        this.aiGenerating = false;
+      }
+    });
   }
 
   onFinalSubmit() {

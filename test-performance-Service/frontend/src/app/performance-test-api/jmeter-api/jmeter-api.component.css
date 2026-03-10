@@ -389,3 +389,29 @@ select.form-control {
   font-size: 1.05rem;
   margin-bottom: 5px;
 }
+
+
+.ai-generator-panel {
+  margin: 1rem 0 1.5rem;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.btn-ai-generate,
+.btn-ai-submit {
+  background-color: #4c6ef5;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+}
+
+.ai-prompt-box {
+  margin-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}

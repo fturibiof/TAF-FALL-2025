@@ -155,6 +155,21 @@
         <img src="assets/logo/jmeter-logo.png" alt="JMeter Icon" class="jmeter-icon">
         <span class="hover-text">Apache JMeter : Outil de test de performance</span>
       </div>
+      
+      <div class="ai-generator-panel">
+        <button type="button" class="btn-ai-generate" (click)="toggleAIPrompt()">
+          Générer le test avec IA
+        </button>
+
+        <div class="ai-prompt-box" *ngIf="showAIPrompt">
+          <label><strong>Décrivez le test à générer</strong></label>
+          <textarea class="form-control" [(ngModel)]="aiPrompt" [ngModelOptions]="{standalone: true}" rows="4"
+            placeholder="Ex: Génère un test HTTP GET sur /api/users avec 20 utilisateurs, ramp-up 10s, pendant 2 minutes."></textarea>
+          <button type="button" class="btn-ai-submit" (click)="generateFromPrompt()" [disabled]="aiGenerating">
+            {{ aiGenerating ? 'Génération...' : 'Générer' }}
+          </button>
+        </div>
+      </div>
 
       <mat-horizontal-stepper [linear]="true" #stepper class="glass-stepper">
 

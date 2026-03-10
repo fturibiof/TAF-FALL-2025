@@ -11,6 +11,7 @@ const GATLING_API = `${environment.apiUrl}/team3/api/performance/gatling/runSimu
 const LATEST_REPORT_API = `${environment.apiUrl}/team3/api/performance/gatling/latest-report`;
 const JMeter_HttpRequest_API = `${environment.apiUrl}/team3/api/performance/jmeter/http`;
 const JMeter_FtpRequest_API = `${environment.apiUrl}/team3/api/performance/jmeter/ftp`;
+const TEST_GENERATION_API = `${environment.apiUrl}/team3/api/performance/test-generation/jmeter`;
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
@@ -51,5 +52,9 @@ export class PerformanceTestApiService {
       'Content-Type': 'application/json',
     });
     return this.http.post(url, jmeter_ftp_request, httpOptions);
+  }
+  
+  generateTestPlan(prompt: string): Observable<any> {
+    return this.http.post(TEST_GENERATION_API, { prompt }, httpOptions);
   }
 }

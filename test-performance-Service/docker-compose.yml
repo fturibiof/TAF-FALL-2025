@@ -43,3 +43,9 @@ services:
     build:
       context: ./tests-ui/team-4/client
       dockerfile: ./Dockerfile
+
+  test-generation:
+    image: ${REGISTRY_BASE}/lionel-test-team3-test-generation:${TEST_GENERATION_VERSION}
+    build:
+      context: ./
+      dockerfile: ./test-generation-service/Dockerfile
