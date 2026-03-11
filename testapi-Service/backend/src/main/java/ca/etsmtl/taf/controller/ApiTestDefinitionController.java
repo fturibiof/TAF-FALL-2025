@@ -2,6 +2,7 @@ package ca.etsmtl.taf.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class ApiTestDefinitionController {
     public ResponseEntity<ApiTestDefinition> create(@RequestBody ApiTestDefinition def, Authentication auth) {
         def.setId(null);
         def.setUsername(auth.getName());
-        return ResponseEntity.ok(repository.save(def));
+        return ResponseEntity.status(HttpStatus.CREATED).body(repository.save(def));
     }
 
     @PutMapping("/{id}")
@@ -42,8 +43,10 @@ public class ApiTestDefinitionController {
                                                      Authentication auth) {
         String username = auth.getName();
         return repository.findById(id)
-                .filter(existing -> username.equals(existing.getUsername()))
                 .map(existing -> {
+                    if (!username.equals(existing.getUsername())) {
+                        return ResponseEntity.status(HttpStatus.FORBIDDEN).<ApiTestDefinition>build();
+                    }
                     def.setId(id);
                     def.setUsername(username);
                     def.setCreatedAt(existing.getCreatedAt());
@@ -56,10 +59,12 @@ public class ApiTestDefinitionController {
     public ResponseEntity<Void> delete(@PathVariable("id") String id, Authentication auth) {
         String username = auth.getName();
         return repository.findById(id)
-                .filter(existing -> username.equals(existing.getUsername()))
                 .map(existing -> {
+                    if (!username.equals(existing.getUsername())) {
+                        return ResponseEntity.status(HttpStatus.FORBIDDEN).<Void>build();
+                    }
                     repository.deleteById(id);
-                    return ResponseEntity.ok().<Void>build();
+                    return ResponseEntity.noContent().<Void>build();
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
