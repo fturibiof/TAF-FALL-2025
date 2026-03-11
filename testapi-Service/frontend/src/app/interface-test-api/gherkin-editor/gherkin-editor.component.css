@@ -111,25 +111,25 @@
 }
 
 /* ── Syntax highlighting colors ── */
-:host ::ng-deep .gh-keyword {
+.highlight-layer .gh-keyword {
   color: #d32f2f;
   font-weight: bold;
 }
-:host ::ng-deep .gh-step {
+.highlight-layer .gh-step {
   color: #1565c0;
   font-weight: bold;
 }
-:host ::ng-deep .gh-string {
+.highlight-layer .gh-string {
   color: #2e7d32;
 }
-:host ::ng-deep .gh-number {
+.highlight-layer .gh-number {
   color: #e65100;
 }
-:host ::ng-deep .gh-comment {
+.highlight-layer .gh-comment {
   color: #9e9e9e;
   font-style: italic;
 }
-:host ::ng-deep .gh-tag {
+.highlight-layer .gh-tag {
   color: #6a1b9a;
 }
 

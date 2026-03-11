@@ -320,7 +320,7 @@ class AuthControllerTest {
         when(userRepository.existsByEmail("test@test.com")).thenReturn(false);
         when(roleRepository.findByName(ERole.ROLE_USER)).thenReturn(Optional.empty());
 
-        assertThrows(Exception.class, () ->
+        assertThrows(jakarta.servlet.ServletException.class, () ->
             mockMvc.perform(post("/api/auth/signup")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(signupReq))));
@@ -342,7 +342,7 @@ class AuthControllerTest {
         when(userRepository.existsByEmail("admin2@test.com")).thenReturn(false);
         when(roleRepository.findByName(ERole.ROLE_ADMIN)).thenReturn(Optional.empty());
 
-        assertThrows(Exception.class, () ->
+        assertThrows(jakarta.servlet.ServletException.class, () ->
             mockMvc.perform(post("/api/auth/signup")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(signupReq))));

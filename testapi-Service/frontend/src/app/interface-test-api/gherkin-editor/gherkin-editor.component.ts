@@ -1,11 +1,12 @@
-import { Component, EventEmitter, Input, Output, OnInit, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, ViewChild, ElementRef, AfterViewChecked, ViewEncapsulation } from '@angular/core';
 import { GherkinParserService } from '../../_services/gherkin-parser.service';
 import { testModel2 } from '../../models/testmodel2';
 
 @Component({
   selector: 'app-gherkin-editor',
   templateUrl: './gherkin-editor.component.html',
-  styleUrls: ['./gherkin-editor.component.css']
+  styleUrls: ['./gherkin-editor.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class GherkinEditorComponent implements OnInit, AfterViewChecked {
 
@@ -20,6 +21,7 @@ export class GherkinEditorComponent implements OnInit, AfterViewChecked {
   parsedTests: testModel2[] = [];
   parseErrors: string[] = [];
   showPreview: boolean = false;
+  highlightedHtml: string = '';
   private needsSync = false;
 
   constructor(private gherkinParser: GherkinParserService) {}
@@ -42,6 +44,7 @@ export class GherkinEditorComponent implements OnInit, AfterViewChecked {
 
   onTextChange(): void {
     this.needsSync = true;
+    this.highlightedHtml = this.getHighlightedHtml();
     const result = this.gherkinParser.parse(this.gherkinText);
     this.parsedTests = result.tests;
     this.parseErrors = result.errors;
