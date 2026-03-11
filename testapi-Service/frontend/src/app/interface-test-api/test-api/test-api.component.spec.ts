@@ -104,4 +104,24 @@ describe('TestApiComponent', () => {
     component.onGherkinClose();
     expect(component.gherkinMode).toBeFalse();
   });
+
+  // ── editTest() ─────────────────────────────────────
+
+  it('should open dialog with test data when editing', () => {
+    const dialogSpy = spyOn(component.dialog, 'open').and.returnValue({
+      afterClosed: () => of(null)
+    } as any);
+
+    const testData: testModel2 = {
+      id: 1, method: 'POST', apiUrl: 'https://api.test.com',
+      headers: { 'Content-Type': 'application/json' },
+      expectedHeaders: {}, statusCode: 201,
+    };
+
+    component.editTest(testData);
+
+    expect(dialogSpy).toHaveBeenCalled();
+    const callArgs = dialogSpy.calls.mostRecent().args;
+    expect(callArgs[1]?.data).toEqual(testData);
+  });
 });

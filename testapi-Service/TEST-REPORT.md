@@ -2,8 +2,8 @@
 
 **Projet** : TAF (Test Automation Framework) — Équipe 3  
 **Cours** : MGL805, ÉTS, Hiver 2026  
-**Date** : 2026-03-10  
-**Branche** : `feature/ModeGherkin`  
+**Date** : 2026-03-11  
+**Branche** : `feature/MongoDB`  
 **Framework** : JUnit 5 (Jupiter) + Mockito + Spring Boot Test  
 **Couverture** : JaCoCo 0.8.12
 

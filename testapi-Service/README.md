@@ -98,6 +98,7 @@ C'est la **fonctionnalité principale** du module TestAPI. Elle permet de tester
    - **URL de l'API** — l'URL complète de l'API à tester
    - **Statut attendu** — le code HTTP attendu (ex: `200`, `404`)
    - **Headers** — paires clé/valeur à envoyer avec la requête (optionnel)
+   - **Corps de la requête (input)** — le corps JSON à envoyer (pour POST/PUT, optionnel)
    - **Sortie attendue** — le corps JSON attendu dans la réponse (optionnel)
    - **En-têtes attendus** — les en-têtes attendus dans la réponse (optionnel)
    - **Temps de réponse** — temps maximum acceptable en ms (optionnel)
@@ -106,6 +107,7 @@ C'est la **fonctionnalité principale** du module TestAPI. Elle permet de tester
 
 **Fonctions supplémentaires :**
 
+- **Modifier** — modifie un test existant en ouvrant le formulaire pré-rempli
 - **Export CSV** — télécharge les définitions de tests au format CSV
 - **Import CSV** — charge des tests depuis un fichier CSV
 - **Supprimer** — supprime un test individuel du tableau
@@ -363,7 +365,7 @@ Accessible à : [http://localhost:8084/swagger-ui.html](http://localhost:8084/sw
 | Java | 17 | Langage backend |
 | Spring Boot | 3.5.10 | Framework backend |
 | **Rest-Assured** | **5.5.0** | **Exécution des tests d'API** |
-| Angular | 14 | Framework frontend |
+| Angular | 13.3 | Framework frontend |
 | MongoDB | latest | Stockage utilisateurs/rôles |
 | Gatling | — | Tests de performance |
 | Selenium Java | 4.27.0 | Tests d'interface |

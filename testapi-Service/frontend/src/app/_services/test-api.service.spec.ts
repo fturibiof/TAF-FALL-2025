@@ -85,4 +85,43 @@ describe('Service: TestApi', () => {
 
     expect(tests.length).toBe(0);
   });
+
+  it('should update an existing test by id', () => {
+    service.addTestOnList({
+      id: 0, method: 'GET', apiUrl: 'https://old.com',
+      headers: {}, expectedHeaders: {}, statusCode: 200,
+    });
+
+    service.updateTest({
+      id: 1, method: 'POST', apiUrl: 'https://new.com',
+      headers: { 'Content-Type': 'application/json' }, expectedHeaders: {}, statusCode: 201,
+    });
+
+    let tests: testModel2[] = [];
+    service.tests$.subscribe(t => tests = t);
+
+    expect(tests.length).toBe(1);
+    expect(tests[0].method).toBe('POST');
+    expect(tests[0].apiUrl).toBe('https://new.com');
+    expect(tests[0].statusCode).toBe(201);
+    expect(tests[0].responseStatus).toBeUndefined();
+  });
+
+  it('should not modify list when updating non-existent test', () => {
+    service.addTestOnList({
+      id: 0, method: 'GET', apiUrl: 'https://a.com',
+      headers: {}, expectedHeaders: {},
+    });
+
+    service.updateTest({
+      id: 999, method: 'DELETE', apiUrl: 'https://gone.com',
+      headers: {}, expectedHeaders: {},
+    });
+
+    let tests: testModel2[] = [];
+    service.tests$.subscribe(t => tests = t);
+
+    expect(tests.length).toBe(1);
+    expect(tests[0].method).toBe('GET');
+  });
 });

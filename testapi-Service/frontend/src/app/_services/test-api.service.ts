@@ -59,6 +59,18 @@ export class TestApiService {
 
   }
 
+  // Mettre a jour un test existant dans la liste
+  updateTest(updatedTest: testModel2): void {
+    const index = this.listTests.findIndex(t => t.id === updatedTest.id);
+    if (index !== -1) {
+      // Reset result fields
+      updatedTest.responseStatus = undefined;
+      updatedTest.messages = [];
+      this.listTests[index] = updatedTest;
+      this.testsSubject.next([...this.listTests]);
+    }
+  }
+
 // delete a test from the liste when user confirm the remove
   deleteTest(id: number){
     let indiceASupprimer = id-1;

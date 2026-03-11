@@ -50,6 +50,18 @@ export class TestApiComponent implements OnInit {
     });
   }
 
+  // Ouvre le dialogue de modification de test
+  editTest(test: testModel2) {
+    this.isPopupOpened = true;
+    const dialogRef = this.dialog.open(AddTestDialogComponent, {
+      data: test
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      this.isPopupOpened = false;
+      this.ngOnInit();
+    });
+  }
+
   // Ouvre le dialogue de suppression de test
   deleteTest(id: string) {
     this.isPopupOpened = true;
