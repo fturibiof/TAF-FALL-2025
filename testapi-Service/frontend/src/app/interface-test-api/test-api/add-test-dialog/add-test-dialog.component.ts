@@ -84,7 +84,7 @@ export class AddTestDialogComponent implements OnInit {
   isValidApiUrl(apiUrl: string): boolean {
     const pattern = new RegExp(
       '^(https?:\\/\\/)?' +
-        '([a-z\\d]([a-z\\d\\-.]*[a-z\\d])*)' +
+        '([a-z\\d]+(?:[\\-.][a-z\\d]+)*)' +
         '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' +
         '(\\?[;&a-z\\d%_.~+=:\\/-]*)?' +
         '(\\#[-a-z\\d_]*)?$',
