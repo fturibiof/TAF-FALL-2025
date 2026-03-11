@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TestApiService } from 'src/app/_services/test-api.service';
+import { TokenStorageService } from 'src/app/_services/token-storage.service';
 import { testModel } from "../../models/test-model";
 import { MatDialog } from "@angular/material/dialog";
 import { AddTestDialogComponent } from "./add-test-dialog/add-test-dialog.component";
@@ -26,6 +27,7 @@ export class TestApiComponent implements OnInit {
 
   constructor(
     private testApiService: TestApiService,
+    private tokenStorage: TokenStorageService,
     public dialog: MatDialog,
     private gherkinParser: GherkinParserService,
   ) { }
@@ -33,10 +35,12 @@ export class TestApiComponent implements OnInit {
   ngOnInit() {
     // Chargement de la liste des tests
     this.getTestList();
-    // Load saved definitions from backend (if user is logged in)
-    this.testApiService.loadDefinitions().subscribe({
-      error: () => {} // silently ignore if not authenticated
-    });
+    // Load saved definitions from backend (only if user is logged in)
+    if (this.tokenStorage.getToken()) {
+      this.testApiService.loadDefinitions().subscribe({
+        error: () => {}
+      });
+    }
   }
 
   // Récupération de la liste des tests
