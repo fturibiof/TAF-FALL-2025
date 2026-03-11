@@ -69,7 +69,7 @@ export class TestApiComponent implements OnInit {
   }
 
   // Ouvre le dialogue de suppression de test
-  deleteTest(id: string) {
+  deleteTest(id: number) {
     this.isPopupOpened = true;
     const dialogRef = this.dialog.open(DeleteTestDialogComponent, { data: id });
     dialogRef.afterClosed().subscribe(() => {

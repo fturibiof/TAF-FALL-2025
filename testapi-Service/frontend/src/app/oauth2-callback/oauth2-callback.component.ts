@@ -38,8 +38,10 @@ export class OAuth2CallbackComponent implements OnInit {
         }
 
         if (userInfoBase64) {
-          // Decode base64url user info
-          const json: string = atob(userInfoBase64.replace(/-/g, '+').replace(/_/g, '/'));
+          // Decode base64url user info (restore padding for atob compatibility)
+          let b64: string = userInfoBase64.replace(/-/g, '+').replace(/_/g, '/');
+          while (b64.length % 4 !== 0) { b64 += '='; }
+          const json: string = atob(b64);
           const userInfo: Record<string, unknown> = JSON.parse(json);
           this.tokenStorage.saveUser(userInfo);
         } else {

@@ -127,8 +127,14 @@ export class TestApiService {
     this.testsSubject.next([...this.listTests]);
 
     // Persist to backend
+    const index = this.listTests.length - 1;
     this.http.post<any>(this.DEFINITIONS_API, this.toBackend(newTest)).subscribe({
-      next: saved => { newTest.mongoId = saved.id; },
+      next: saved => {
+        // Update by index in case the reference was replaced by updateTest
+        if (this.listTests[index]) {
+          this.listTests[index].mongoId = saved.id;
+        }
+      },
       error: err => console.error('Failed to save definition:', err)
     });
   }
