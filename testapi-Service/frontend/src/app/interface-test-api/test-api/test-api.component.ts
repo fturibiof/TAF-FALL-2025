@@ -48,9 +48,8 @@ export class TestApiComponent implements OnInit {
   addTest() {
     this.isPopupOpened = true;
     const dialogRef = this.dialog.open(AddTestDialogComponent, {});
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(() => {
       this.isPopupOpened = false;
-      this.ngOnInit(); // rafraîchit la liste
     });
   }
 
@@ -60,9 +59,8 @@ export class TestApiComponent implements OnInit {
     const dialogRef = this.dialog.open(AddTestDialogComponent, {
       data: test
     });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(() => {
       this.isPopupOpened = false;
-      this.ngOnInit();
     });
   }
 
@@ -70,11 +68,9 @@ export class TestApiComponent implements OnInit {
   deleteTest(id: string) {
     this.isPopupOpened = true;
     const dialogRef = this.dialog.open(DeleteTestDialogComponent, { data: id });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(() => {
       this.isPopupOpened = false;
-      this.ngOnInit();
     });
-    this.getTestList();
   }
 
   exportCSV(): void {

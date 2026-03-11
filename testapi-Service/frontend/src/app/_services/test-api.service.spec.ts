@@ -68,6 +68,8 @@ describe('Service: TestApi', () => {
     service.tests$.subscribe(t => tests = t);
 
     expect(tests.length).toBe(1);
+    expect(tests[0].apiUrl).toBe('https://b.com');
+    expect(tests[0].id).toBe(1); // renumbered after deletion
   });
 
   it('should get a test by id', () => {

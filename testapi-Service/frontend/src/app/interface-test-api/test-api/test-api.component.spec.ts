@@ -136,10 +136,6 @@ describe('TestApiComponent', () => {
 
     component.editTest(testData);
 
-    // editTest dialog afterClosed triggers ngOnInit → loadDefinitions GET
-    const reqs = httpMock.match(r => r.method === 'GET' && r.url.includes('/definitions'));
-    reqs.forEach(r => r.flush([]));
-
     expect(dialogSpy).toHaveBeenCalled();
     const callArgs = dialogSpy.calls.mostRecent().args;
     expect(callArgs[1]?.data).toEqual(testData);

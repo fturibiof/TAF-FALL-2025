@@ -134,11 +134,13 @@ export class TestApiService {
 
 // delete a test from the liste when user confirm the remove
   deleteTest(id: number){
-    const test = this.listTests.find(t => t.id === id);
-    const mongoId = test?.mongoId;
+    const index = this.listTests.findIndex(t => t.id === id);
+    if (index === -1) return;
+    const mongoId = this.listTests[index].mongoId;
 
-    let indiceASupprimer = id-1;
-    this.listTests.splice(indiceASupprimer, 1);
+    this.listTests.splice(index, 1);
+    // Renumber IDs sequentially after deletion
+    this.listTests.forEach((t, i) => t.id = i + 1);
     this.testsSubject.next([...this.listTests]);
 
     // Delete from backend
