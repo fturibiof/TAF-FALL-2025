@@ -423,7 +423,7 @@ mvn test -pl backend "-P !with-frontend"
 | Réussis | 87 |
 | Échoués | 0 |
 | Ignorés | 1 |
-| Couverture lignes (classes équipe) | **97%** (431/443) |
+| Couverture lignes (classes équipe) | **98%** (433/438) |
 | Modules couverts | Sécurité (JWT, OAuth2, filtres), contrôleurs, entités, DTOs, persistance MongoDB, **timeout** |
 
 Le rapport de couverture est dans `backend/target/site/jacoco/index.html`.  

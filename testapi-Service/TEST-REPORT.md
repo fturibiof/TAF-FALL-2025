@@ -17,7 +17,7 @@
 | Réussis | 87 |
 | Échoués | 0 |
 | Ignorés | 1 (TestAutomationFrameworkApplicationTests — test de contexte Spring sans MongoDB) |
-| Couverture lignes (24 classes équipe) | **97%** (431/443) |
+| Couverture lignes (24 classes équipe) | **98%** (433/438) |
 | Couverture instructions (classes 100%) | 20/24 classes |
 | Couverture branches (classes 100%) | 20/24 classes |
 
@@ -144,7 +144,7 @@ Le rapport de couverture JaCoCo est généré dans :
 | `security.services` | 100% | 100% | UserDetailsImpl, UserDetailsServiceImpl |
 | `security.oauth2` | 100% | 100% | OAuth2LoginSuccessHandler |
 | `security.jwt` | 100% | 100% | JwtUtils, AuthTokenFilter, AuthEntryPointJwt |
-| `payload.request` | 100% (sauf TestApiRequest 88%) | n/a | LoginRequest, SignupRequest, RefreshTokenRequest, TestApiRequest |
+| `payload.request` | 100% | n/a | LoginRequest, SignupRequest, RefreshTokenRequest, TestApiRequest |
 | `payload.response` | 100% | n/a | JwtResponse, MessageResponse |
 | `controller` | 100% | 100% | AuthController, TestApiController, ApiTestDefinitionController, OAuth2Controller |
 | `entity` | 100% | 100% | User, Role, ERole, ApiTestDefinition |

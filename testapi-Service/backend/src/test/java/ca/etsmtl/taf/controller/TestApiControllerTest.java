@@ -66,6 +66,8 @@ class TestApiControllerTest {
         req.setInput("{\"key\":\"value\"}");
         req.setExpectedOutput("{\"result\":\"ok\"}");
         req.setHeaders(java.util.Map.of("Content-Type", "application/json"));
+        req.setResponseTime(5000);
+        req.setExpectedHeaders(java.util.Map.of("X-Custom", "value"));
 
         assertEquals("POST", req.getMethod());
         assertEquals("http://example.com/api", req.getApiUrl());
@@ -73,6 +75,8 @@ class TestApiControllerTest {
         assertEquals("{\"key\":\"value\"}", req.getInput());
         assertEquals("{\"result\":\"ok\"}", req.getExpectedOutput());
         assertEquals("application/json", req.getHeaders().get("Content-Type"));
+        assertEquals(5000, req.getResponseTime());
+        assertEquals("value", req.getExpectedHeaders().get("X-Custom"));
     }
 
     @Test
