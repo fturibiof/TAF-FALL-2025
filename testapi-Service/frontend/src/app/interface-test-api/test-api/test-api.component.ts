@@ -207,11 +207,9 @@ export class TestApiComponent implements OnInit {
 
   /** Receive parsed tests from Gherkin editor and add to table */
   onGherkinTestsReady(tests: testModel2[]): void {
-    // Clear existing tests and add new ones from Gherkin
-    this.testApiService.clearTests();
+    // Append Gherkin tests to the existing list (each is POSTed to backend)
     tests.forEach(test => this.testApiService.addTestOnList(test));
     this.gherkinMode = false;
-    this.getTestList();
   }
 
   /** Close Gherkin editor without applying */

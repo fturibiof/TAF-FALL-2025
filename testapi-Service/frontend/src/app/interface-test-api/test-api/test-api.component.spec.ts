@@ -109,9 +109,6 @@ describe('TestApiComponent', () => {
 
     // Flush the POST request fired by addTestOnList inside onGherkinTestsReady
     httpMock.expectOne(r => r.method === 'POST' && r.url.includes('/definitions')).flush({ id: 'mg1' });
-    // Flush the GET request fired by ngOnInit re-invocation via getTestList
-    const getReqs = httpMock.match(r => r.method === 'GET' && r.url.includes('/definitions'));
-    getReqs.forEach(r => r.flush([]));
 
     expect(component.gherkinMode).toBeFalse();
   });

@@ -261,6 +261,7 @@ services:
     environment:
       SPRING_APPLICATION_NAME: team2
       SERVER_PORT: 8080
+      EUREKA_INSTANCE_PREFER_IP_ADDRESS: "true"
       DB_URI: mongodb://admin:admin123@mongodb:27017/taf?authSource=admin
       DB_AUTH: admin
       DB_NAME: taf
