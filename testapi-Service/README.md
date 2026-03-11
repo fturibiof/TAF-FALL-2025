@@ -224,7 +224,7 @@ Le système gère les timeouts à deux niveaux :
 
 Si l'API cible ne répond pas dans le délai (`SocketTimeoutException`), le test retourne un message d'erreur explicite au lieu de crasher.
 
-Un endpoint `/slow?delay=N` est disponible sur le testapi (port 8086) pour tester le comportement de timeout.
+Un endpoint `/slow?delay=N` est disponible sur le testapi (port 8086) pour tester le comportement de timeout. Le paramètre `delay` accepte une valeur entre 0 et 120 000 ms ; toute valeur hors de cette plage retourne `400 Bad Request`.
 
 **Comparaison JSON (JsonComparator) :** La comparaison du corps de réponse est récursive — elle parcourt l'arbre JSON attendu vs reçu et retourne un objet indiquant `true`/`false` pour chaque champ, y compris les objets et tableaux imbriqués.
 
