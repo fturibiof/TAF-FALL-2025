@@ -102,9 +102,10 @@ C'est la **fonctionnalité principale** du module TestAPI. Elle permet de tester
    - **Corps de la requête (input)** — le corps JSON à envoyer (pour POST/PUT, optionnel)
    - **Sortie attendue** — le corps JSON attendu dans la réponse (optionnel)
    - **En-têtes attendus** — les en-têtes attendus dans la réponse (optionnel)
-   - **Temps de réponse** — temps maximum acceptable en ms (optionnel)
+   - **Temps de réponse attendu (ms)** — temps maximum acceptable en ms (optionnel)
 5. Cliquer **« Lancer les tests »** — tous les tests du tableau s'exécutent en parallèle
-6. La colonne **Résultat** affiche **vert** (pass) ou **rouge** (fail) avec un tooltip détaillant les erreurs
+6. La colonne **TDR attendu (ms)** affiche la valeur seuil définie par l'utilisateur ; la colonne **TDR (ms)** affiche le temps réel mesuré (vert si ≤ seuil, rouge si dépassé)
+7. La colonne **Résultat** affiche **vert** (pass) ou **rouge** (fail) avec un tooltip détaillant les erreurs
 
 **Fonctions supplémentaires :**
 

@@ -18,7 +18,7 @@ import { GherkinParserService } from '../../_services/gherkin-parser.service';
 export class TestApiComponent implements OnInit {
   isPopupOpened = true;
   // Colonnes à afficher
-  displayedColumns: string[] = ['id', 'method', 'apiUrl', 'responseTime', 'statusCode', 'responseStatus', 'action'];
+  displayedColumns: string[] = ['id', 'method', 'apiUrl', 'responseTime', 'actualResponseTime', 'statusCode', 'responseStatus', 'action'];
   dataTests: testModel2[] = [];
 
   // Gherkin mode
