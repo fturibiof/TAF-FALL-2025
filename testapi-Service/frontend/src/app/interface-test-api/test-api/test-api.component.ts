@@ -167,11 +167,16 @@ export class TestApiComponent implements OnInit {
   }
   
 
-  // Exécution des tests
+  // Exécution des tests (progressive: chaque résultat s'affiche dès qu'il arrive)
   lunchTests() {
-    this.testApiService.executeTests(this.dataTests).subscribe({
-      next: (listTestsReponses: TestResponseModel[]) => {
-        this.updateTestsStatusExecution(listTestsReponses);
+    // Clear previous results — show "pending" state
+    this.testApiService.clearTestResults();
+    this.getTestList();
+
+    this.testApiService.executeTestsProgressive(this.dataTests).subscribe({
+      next: ({index, result}) => {
+        this.testApiService.updateSingleTestResult(index, result);
+        this.getTestList();
       },
       error: (error) => {
         this.showErrorPopup("Erreur lors de l'exécution des tests : " + error.message);
