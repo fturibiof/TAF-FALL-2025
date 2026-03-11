@@ -3,7 +3,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { DebugElement, NO_ERRORS_SCHEMA } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { of } from 'rxjs';
 
@@ -17,6 +17,7 @@ describe('TestApiComponent', () => {
   let fixture: ComponentFixture<TestApiComponent>;
   let testApiService: TestApiService;
   let gherkinParser: GherkinParserService;
+  let httpMock: HttpTestingController;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -40,7 +41,16 @@ describe('TestApiComponent', () => {
     component = fixture.componentInstance;
     testApiService = TestBed.inject(TestApiService);
     gherkinParser = TestBed.inject(GherkinParserService);
+    httpMock = TestBed.inject(HttpTestingController);
     fixture.detectChanges();
+
+    // ngOnInit fires loadDefinitions() which makes a GET request
+    const reqs = httpMock.match(r => r.method === 'GET' && r.url.includes('/definitions'));
+    reqs.forEach(r => r.flush([]));
+  });
+
+  afterEach(() => {
+    httpMock.verify();
   });
 
   it('should create', () => {
@@ -70,6 +80,9 @@ describe('TestApiComponent', () => {
       id: 0, method: 'GET', apiUrl: 'https://example.com',
       headers: {}, expectedHeaders: {}, statusCode: 200,
     });
+    // Flush the POST request fired by addTestOnList
+    httpMock.expectOne(r => r.method === 'POST' && r.url.includes('/definitions')).flush({ id: 'm1' });
+
     component.getTestList(); // subscribe to service
     // dataTests is populated via subscription
     component.dataTests = [{
@@ -93,6 +106,12 @@ describe('TestApiComponent', () => {
     ];
 
     component.onGherkinTestsReady(tests);
+
+    // Flush the POST request fired by addTestOnList inside onGherkinTestsReady
+    httpMock.expectOne(r => r.method === 'POST' && r.url.includes('/definitions')).flush({ id: 'mg1' });
+    // Flush the GET request fired by ngOnInit re-invocation via getTestList
+    const getReqs = httpMock.match(r => r.method === 'GET' && r.url.includes('/definitions'));
+    getReqs.forEach(r => r.flush([]));
 
     expect(component.gherkinMode).toBeFalse();
   });
@@ -119,6 +138,10 @@ describe('TestApiComponent', () => {
     };
 
     component.editTest(testData);
+
+    // editTest dialog afterClosed triggers ngOnInit → loadDefinitions GET
+    const reqs = httpMock.match(r => r.method === 'GET' && r.url.includes('/definitions'));
+    reqs.forEach(r => r.flush([]));
 
     expect(dialogSpy).toHaveBeenCalled();
     const callArgs = dialogSpy.calls.mostRecent().args;

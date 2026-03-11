@@ -33,6 +33,10 @@ export class TestApiComponent implements OnInit {
   ngOnInit() {
     // Chargement de la liste des tests
     this.getTestList();
+    // Load saved definitions from backend (if user is logged in)
+    this.testApiService.loadDefinitions().subscribe({
+      error: () => {} // silently ignore if not authenticated
+    });
   }
 
   // Récupération de la liste des tests
