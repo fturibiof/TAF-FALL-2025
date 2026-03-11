@@ -21,13 +21,19 @@ public class TestApiController {
         return new RequestController(request).getAnswer();
     }
 
+    private static final int MAX_DELAY_MS = 120_000;
+
     /**
      * Simulates a slow API endpoint to test timeout behavior.
-     * Sleeps for the given number of milliseconds (default 15000).
+     * Sleeps for the given number of milliseconds (default 15000, max 120000).
      */
     @GetMapping("/slow")
     public ResponseEntity<Map<String, Object>> slow(
             @RequestParam(value = "delay", defaultValue = "15000") int delay) {
+        if (delay < 0 || delay > MAX_DELAY_MS) {
+            return ResponseEntity.badRequest().body(Map.of(
+                    "error", "delay must be between 0 and " + MAX_DELAY_MS + " ms"));
+        }
         long start = System.currentTimeMillis();
         try {
             Thread.sleep(delay);
