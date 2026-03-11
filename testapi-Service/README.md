@@ -81,6 +81,7 @@ cd frontend && npm install && ng serve --open
 | Swagger UI | http://localhost:8084/swagger-ui.html | Interface API |
 | Eureka | http://localhost:8761 | TEAM2 enregistré |
 | Health check | http://localhost:8084/actuator/health | `{"status":"UP"}` |
+| Mongo Express | http://localhost:8881 | Interface admin MongoDB |
 
 ---
 
