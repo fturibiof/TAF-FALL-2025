@@ -49,8 +49,20 @@ Le backend agit comme un proxy transparent : il sérialise la requête JSON et l
 **Prérequis :** Docker et Docker Compose installés.
 
 ```powershell
-# Démarrage rapide — Team 2 uniquement
+# Premier démarrage (build des images)
 .\start-taf-local.ps1 -Mode team2 -Build
+
+# Redémarrage rapide sans rebuild (recommandé après le premier build)
+.\start-taf-local.ps1 -Mode team2 -Restart
+
+# Arrêter les conteneurs (données MongoDB conservées)
+.\start-taf-local.ps1 -Mode team2 -Stop
+
+# Voir le statut de tous les conteneurs
+.\start-taf-local.ps1 -Status
+
+# Nettoyage complet (supprime conteneurs + volumes MongoDB)
+.\start-taf-local.ps1 -Clean
 
 # Ou manuellement
 docker compose -f docker-compose-local-test.yml up -d --build
