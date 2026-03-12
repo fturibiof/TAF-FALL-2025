@@ -1,4 +1,4 @@
-package org.config;
+package ca.etsmtl.taf.testapi.config;
 
 import io.restassured.RestAssured;
 import io.restassured.config.HttpClientConfig;

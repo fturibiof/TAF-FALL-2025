@@ -1,6 +1,6 @@
-package org.requests;
+package ca.etsmtl.taf.testapi;
 
-import org.requests.payload.request.TestApiRequest;
+import ca.etsmtl.taf.testapi.payload.request.TestApiRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,7 +18,7 @@ public class TestApiController {
     }
 
     public Serializable redirectMethod(TestApiRequest request) {
-        return new RequestController(request).getAnswer();
+        return new TestRequestExecutor(request).getAnswer();
     }
 
     private static final int MAX_DELAY_MS = 120_000;

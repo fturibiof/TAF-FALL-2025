@@ -1,13 +1,13 @@
-package org.requests;
+package ca.etsmtl.taf.testapi;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
-import org.requests.payload.request.Answer;
-import org.requests.payload.request.TestApiRequest;
-import org.utils.JsonComparator;
+import ca.etsmtl.taf.testapi.payload.request.Answer;
+import ca.etsmtl.taf.testapi.payload.request.TestApiRequest;
+import ca.etsmtl.taf.testapi.util.JsonComparator;
 
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 import static io.restassured.RestAssured.given;
 
-public class RequestController {
+public class TestRequestExecutor {
     
     private final TestApiRequest request;
     private final RequestSpecification httpRequest;
@@ -28,8 +28,8 @@ public class RequestController {
     private boolean timedOut = false;
     private long actualResponseTime = -1;
 
-    public RequestController(TestApiRequest request) {
-        System.out.println("############### DEBUG : RequestController INITIALISÉ ###############");
+    public TestRequestExecutor(TestApiRequest request) {
+        System.out.println("############### DEBUG : TestRequestExecutor INITIALISÉ ###############");
 
         this.request = request;
         RequestSpecification spec = given()
