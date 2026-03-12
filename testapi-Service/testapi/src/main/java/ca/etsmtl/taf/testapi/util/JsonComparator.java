@@ -21,7 +21,9 @@ public class JsonComparator {
             ArrayNode array2 = (ArrayNode) node2;
             ArrayNode arrayResult = result.arrayNode();
             for (int i = 0; i < array1.size(); i++) {
-                if (array1.get(i).isObject() && array2.get(i).isObject()) {
+                if (i >= array2.size()) {
+                    arrayResult.add(false);
+                } else if (array1.get(i).isObject() && array2.get(i).isObject()) {
                     arrayResult.add(compareJson(array1.get(i), array2.get(i), result.objectNode()));
                 } else {
                     arrayResult.add(array1.get(i).equals(array2.get(i)));
@@ -39,12 +41,14 @@ public class JsonComparator {
                     } else {
                         result.put(fieldName, false);
                     }
-                } else if (value1.isArray() && value2.isArray()) {
+                } else if (value1.isArray() && value2 != null && value2.isArray()) {
                     ArrayNode array1 = (ArrayNode) value1;
                     ArrayNode array2 = (ArrayNode) value2;
                     ArrayNode arrayResult = result.arrayNode();
                     for (int i = 0; i < array1.size(); i++) {
-                        if (array1.get(i).isObject() && array2.get(i).isObject()) {
+                        if (i >= array2.size()) {
+                            arrayResult.add(false);
+                        } else if (array1.get(i).isObject() && array2.get(i).isObject()) {
                             arrayResult.add(compareJson(array1.get(i), array2.get(i), result.objectNode()));
                         } else {
                             arrayResult.add(array1.get(i).equals(array2.get(i)));

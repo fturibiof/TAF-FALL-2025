@@ -72,7 +72,8 @@ public class AuthController {
   /**
    * Refresh token endpoint.
    * Accepts a valid refresh token and returns a new access token + refresh token pair.
-   * The old refresh token is invalidated by issuing a new one (rotation strategy).
+   * Note: Previously issued refresh tokens remain valid until they expire; this method does
+   * not persist or invalidate older refresh tokens on the server side.
    */
   @PostMapping("/refresh-token")
   public ResponseEntity<?> refreshToken(@Valid @RequestBody RefreshTokenRequest request) {
