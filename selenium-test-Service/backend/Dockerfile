@@ -1,32 +1,53 @@
-FROM maven:3.9.5-sapmachine-17 as builder
-WORKDIR /code
+###########################
+# Stage 1: Builder
+###########################
+FROM maven:3.9-eclipse-temurin-17 AS builder
+
+# Set working directory
+WORKDIR /app
+
+# Copy parent pom.xml
 COPY pom.xml .
-COPY gatling ./gatling
+
+# Copy modules
 COPY backend ./backend
-RUN mvn clean install -D maven.test.skip
+COPY gatling ./gatling  
+# Optional: include if needed
 
-FROM openjdk:17-jdk-alpine as runner
+# Download dependencies offline
+RUN mvn dependency:go-offline -B
 
-WORKDIR /opt
-COPY apache-jmeter-5.6.3.tgz .
+# Build all modules, skip tests for speed
+RUN mvn clean package -DskipTests -B
 
-RUN tar -xzf apache-jmeter-5.6.3.tgz
-RUN mv apache-jmeter-5.6.3 jmeter
-RUN rm apache-jmeter-5.6.3.tgz
+###########################
+# Stage 2: Runner
+###########################
+FROM eclipse-temurin:21-jre AS runner
 
-WORKDIR /code
+# Set working directory
+WORKDIR /app
 
-ARG JAR_FILE=target/backend-1.0.0-SNAPSHOT.jar
+# Copy the backend JAR from builder
+ARG JAR_FILE=backend/target/backend-1.0.0-SNAPSHOT.jar
+COPY --from=builder /app/${JAR_FILE} /app/app.jar
 
-COPY --from=builder /code/backend/${JAR_FILE} /code/app.jar
+# Install Chrome for Selenium headless
+RUN apt-get update && apt-get install -y \
+    wget \
+    gnupg \
+    ca-certificates \
+    && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub \
+       | gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg \
+    && echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] \
+       http://dl.google.com/linux/chrome/deb/ stable main" \
+       > /etc/apt/sources.list.d/google-chrome.list \
+    && apt-get update \
+    && apt-get install -y google-chrome-stable \
+    && rm -rf /var/lib/apt/lists/*
 
-# Set JMETER_HOME environment variable
-ENV JMETER_HOME=/opt/jmeter
-ENV PATH=$PATH:$JMETER_HOME/bin
-ENV JMETER_INSTALL_DIR=/opt/jmeter
+# Expose your app port
+EXPOSE 8080
 
-# Create directories for tests and results (optional, but good practice)
-RUN mkdir -p /jmeter/tests
-RUN mkdir -p /jmeter/results
-
-ENTRYPOINT ["java","-jar","/code/app.jar"]
+# Run the app
+CMD ["java", "-jar", "/app/app.jar"]

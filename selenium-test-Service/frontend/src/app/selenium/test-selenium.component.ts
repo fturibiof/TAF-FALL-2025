@@ -24,16 +24,31 @@ export class TestSeleniumComponent {
         }[];
     }[] = [];
     percentage = 0;
+    parallelExecution = true; // Default to parallel execution
+    executionTime = 0; // Execution time in milliseconds
+    totalTests = 0;
+    successfulTests = 0;
 
     runMethod(cases: any) {
         let counterTrue = 0;
         const API_URL = 'http://localhost:8083/api/selenium/run';
         this.showResultModal();
         this.showSpinner();
-        this.http.post(API_URL, cases).subscribe(
-            (response) => {
+        
+        // Create request with parallelism control
+        const requestBody = {
+            cases: cases,
+            parallelExecution: this.parallelExecution
+        };
+        
+        this.http.post(API_URL, requestBody).subscribe(
+            (response: any) => {
                 console.log('tested successfully:', response);
-                this.testResult = response;
+                this.testResult = response.results;
+                this.executionTime = response.executionTime;
+                this.totalTests = response.totalTests;
+                this.successfulTests = response.successfulTests;
+                
                 // Calculer le pourcentage de succès
                 for (let result of this.testResult) {
                     if (result.success) {
@@ -43,8 +58,9 @@ export class TestSeleniumComponent {
                 this.percentage = (counterTrue / this.testResult.length) * 100;
                 this.hideSpinner();
             },
-            (error) => {
+            (error: any) => {
                 console.error('Error test:', error);
+                this.hideSpinner();
             }
         );
     }
