@@ -5,12 +5,16 @@ import org.springframework.stereotype.Service;
 import com.fasterxml.jackson.databind.JsonNode;
 import ca.etsmtl.taf.repository.ApiBddJmeterRepository;
 import ca.etsmtl.taf.entity.ApiBddJmeterEntity;
+import org.springframework.context.annotation.Profile;
+
+
+
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.time.format.DateTimeFormatter;
-
+@Profile("sql")
 @Service
 public class ApiBddService {
 

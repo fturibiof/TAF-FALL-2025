@@ -5,8 +5,19 @@ import {
   RunCard, RunDetail, CaseSearchResponse, PassratePoint,
   ToolRate, TypeRate, NamedCount
 } from '../models/dashboard.model';
-
-const API = 'http://localhost:8083/dashboard';
+// API Base URL (dynamic: local dev, Codespace, or production)
+// We use environment.apiUrl instead of hard‑coding "http://localhost:8083"
+// so the frontend can adapt automatically to different environments:
+//  - Local development:
+//        environment.ts → http://localhost:<port>
+//  - GitHub Codespaces:
+//        environment.codespace.ts → https://<codespace>-8086.app.github.dev
+//  - Production build:
+//        environment.prod.ts → real backend URL
+// This makes the UI portable for all teammates and prevents
+// environment‑specific URLs from breaking API calls.
+import { environment } from '../../environments/environment';
+const API = `${environment.apiUrl}/dashboard`;
 
 @Injectable({ providedIn: 'root' })
 export class BoardAdminService {
@@ -66,4 +77,11 @@ export class BoardAdminService {
     const p = new HttpParams().set('project', project).set('days', days).set('limit', limit);
     return this.http.get<NamedCount[]>(`${API}/summary/flaky`, { params: p });
   }
+  // Stats par requirement (ex: % pass par requirement, ou nombre de runs/cases par requirement)
+  getStatsByRequirement(project: string, days = 30) {
+  return this.http.get<any[]>(
+    `${environment.apiUrl}/dashboard/summary/by-requirement`,
+    { params: { project, days } }
+  );
+}
 }

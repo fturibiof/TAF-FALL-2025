@@ -435,6 +435,3 @@ Le détail complet des tests est dans [TEST-REPORT.md](./TEST-REPORT.md).
 La démarche pour contribuer est disponible dans [CONTRIBUTING.md](./CONTRIBUTING.md).
 Les conventions de code (JS/TS et Java) sont dans [CONVENTIONS.md](./documentation/CONVENTIONS.md).
 
-## Contact
-
-En cas de questions : [Discord TAF](https://discord.gg/TYrqTdHEqk) (1-2 personnes par équipe max).
