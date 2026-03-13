@@ -28,6 +28,17 @@ Write-Host "========================================" -ForegroundColor Cyan
 Write-Host "  TAF Local Testing - Quick Start" -ForegroundColor Cyan
 Write-Host "========================================`n" -ForegroundColor Cyan
 
+# Auto-create .env from .env.example if missing
+if (-not (Test-Path ".env")) {
+    if (Test-Path ".env.example") {
+        Copy-Item ".env.example" ".env"
+        Write-Host "INFO: .env file created from .env.example. Please review and update the values if needed." -ForegroundColor Yellow
+    } else {
+        Write-Host "ERROR: .env file not found and .env.example is missing!" -ForegroundColor Red
+        exit 1
+    }
+}
+
 # Check if Docker is running
 try {
     docker ps | Out-Null
