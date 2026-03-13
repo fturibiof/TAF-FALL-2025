@@ -40,7 +40,7 @@ export class OAuth2CallbackComponent implements OnInit {
         if (userInfoBase64) {
           // Decode base64url user info
           let base64: string = userInfoBase64.replace(/-/g, '+').replace(/_/g, '/');
-          while (base64.length % 4) { base64 += '='; }
+          while (base64.length % 4) base64 += '=';
           const json: string = atob(base64);
           const userInfo: Record<string, unknown> = JSON.parse(json);
           this.tokenStorage.saveUser(userInfo);
