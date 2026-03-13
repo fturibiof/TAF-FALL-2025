@@ -1,7 +1,11 @@
-
 {
-	"/": {
-		"target": "/taf",
-		"secure": false
-	}
+  "/api": {
+    "target": "http://localhost:8086",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug",
+    "pathRewrite": {
+      "^/api": ""
+    }
+  }
 }

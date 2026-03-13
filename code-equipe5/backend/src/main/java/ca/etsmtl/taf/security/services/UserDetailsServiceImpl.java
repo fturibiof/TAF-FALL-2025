@@ -5,11 +5,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.context.annotation.Profile;
+
 import org.springframework.transaction.annotation.Transactional;
 
 import ca.etsmtl.taf.entity.User;
 import ca.etsmtl.taf.repository.UserRepository;
-
+@Profile("sql")   
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
   @Autowired
