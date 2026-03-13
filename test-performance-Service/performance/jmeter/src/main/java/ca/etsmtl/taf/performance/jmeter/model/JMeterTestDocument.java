@@ -19,4 +19,5 @@ public class JMeterTestDocument {
 
     private TestPlanBase testRequest;
     private JMeterResponse testResult;
+    // TODO: test results
 }
