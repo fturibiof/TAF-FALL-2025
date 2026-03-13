@@ -8,6 +8,10 @@ pipeline {
     NODE_VERSION = "20.18.1"
     NODE_DIR = "${WORKSPACE}/node"
     
+    // Java 21 configuration
+    JAVA_HOME = "/opt/jdk21"
+    PATH = "/opt/jdk21/bin:${env.PATH}"
+    
     // Quality Gate thresholds
     MAX_CRITICAL_ISSUES = "0"
     MAX_HIGH_ISSUES = "5"
@@ -23,6 +27,7 @@ pipeline {
           set -eux
           whoami
           id
+          echo "JAVA_HOME=${JAVA_HOME}"
           java -version
           javac -version
           git --version
@@ -88,16 +93,20 @@ pipeline {
       steps {
         sh '''
           set -eux
+          export JAVA_HOME=/opt/jdk21
+          export PATH=/opt/jdk21/bin:$PATH
+          
           for d in auth gateway registry user; do
             if [ -x "$d/gradlew" ]; then
               echo "== Gradle build in $d =="
-              (cd "$d" && ./gradlew build -x test) || echo "WARN: Gradle build failed in $d (continuing)"
+              (cd "$d" && ./gradlew build -x test -Dorg.gradle.java.home=/opt/jdk21) || echo "WARN: Gradle build failed in $d (continuing)"
             fi
           done
+          
           for w in $(find . -maxdepth 4 -name mvnw -type f); do
             d=$(dirname "$w")
             echo "== Maven build in $d =="
-            (cd "$d" && chmod +x mvnw && ./mvnw -q -DskipTests package) || echo "WARN: Maven build failed in $d (continuing)"
+            (cd "$d" && chmod +x mvnw && JAVA_HOME=/opt/jdk21 ./mvnw -q -DskipTests package) || echo "WARN: Maven build failed in $d (continuing)"
           done
         '''
       }
@@ -107,15 +116,20 @@ pipeline {
         sh '''
           set -eux
           export PATH="${NODE_DIR}/bin:$PATH"
+          export JAVA_HOME=/opt/jdk21
+          export PATH=/opt/jdk21/bin:$PATH
           rm -rf codeql-db-java codeql-db-js codeql-*.sarif
           
           cat > codeql-build-java.sh << 'EOF'
 #!/bin/bash
 set -eux
+export JAVA_HOME=/opt/jdk21
+export PATH=/opt/jdk21/bin:$PATH
+
 for dir in auth gateway registry user; do
   if [ -x "${dir}/gradlew" ]; then
     echo "== CodeQL trace Gradle in ${dir} =="
-    (cd "${dir}" && ./gradlew --no-daemon clean compileJava)
+    (cd "${dir}" && ./gradlew --no-daemon clean compileJava -Dorg.gradle.java.home=/opt/jdk21)
   fi
 done
 EOF
@@ -294,6 +308,54 @@ PYTHON_EOF
     stage('Archive SARIF') {
       steps {
         archiveArtifacts artifacts: 'codeql-*.sarif', fingerprint: true
+      }
+    }
+    stage('Deploy to TAF') {
+      when { 
+        anyOf {
+          branch 'main'
+          branch 'demo/pr'
+        }
+      }
+      steps {
+        script {
+          def TAF_HOST = '172.31.21.242'
+          def TAF_USER = 'ubuntu'
+          def DEPLOY_BRANCH = env.BRANCH_NAME
+          
+          sh """
+            set -eux
+            
+            # Ensure .ssh directory exists with correct permissions
+            mkdir -p /var/jenkins_home/.ssh
+            chmod 700 /var/jenkins_home/.ssh
+            
+            # Add TAF host to known_hosts
+            ssh-keyscan -H ${TAF_HOST} >> /var/jenkins_home/.ssh/known_hosts 2>/dev/null || true
+            
+            # Deploy to TAF server - checkout specific branch
+            ssh ${TAF_USER}@${TAF_HOST} << 'ENDSSH'
+              set -eux
+              cd ~/TAF-FALL-2025
+              
+              # Fetch all updates
+              git fetch --all
+              
+              # Checkout and pull the specific branch being deployed
+              git checkout ${DEPLOY_BRANCH} 2>/dev/null || git checkout -b ${DEPLOY_BRANCH} origin/${DEPLOY_BRANCH}
+              git pull origin ${DEPLOY_BRANCH}
+              
+              # Deploy with docker compose
+              if [ -f docker-compose-local-test.yml ]; then
+                docker compose -f docker-compose-local-test.yml up -d --build
+              else
+                docker compose up -d --build
+              fi
+ENDSSH
+            
+            echo "✅ Deployed branch ${DEPLOY_BRANCH} to TAF server"
+          """
+        }
       }
     }
   }
