@@ -8,7 +8,7 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "jmeter_tests")
+@Document(collection = "jmeter_test_results")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
