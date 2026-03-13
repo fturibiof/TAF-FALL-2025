@@ -29,7 +29,10 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(authReq).pipe(
       catchError((error: HttpErrorResponse) => {
         // Only attempt refresh on 401 errors and if the request is not itself a refresh/auth request
-        if (error.status === 401 && !req.url.includes('/api/auth/') && !req.url.includes('/auth/api/')) {
+        if (error.status === 401
+            && !req.url.includes('/api/auth/')
+            && !req.url.includes('/auth/api/')
+            && !req.url.includes('/oauth2/')) {
           return this.handle401Error(authReq, next);
         }
         return throwError(() => error);
