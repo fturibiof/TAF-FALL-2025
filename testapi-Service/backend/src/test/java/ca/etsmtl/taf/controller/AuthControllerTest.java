@@ -298,7 +298,7 @@ class AuthControllerTest {
         when(userRegistrationService.registerUser(any(), any(), any(), any(), any()))
                 .thenThrow(new RuntimeException("Error: Role is not found."));
 
-        assertThrows(Exception.class, () ->
+        assertThrows(jakarta.servlet.ServletException.class, () ->
             mockMvc.perform(post("/api/auth/signup")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(signupReq))));
@@ -321,7 +321,7 @@ class AuthControllerTest {
         when(userRegistrationService.registerUser(any(), any(), any(), any(), any()))
                 .thenThrow(new RuntimeException("Error: Role is not found."));
 
-        assertThrows(Exception.class, () ->
+        assertThrows(jakarta.servlet.ServletException.class, () ->
             mockMvc.perform(post("/api/auth/signup")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(objectMapper.writeValueAsString(signupReq))));

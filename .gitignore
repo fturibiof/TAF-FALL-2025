@@ -2,8 +2,29 @@ selenium-test-Service/node_modules
 test-performance-Service/node_modules
 autotest-main/node_modules
 node_modules
-*.py
-
-# Secrets
-.env
-**/.env
+# ============================================================
+# Prevent committing local environment configuration files
+# ------------------------------------------------------------
+# These files often contain secrets (API keys, passwords) or
+# personal / machine‑specific settings. They should NEVER be
+# pushed to GitHub.
+# ============================================================
+.env*
+*.local
+# ============================================================
+# Prevent committing Python virtual environments
+# ------------------------------------------------------------
+# Some tools in Codespaces automatically create you a 'venv' or
+# '.venv' folder. These contain hundreds of temporary Python files
+# that do NOT belong in a Java/Node project.
+# ============================================================
+.venv/
+venv/
+# ============================================================
+# Prevent committing system installer files
+# ------------------------------------------------------------
+# Example: 'packages-microsoft-prod.deb' appears when installing
+# Microsoft packages inside Codespaces. These files are large,
+# binary, and not part of your project code.
+# ============================================================
+*.deb

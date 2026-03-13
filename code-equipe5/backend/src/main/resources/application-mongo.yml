@@ -1,0 +1,79 @@
+# =====================================================================
+# application-mongo.yml
+# Profile-specific configuration for running the backend in Mongo-only mode.
+# Activate this profile with:
+#   --spring.profiles.active=mongo
+# or by setting the env var:
+#   SPRING_PROFILES_ACTIVE=mongo
+# =====================================================================
+
+spring:
+  # -------------------------
+  # MongoDB configuration
+  # -------------------------
+  data:
+    mongodb:
+      # Connection string for your MongoDB instance.
+      # Priority order at runtime:
+      #  1) Environment variable MONGO_URI
+      #  2) Default value below
+      #
+      # You can override this per environment WITHOUT changing the file:
+      #   export MONGO_URI="mongodb://user:pass@host:27017/db?authSource=admin"
+      #   mvn spring-boot:run -Dspring-boot.run.arguments="--spring.profiles.active=mongo"
+      uri: ${MONGO_URI:mongodb://admin:admin123@localhost:27017/taf?authSource=admin}
+
+  # -------------------------
+  # Disable ALL SQL/JPA auto-configuration for this profile
+  # These exclusions prevent Spring from initializing:
+  #  * JDBC datasource (Hikari)
+  #  * Hibernate JPA
+  #  * JPA repositories
+  #  * JDBC transaction manager
+  # This is the key to avoid Postgres/Hibernate errors in mongo mode.
+  # -------------------------
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceTransactionManagerAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.jpa.JpaRepositoriesAutoConfiguration
+
+# -------------------------
+# Web server configuration
+# -------------------------
+server:
+  # Optional: pick a port that doesn't collide with frontend dev server or other apps.
+  port: 8086
+# Actuator / Health details
+# -------------------------
+management:
+  endpoints:
+    web:
+      # Expose the health endpoint over HTTP
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      # Show component-level details (e.g., mongo) in /actuator/health
+      show-details: always
+# -------------------------
+# Logging tips (optional)
+# Uncomment any of these to increase/decrease verbosity while debugging
+# -------------------------
+#logging:
+#  level:
+#    root: INFO
+#    org.springframework.data.mongodb: DEBUG
+#    org.mongodb.driver: INFO
+#    # If you still see SQL trying to start, enable these to trace where it comes from:
+#    org.springframework.orm.jpa: DEBUG
+#    org.springframework.boot.autoconfigure.orm.jpa: DEBUG
+#    org.springframework.boot.autoconfigure.jdbc: DEBUG
+
+# -------------------------
+# Safety: in mongo profile, ensure JPA auditing/config stays off.
+# You've already guarded @EnableJpaAuditing with @Profile("!mongo")
+# and SQL config with @Profile("sql"). This file complements that by
+# preventing SQL/JPA auto-config from even attempting to load.
+# -------------------------

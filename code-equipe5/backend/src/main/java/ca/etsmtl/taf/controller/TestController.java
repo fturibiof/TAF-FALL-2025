@@ -1,5 +1,6 @@
 package ca.etsmtl.taf.controller;
 
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ca.etsmtl.taf.entity.Test;
@@ -9,6 +10,7 @@ import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Profile("sql")      
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/test") // préfixe clair

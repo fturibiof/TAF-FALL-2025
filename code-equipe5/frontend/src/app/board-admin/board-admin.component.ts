@@ -13,7 +13,7 @@ import { CaseDetailDialogComponent } from './case-detail-dialog.component';
 
 type StatusFilter = 'all' | 'passed' | 'failed';
 type ToolFilter   = 'all' | 'gatling' | 'selenium' | 'restAssured' | 'other';
-
+type DaysWindow = 7 | 14 | 30 | 60 | 90 | 120;
 @Component({
   selector: 'app-board-admin',
   templateUrl: './board-admin.component.html',
@@ -31,7 +31,9 @@ export class BoardAdminComponent implements OnInit, OnDestroy {
 
   // Filtres
   project = 'TAF';
-  days: 7 | 14 | 30 | 60 = 30;
+
+days: DaysWindow = 30;
+
   fStatus: StatusFilter = 'all';
   fTool: ToolFilter     = 'all';
 
@@ -92,7 +94,7 @@ export class BoardAdminComponent implements OnInit, OnDestroy {
 
 
 
-  /** Line chart Passrate journalier */
+  /** Graphique: Taux de réussite des tests */
   lineData: ChartConfiguration<'line'>['data'] = {
     labels: [],
     datasets: [{ label: 'Passrate (%)', data: [], tension: 0.35, pointRadius: 3, fill: false }]
@@ -153,11 +155,12 @@ export class BoardAdminComponent implements OnInit, OnDestroy {
     this.fetchFlaky();
   }
 
-  changeDays(d: 7 | 14 | 30 | 60): void {
-    this.days = d;
-    this.loadAll();
 
-  }
+changeDays(d: DaysWindow): void {
+  this.days = d;
+  this.loadAll();
+}
+
 
   changePage(delta: number): void {
     const maxPage = Math.max(0, Math.ceil(this.casesResp.total / this.size) - 1);

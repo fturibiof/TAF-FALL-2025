@@ -9,7 +9,16 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/dashboard")
-@CrossOrigin(origins = { "http://localhost:4200", "http://localhost:5173" })
+// CORS (dev only):
+// - Local teammates: allow localhost on any port (4200, 5173, etc.)
+// - Codespaces: allow the public forwarded URL (*.app.github.dev)
+// This prevents browser calls from being blocked when UI + API are on different domains.
+@CrossOrigin(
+    originPatterns = {
+        "http://localhost:*",        // local dev (teammates)
+        "https://*.app.github.dev"   // GitHub Codespaces forwarded ports
+    }
+)
 public class DashboardController {
 
     private final DashboardService service;
@@ -106,6 +115,12 @@ public class DashboardController {
     ) {
         return dashboardService.avgDuration(project, days, tool);
     }
-
+    @GetMapping("/summary/by-requirement")
+    public List<Map> byRequirement(
+            @RequestParam String project,
+            @RequestParam(defaultValue = "30") int days
+    ) {
+    return dashboardService.statsByRequirement(project, days);
+    }   
 
 }

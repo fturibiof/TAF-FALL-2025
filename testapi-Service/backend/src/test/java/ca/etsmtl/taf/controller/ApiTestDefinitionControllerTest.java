@@ -106,7 +106,7 @@ class ApiTestDefinitionControllerTest {
         mockMvc.perform(post("/api/testapi/definitions")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(input)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value("newId1"))
                 .andExpect(jsonPath("$.username").value("equipe3"));
 
@@ -139,15 +139,15 @@ class ApiTestDefinitionControllerTest {
 
     @Test
     @WithMockUser(username = "equipe3")
-    @DisplayName("PUT on another user's definition returns 404")
-    void update_otherUserDefinition_returns404() throws Exception {
+    @DisplayName("PUT on another user's definition returns 403")
+    void update_otherUserDefinition_returns403() throws Exception {
         ApiTestDefinition existing = makeDef("abc1", "otheruser");
         when(repository.findById("abc1")).thenReturn(Optional.of(existing));
 
         mockMvc.perform(put("/api/testapi/definitions/abc1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(makeDef(null, null))))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isForbidden());
 
         verify(repository, never()).save(any());
     }
@@ -174,20 +174,20 @@ class ApiTestDefinitionControllerTest {
         when(repository.findById("abc1")).thenReturn(Optional.of(existing));
 
         mockMvc.perform(delete("/api/testapi/definitions/abc1"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         verify(repository).deleteById("abc1");
     }
 
     @Test
     @WithMockUser(username = "equipe3")
-    @DisplayName("DELETE on another user's definition returns 404")
-    void delete_otherUserDefinition_returns404() throws Exception {
+    @DisplayName("DELETE on another user's definition returns 403")
+    void delete_otherUserDefinition_returns403() throws Exception {
         ApiTestDefinition existing = makeDef("abc1", "otheruser");
         when(repository.findById("abc1")).thenReturn(Optional.of(existing));
 
         mockMvc.perform(delete("/api/testapi/definitions/abc1"))
-                .andExpect(status().isNotFound());
+                .andExpect(status().isForbidden());
 
         verify(repository, never()).deleteById(any());
     }

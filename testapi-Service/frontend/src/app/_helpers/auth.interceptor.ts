@@ -64,6 +64,15 @@ export class AuthInterceptor implements HttpInterceptor {
             const newAccessToken = response.token || response.accessToken;
             const newRefreshToken = response.refreshToken || response.refresh;
 
+            if (!newAccessToken) {
+              this.isRefreshing = false;
+              this.refreshTokenSubject.error(new Error('No access token in refresh response'));
+              this.refreshTokenSubject = new BehaviorSubject<string | null>(null);
+              this.tokenService.signOut();
+              window.location.href = '/login';
+              return throwError(() => new Error('No access token in refresh response'));
+            }
+
             this.tokenService.saveToken(newAccessToken);
             if (newRefreshToken) {
               this.tokenService.saveRefreshToken(newRefreshToken);

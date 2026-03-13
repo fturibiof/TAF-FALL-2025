@@ -4,39 +4,85 @@ services:
     build:
       context: ./
       dockerfile: ./backend/Dockerfile
+    depends_on:
+      - mongodb
+    env_file:
+      - .docker_config.env
+    environment:
+      - spring.data.mongodb.uri=${DB_URI}
+      - spring.data.mongodb.database=${DB_NAME}
+    ports:
+      - "8083:8083"
 
   frontend:
     image: ${REGISTRY_BASE}/lionel-test-team1-frontend:${FRONTEND_VERSION}
     build:
       context: ./
       dockerfile: ./frontend/Dockerfile
+    env_file:
+      - .docker_config.env
+    ports:
+      - "4200:80"
 
   selenium:
     image: ${REGISTRY_BASE}/lionel-test-team1-selenium:${SELENIUM_VERSION}
     build:
       context: ./
       dockerfile: ./selenium/Dockerfile
+    env_file:
+      - .docker_config.env
+    ports:
+      - "8090:8090"
+    shm_size: '2gb'          # Shared memory for Chrome (prevents crashes in parallel execution)
+    deploy:
+      resources:
+        limits:
+          cpus: '4.0'          # Allow up to 4 CPU cores
+          memory: 4G           # Limit to 4GB RAM (Chrome instances can be memory-intensive)
+        reservations:
+          cpus: '1.0'          # Reserve at least 1 CPU core
+          memory: 1G           # Reserve at least 1GB RAM
 
   testapi:
     image: ${REGISTRY_BASE}/lionel-test-team1-testapi:${TEST_API_VERSION}
     build:
       context: ./testapi
       dockerfile: ./Dockerfile
+    env_file:
+      - .docker_config.env
 
   testui:
     image: ${REGISTRY_BASE}/lionel-test-team1-testui:${TEST_UI_VERSION}
     build:
       context: ./tests-ui/tests-ui
       dockerfile: ./Dockerfile
+    env_file:
+      - .docker_config.env
 
   testuiteam4-server:
     image: ${REGISTRY_BASE}/lionel-test-team1-testui-team4-server:${TEST_TEAM4_SERVER_VERSION}
     build:
       context: ./tests-ui/team-4/server
       dockerfile: ./Dockerfile
+    env_file:
+      - .docker_config.env
 
   testuiteam4-client:
     image: ${REGISTRY_BASE}/lionel-test-team1-testui-team4-client:${TEST_TEAM4_CLIENT_VERSION}
     build:
       context: ./tests-ui/team-4/client
       dockerfile: ./Dockerfile
+    env_file:
+      - .docker_config.env
+
+  mongodb:
+    image: mongo:7.0
+    container_name: mongodb
+    env_file:
+      - .docker_config.env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - MONGO_INITDB_DATABASE=${DB_NAME}
+    ports:
+      - "27017:27017"

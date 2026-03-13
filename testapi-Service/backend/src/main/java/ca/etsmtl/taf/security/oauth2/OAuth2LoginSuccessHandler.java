@@ -83,7 +83,7 @@ public class OAuth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                             String username = email.split("@")[0]; // Use email prefix as username
                             // Ensure username uniqueness
                             if (userRepository.existsByUsername(username)) {
-                                username = username + "_g" + googleId.substring(0, 6);
+                                username = username + "_g" + googleId.substring(0, Math.min(googleId.length(), 6));
                             }
                             User newUser = new User(name, username, email, "google", googleId);
 
