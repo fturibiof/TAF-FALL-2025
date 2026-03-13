@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { TestApiService } from 'src/app/_services/test-api.service';
-import { testModel } from "../../models/test-model";
+import { TokenStorageService } from 'src/app/_services/token-storage.service';
+import { TestModel } from "../../models/test-model";
 import { MatDialog } from "@angular/material/dialog";
 import { AddTestDialogComponent } from "./add-test-dialog/add-test-dialog.component";
 import { DeleteTestDialogComponent } from "./delete-test-dialog/delete-test-dialog.component";
-import { testModel2 } from "../../models/testmodel2";
+import { TestModel2 } from "../../models/testmodel2";
 import { TestResponseModel } from "../../models/testResponseModel";
 import { ErrorDialogComponent } from './error-dialog.component';
+import { GherkinParserService } from '../../_services/gherkin-parser.service';
 
 @Component({
   selector: 'app-test-api',
@@ -16,43 +18,63 @@ import { ErrorDialogComponent } from './error-dialog.component';
 export class TestApiComponent implements OnInit {
   isPopupOpened = true;
   // Colonnes à afficher
-  displayedColumns: string[] = ['id', 'method', 'apiUrl', 'responseTime', 'statusCode', 'responseStatus', 'action'];
-  dataTests: testModel2[] = [];
+  displayedColumns: string[] = ['id', 'method', 'apiUrl', 'responseTime', 'actualResponseTime', 'statusCode', 'responseStatus', 'action'];
+  dataTests: TestModel2[] = [];
+
+  // Gherkin mode
+  gherkinMode: boolean = false;
+  gherkinText: string = '';
 
   constructor(
     private testApiService: TestApiService,
+    private tokenStorage: TokenStorageService,
     public dialog: MatDialog,
+    private gherkinParser: GherkinParserService,
   ) { }
 
   ngOnInit() {
     // Chargement de la liste des tests
     this.getTestList();
+    // Load saved definitions from backend (only if user is logged in)
+    if (this.tokenStorage.getToken()) {
+      this.testApiService.loadDefinitions().subscribe({
+        error: () => {}
+      });
+    }
   }
 
   // Récupération de la liste des tests
   getTestList(): void {
-    this.testApiService.tests$.subscribe((tests: testModel2[]) => { this.dataTests = tests; });
+    this.testApiService.tests$.subscribe((tests: TestModel2[]) => { this.dataTests = tests; });
   }
 
   // Ouvre le dialogue d'ajout de test
   addTest() {
     this.isPopupOpened = true;
     const dialogRef = this.dialog.open(AddTestDialogComponent, {});
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(() => {
       this.isPopupOpened = false;
-      this.ngOnInit(); // rafraîchit la liste
+    });
+  }
+
+  // Ouvre le dialogue de modification de test
+  editTest(test: TestModel2) {
+    this.isPopupOpened = true;
+    const dialogRef = this.dialog.open(AddTestDialogComponent, {
+      data: test
+    });
+    dialogRef.afterClosed().subscribe(() => {
+      this.isPopupOpened = false;
     });
   }
 
   // Ouvre le dialogue de suppression de test
-  deleteTest(id: string) {
+  deleteTest(id: number) {
     this.isPopupOpened = true;
     const dialogRef = this.dialog.open(DeleteTestDialogComponent, { data: id });
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(() => {
       this.isPopupOpened = false;
-      this.ngOnInit();
     });
-    this.getTestList();
   }
 
   exportCSV(): void {
@@ -110,7 +132,7 @@ export class TestApiComponent implements OnInit {
       if (!lines.length) { return; }
       
       const headers: string[] = lines[0].split(',').map((h: string) => h.trim());
-      const tests: testModel2[] = [];
+      const tests: TestModel2[] = [];
   
       lines.slice(1).forEach((line: string) => {
         const values: string[] = line.split(',').map((v: string) => v.trim());
@@ -135,24 +157,33 @@ export class TestApiComponent implements OnInit {
         testObj.responseStatus = undefined;
         testObj.responseTime = undefined;
         testObj.messages = [];
-        tests.push(testObj as testModel2);
+        tests.push(testObj as TestModel2);
       });
   
       // Ajoute chaque test à la liste via le service, sans lancer les tests automatiquement
-      tests.forEach((test: testModel2) => this.testApiService.addTestOnList(test));
+      tests.forEach((test: TestModel2) => this.testApiService.addTestOnList(test));
     };
     reader.readAsText(file);
   }
   
 
-  // Exécution des tests
+  // Exécution des tests (progressive: chaque résultat s'affiche dès qu'il arrive)
   lunchTests() {
-    this.testApiService.executeTests(this.dataTests).subscribe({
-      next: (listTestsReponses: TestResponseModel[]) => {
-        this.updateTestsStatusExecution(listTestsReponses);
+    // Clear previous results — show "pending" state
+    this.testApiService.clearTestResults();
+    this.getTestList();
+
+    this.testApiService.executeTestsProgressive(this.dataTests).subscribe({
+      next: ({index, result}) => {
+        this.testApiService.updateSingleTestResult(index, result);
+        this.getTestList();
       },
       error: (error) => {
         this.showErrorPopup("Erreur lors de l'exécution des tests : " + error.message);
+      },
+      complete: () => {
+        // All tests finished — persist results to MongoDB for Dashboard
+        this.testApiService.saveResults(this.dataTests).subscribe();
       }
     });
   }
@@ -170,5 +201,28 @@ export class TestApiComponent implements OnInit {
     console.log("========>", listTestsReponses);
     this.testApiService.updateTestsStatusExecution(listTestsReponses);
     this.getTestList();
+  }
+
+  // ── Gherkin mode ──────────────────────────────────
+
+  /** Toggle between table mode and Gherkin editor mode */
+  toggleGherkinMode(): void {
+    if (!this.gherkinMode && this.dataTests.length > 0) {
+      // Convert existing table tests to Gherkin when entering Gherkin mode
+      this.gherkinText = this.gherkinParser.toGherkin(this.dataTests);
+    }
+    this.gherkinMode = !this.gherkinMode;
+  }
+
+  /** Receive parsed tests from Gherkin editor and add to table */
+  onGherkinTestsReady(tests: TestModel2[]): void {
+    // Append Gherkin tests to the existing list (each is POSTed to backend)
+    tests.forEach(test => this.testApiService.addTestOnList(test));
+    this.gherkinMode = false;
+  }
+
+  /** Close Gherkin editor without applying */
+  onGherkinClose(): void {
+    this.gherkinMode = false;
   }
 }

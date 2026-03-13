@@ -12,6 +12,7 @@ import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 import { BoardAdminComponent } from './board-admin/board-admin.component';
 import { BoardUserComponent } from './board-user/board-user.component';
+import { OAuth2CallbackComponent } from './oauth2-callback/oauth2-callback.component';
 
 import { authInterceptorProviders } from './_helpers/auth.interceptor';
 import { ProjectComponent } from './project/project.component';
@@ -28,6 +29,8 @@ import { DeleteTestDialogComponent } from './interface-test-api/test-api/delete-
 import {MatCardModule} from "@angular/material/card";
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 import { TestSeleniumComponent } from './selenium/test-selenium.component';
 
@@ -37,6 +40,7 @@ import { GatlingApiComponent } from './performance-test-api/gatling-api/gatling-
 import { JmeterApiComponent } from './performance-test-api/jmeter-api/jmeter-api.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorDialogComponent } from './interface-test-api/test-api/error-dialog.component';
+import { GherkinEditorComponent } from './interface-test-api/gherkin-editor/gherkin-editor.component';
 
 
 
@@ -49,6 +53,7 @@ import { ErrorDialogComponent } from './interface-test-api/test-api/error-dialog
     ProfileComponent,
     BoardAdminComponent,
     BoardUserComponent,
+    OAuth2CallbackComponent,
     ProjectComponent,
     TestApiComponent,
     AddTestDialogComponent,
@@ -57,7 +62,8 @@ import { ErrorDialogComponent } from './interface-test-api/test-api/error-dialog
     PerformanceTestApiComponent,
     GatlingApiComponent,
     JmeterApiComponent,
-    ErrorDialogComponent
+    ErrorDialogComponent,
+    GherkinEditorComponent
   ],
 
     imports: [
@@ -75,7 +81,9 @@ import { ErrorDialogComponent } from './interface-test-api/test-api/error-dialog
         MatCardModule,
         ReactiveFormsModule,
         MatInputModule,
-        MatSelectModule
+        MatSelectModule,
+        MatTooltipModule,
+        MatProgressSpinnerModule
     ],
   providers: [authInterceptorProviders],
   bootstrap: [AppComponent]

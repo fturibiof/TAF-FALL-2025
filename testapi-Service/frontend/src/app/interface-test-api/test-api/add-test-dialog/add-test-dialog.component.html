@@ -1,4 +1,4 @@
-<h3 mat-dialog-title>Ajouter un test</h3>
+<h3 mat-dialog-title>{{ isEditMode ? 'Modifier le test' : 'Ajouter un test' }}</h3>
 
 <mat-card>
   <mat-card-content class="scrollable-content">
@@ -50,8 +50,13 @@
 
       <!-- Champs supplémentaires pour les autres propriétés du JSON -->
       <mat-form-field appearance="outline" class="example-full-width">
-        <mat-label>Temps de réponse</mat-label>
+        <mat-label>Temps de réponse attendu (ms)</mat-label>
         <input matInput  type="number" [(ngModel)]="responseTime" name="responseTime" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="example-full-width">
+        <mat-label>Corps de la requête (input)</mat-label>
+        <textarea matInput [(ngModel)]="input"  name="input" ></textarea>
       </mat-form-field>
 
       <mat-form-field appearance="outline" class="example-full-width">
@@ -79,7 +84,7 @@
 
       <mat-icon mat-raised-button color="primary" (click)="addnewExpectedHeader()">add</mat-icon >
       <br />
-      <button mat-raised-button color="accent" (click)="saveForm()" type="submit">  Soumettre  </button>
+      <button mat-raised-button color="accent" (click)="saveForm()" type="submit">{{ isEditMode ? 'Modifier' : 'Soumettre' }}</button>
       <button mat-raised-button (click)="closeDialog()" >fermer</button>
     </form>
   </mat-card-content>

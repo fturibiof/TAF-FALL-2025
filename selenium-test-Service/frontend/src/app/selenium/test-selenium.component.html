@@ -4,10 +4,18 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="staticModalLabel">Cases Result</h5>
+                <h5 class="modal-title" id="staticModalLabel">Test Execution Results</h5>
             </div>
             <div class="modal-body">
                 <div *ngIf="testResult">
+                    <!-- Execution Summary -->
+                    <div class="alert alert-info">
+                        <strong>Execution Summary:</strong><br>
+                        <span>Execution Mode: <strong>{{ parallelExecution ? 'Parallel' : 'Sequential' }}</strong></span><br>
+                        <span>Total Execution Time: <strong>{{ executionTime }}ms</strong> ({{ (executionTime / 1000).toFixed(2) }}s)</span><br>
+                        <span>Tests: {{ successfulTests }} / {{ totalTests }} passed</span>
+                    </div>
+                    
                     <div class="progress">
                         <div class="progress-bar" role="progressbar" [style.width]="percentage + '%'" aria-valuenow="percentage" aria-valuemin="0" aria-valuemax="100">{{percentage}}%</div>
                     </div>
@@ -16,6 +24,7 @@
                             <tr>
                                 <th scope="col">Case ID</th>
                                 <th scope="col">Case Name</th>
+                                <th scope="col">Duration</th>
                                 <th scope="col">Status</th>
                             </tr>
                         </thead>
@@ -23,9 +32,11 @@
                             <tr *ngFor="let result of testResult">
                                 <td>{{result.case_id}}</td>
                                 <td>{{result.caseName}}</td>
+                                <td>{{result.duration}}ms</td>
                                 <td>
                                     <span class="badge bg-success" *ngIf="result.success==true">success</span>
                                     <span class="badge bg-danger" *ngIf="result.success==false">failed</span>
+                                    <div [innerHTML]="result.output"></div>
                                 </td>
                                 
                             </tr>
@@ -113,15 +124,27 @@
 </div>
 <!-- show the added cases and actions -->
 <div class="container">
-    <div class="btn-group" role="group" aria-label="Basic outlined example">
-        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addCase">
-            Add New Case
-        </button>
-        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addAction" id="addActionButton" disabled>
-            Add New Action
-        </button>
-        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#resultModal" (click)="runMethod(cases)">Run</button>
-    </div><br><br>
+    <div class="d-flex align-items-center mb-3">
+        <div class="btn-group me-3" role="group" aria-label="Basic outlined example">
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addCase">
+                Add New Case
+            </button>
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addAction" id="addActionButton" disabled>
+                Add New Action
+            </button>
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#resultModal" (click)="runMethod(cases)">Run</button>
+        </div>
+        
+        <!-- Parallel Execution Toggle -->
+        <div class="form-check form-switch">
+            <input class="form-check-input" type="checkbox" id="parallelExecutionToggle" [(ngModel)]="parallelExecution">
+            <label class="form-check-label" for="parallelExecutionToggle">
+                <strong>Parallel Execution</strong>
+                <small class="text-muted d-block">{{ parallelExecution ? 'Tests run simultaneously' : 'Tests run one at a time' }}</small>
+            </label>
+        </div>
+    </div>
+    <br>
     <div class="container" *ngFor="let case of cases">
 
         <h4>Case #{{case.case_id}} : {{case.caseName}}</h4>

@@ -1,6 +1,17 @@
 server:
   port: 8090
+  tomcat:
+    threads:
+      max: 50              # Nombre max de threads pour traiter les requêtes en parallèle
+      min-spare: 10        # Threads minimum en attente
+    accept-count: 100      # Taille de la queue pour les connexions en attente
+    max-connections: 200   # Nombre max de connexions simultanées
+
+# URL de l'instance UI pour les tests
+ui:
+  instances: http://frontend:80
 
 logging:
   level:
     web: DEBUG
+    ca.etsmtl.selenium: INFO

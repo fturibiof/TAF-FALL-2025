@@ -1,0 +1,39 @@
+<div class="fh-wrapper card">
+
+  <h3 class="section-title">Résultats des tests par exigence (Top 5 des exigences échouées)</h3>
+
+  <div *ngIf="loading" class="fh-loading">Chargement…</div>
+
+  <div class="fh-grid" *ngIf="!loading">
+
+    <div class="fh-card" *ngFor="let r of cards">
+      
+      <div class="fh-title">{{ r.requirement }}</div>
+
+      <div class="fh-row">
+        <div class="fh-label">Échoués :</div>
+        <div class="fh-value fh-fail">✖ {{ r.failed }}</div>
+      </div>
+
+      <div class="fh-row">
+        <div class="fh-label">Passés :</div>
+        <div class="fh-value fh-pass">✔ {{ r.passed }}</div>
+      </div>
+
+      <div class="fh-row">
+        <div class="fh-label">Taux de succès :</div>
+        <div class="fh-value fh-rate">{{ passRate(r) }}</div>
+      </div>
+
+      <div class="fh-tools">
+        Outils : {{ (r.tools || []).join(', ') }}
+      </div>
+
+    </div>
+
+    <div *ngIf="cards.length === 0" class="fh-empty">
+      Aucun résultat disponible.
+    </div>
+
+  </div>
+</div>

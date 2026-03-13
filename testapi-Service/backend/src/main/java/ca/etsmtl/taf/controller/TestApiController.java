@@ -13,20 +13,25 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.time.Duration;
 
 import org.springframework.beans.factory.annotation.Value;
 
-
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/testapi")
+@SecurityRequirement(name = "bearerAuth")
 public class TestApiController {
     @Value("${taf.app.testAPI_url}")
     String Test_API_microservice_url;
 
     @Value("${taf.app.testAPI_port}")
     String Test_API_microservice_port;
+
+    @Value("${taf.app.testAPI_timeout:30000}")
+    int testApiTimeout;
 
     @PostMapping("/checkApi")
     public ResponseEntity<String> testApi(@Valid @RequestBody TestApiRequest testApiRequest) throws URISyntaxException, IOException, InterruptedException {
@@ -38,10 +43,13 @@ public class TestApiController {
                 .writerWithDefaultPrettyPrinter()
                 .writeValueAsString(testApiRequest);
 
-        HttpClient client = HttpClient.newHttpClient();
+        HttpClient client = HttpClient.newBuilder()
+                .connectTimeout(Duration.ofMillis(testApiTimeout))
+                .build();
 
         HttpRequest request = HttpRequest.newBuilder(uri)
                 .header("Content-Type", "application/json")
+                .timeout(Duration.ofMillis(testApiTimeout))
                 .POST(BodyPublishers.ofString(requestBody))
                 .build();
 

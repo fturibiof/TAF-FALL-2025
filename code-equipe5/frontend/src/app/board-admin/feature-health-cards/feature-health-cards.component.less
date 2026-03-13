@@ -1,0 +1,80 @@
+/* Outer container styled like other dashboard "cards" */
+.fh-wrapper {
+  padding: 16px;
+  margin: 16px 0;
+
+  border: 1px solid #e6e6e6;
+  border-radius: 12px;
+  background: #fff;
+}
+
+/* Cards grid */
+.fh-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+/* Individual feature card */
+.fh-card {
+  flex: 1 1 300px;
+  max-width: 380px;
+  min-width: 280px;
+
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 14px;
+  background: #fff;
+
+  display: flex;
+  flex-direction: column;
+}
+
+/* Title */
+.fh-title {
+  font-weight: 700;
+  margin-bottom: 12px;
+  font-size: 15px;
+}
+
+/* Row with label + value */
+.fh-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+
+.fh-label {
+  color: #555;
+  width: 140px;
+}
+
+.fh-value {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.fh-fail { color: #c62828; }
+.fh-pass { color: #2e7d32; }
+.fh-rate { color: #333; }
+
+/* Tools line */
+.fh-tools {
+  margin-top: auto;
+
+  font-size: 13px;
+  color: #444;
+  border-top: 1px solid #eee;
+  padding-top: 8px;
+}
+
+/* Loading & empty */
+.fh-loading,
+.fh-empty {
+  color: #666;
+  font-size: 14px;
+  padding: 10px;
+}

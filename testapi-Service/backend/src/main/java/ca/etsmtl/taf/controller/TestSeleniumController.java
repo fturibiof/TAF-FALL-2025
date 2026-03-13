@@ -10,9 +10,12 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api")
+@SecurityRequirement(name = "bearerAuth")
 public class TestSeleniumController {
     private final SeleniumService seleniumService;
 

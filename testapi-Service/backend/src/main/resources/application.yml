@@ -13,6 +13,22 @@ spring:
       database: ${DB_NAME}
       auto-index-creation: true
 
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:placeholder}
+            client-secret: ${GOOGLE_CLIENT_SECRET:placeholder}
+            scope: openid, profile, email
+            redirect-uri: ${OAUTH2_REDIRECT_URI:http://localhost:8084/login/oauth2/code/google}
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://openidconnect.googleapis.com/v1/userinfo
+            user-name-attribute: sub
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -26,10 +42,13 @@ taf:
   app:
     jwtSecret: ${JWT_SECRET}
     jwtExpirationMs: ${JWT_EXPIRES}
+    jwtRefreshExpirationMs: ${JWT_REFRESH_EXPIRES:604800000}
     testAPI_url: ${TEST_API_SERVICE_URL}
     testAPI_port: ${TEST_API_SERVICE_PORT}
+    testAPI_timeout: ${TEST_API_TIMEOUT:30000}
     selenium_container_url: ${SELENIUM_URL}
     selenium_container_port: ${SELENIUM_PORT}
+    oauth2FrontendRedirectUrl: ${OAUTH2_FRONTEND_REDIRECT_URL:http://localhost:4200}
 
 server:
   port: 8080
@@ -43,10 +62,11 @@ eureka:
   #  prefer-ip-address: true
 
   client:
+    enabled: ${EUREKA_CLIENT_ENABLED:true}
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://${EUREKA_USERNAME}:${EUREKA_PASSWORD}@${EUREKA_HOST}:${EUREKA_PORT}/eureka
+      defaultZone: http://${EUREKA_USERNAME:eureka}:${EUREKA_PASSWORD:eureka}@${EUREKA_HOST:localhost}:${EUREKA_PORT:8761}/eureka
 
 springdoc:
   api-docs:
