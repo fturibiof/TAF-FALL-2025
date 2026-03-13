@@ -42,7 +42,7 @@
     <div class="editor-pane">
       <div class="editor-wrapper">
         <!-- Syntax-highlighted layer (behind textarea) -->
-        <pre #highlightPre class="highlight-layer" [innerHTML]="getHighlightedHtml()"></pre>
+        <pre #highlightPre class="highlight-layer" [innerHTML]="highlightedHtml"></pre>
         <!-- Transparent textarea (on top, captures input) -->
         <textarea #editorTextarea
                   class="editor-textarea"

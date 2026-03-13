@@ -2,7 +2,7 @@
 
 <!-- Mode toggle buttons -->
 <div style="text-align: center; margin-bottom: 10px;">
-  <button mat-raised-button [color]="gherkinMode ? 'primary' : ''" (click)="toggleGherkinMode()">
+  <button mat-raised-button [color]="gherkinMode ? 'primary' : undefined" (click)="toggleGherkinMode()">
     <mat-icon>{{ gherkinMode ? 'table_chart' : 'code' }}</mat-icon>
     {{ gherkinMode ? 'Mode Tableau' : 'Mode Gherkin' }}
   </button>

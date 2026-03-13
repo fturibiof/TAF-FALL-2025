@@ -226,14 +226,14 @@ export class GherkinParserService {
     }
 
     // Input body: the input is '...'
-    match = text.match(/^the input is '(.+)'$/i);
+    match = text.match(/^the input is '(.*)'$/i);
     if (match) {
       test.input = match[1];
       return;
     }
 
     // Expected output: the expected output is '...'
-    match = text.match(/^the expected output is '(.+)'$/i);
+    match = text.match(/^the expected output is '(.*)'$/i);
     if (match) {
       test.expectedOutput = match[1];
       return;

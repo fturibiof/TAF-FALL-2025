@@ -215,66 +215,36 @@ public class DashboardService {
         out.put("items", items);
         return out;
     }
-
     // ---- D) passrate (par jour) ----
+    // NOW: Test Pass Rate (based on test_cases), not run pass rate
     public List<PassratePointDto> passrate(String project, int days) {
-        int win = (days <= 0 || days > 365) ? 14 : days;
-        Instant from = LocalDate.now(ZoneOffset.UTC)
-                .minusDays(win - 1L)
-                .atStartOfDay()
-                .toInstant(ZoneOffset.UTC);
+    int win = (days <= 0 || days > 365) ? 14 : days;
 
-        // 1) si on a test_runs : simple et fiable
-        try {
-            Aggregation aggRuns = newAggregation(
-                    match(Criteria.where("project.key").is(project)
-                            .and("createdAt").gte(Date.from(from))),
-                    project()
-                            .and(DateOperators.DateToString
-                                    .dateOf("createdAt")
-                                    .toString("%Y-%m-%d")).as("day")
-                            .and("$run.status").as("status"),
-                    group("day")
-                            .sum(ConditionalOperators.when(Criteria.where("status").is("passed"))
-                                    .then(1).otherwise(0)).as("passed")
-                            .count().as("total"),
-                    sort(Sort.by("day").ascending())
-            );
-            List<Map> res = mongo.aggregate(aggRuns, "test_runs", Map.class).getMappedResults();
-            if (!res.isEmpty()) return mapPassrate(res);
-        } catch (Exception ignore) {}
+    Instant from = LocalDate.now(ZoneOffset.UTC)
+            .minusDays(win - 1L)
+            .atStartOfDay()
+            .toInstant(ZoneOffset.UTC);
 
-        // 2) Fallback : reconstituer par run depuis test_cases (executedAt est String)
-        Aggregation aggCases = newAggregation(
-                match(Criteria.where("project").is(project)),
-                addFields().addField("execDate")
-                        .withValue(DateOperators.dateFromString("$executedAt"))
-                        .build(),
-                match(Criteria.where("execDate").gte(Date.from(from))),
-                group("runId")
-                        .sum(ConditionalOperators.when(Criteria.where("status").is("failed"))
-                                .then(1).otherwise(0)).as("failed")
-                        .first("execDate").as("anyTime"),
-                project()
-                        .and(DateOperators.DateToString
-                                .dateOf("anyTime")
-                                .toString("%Y-%m-%d")).as("day")
-                        .and(ConditionalOperators.when(
-                                        ComparisonOperators.Gt.valueOf("$failed").greaterThanValue(0))
-                                .then("failed").otherwise("passed"))
-                        .as("status"),
-                group("day")
-                        .sum(ConditionalOperators.when(Criteria.where("status").is("passed"))
-                                .then(1).otherwise(0)).as("passed")
-                        .count().as("total"),
-                sort(Sort.by("day").ascending())
-        );
+    // executedAt is stored as ISO String in mock data -> convert to Date (execDate)
+    Aggregation agg = newAggregation(
+            match(Criteria.where("project").is(project)),
+            addFields().addField("execDate")
+                    .withValue(DateOperators.dateFromString("$executedAt"))
+                    .build(),
+            match(Criteria.where("execDate").gte(Date.from(from))),
+            project()
+                    .and(DateOperators.DateToString.dateOf("execDate").toString("%Y-%m-%d")).as("day")
+                    .and("status").as("status"),
+            group("day")
+                    .sum(ConditionalOperators.when(Criteria.where("status").is("passed")).then(1).otherwise(0)).as("passed")
+                    .count().as("total"),
+                sort(Sort.by(Sort.Direction.ASC, "_id"))
+    );
 
-        List<Map> res2 = mongo.aggregate(aggCases, "test_cases", Map.class).getMappedResults();
-        return mapPassrate(res2);
-    }
-
-    // --------------- helpers ---------------
+    List<Map> rows = mongo.aggregate(agg, "test_cases", Map.class).getMappedResults();
+    return mapPassrate(rows);
+}
+  // --------------- helpers ---------------
     private List<PassratePointDto> mapPassrate(List<Map> rows) {
         List<PassratePointDto> out = new ArrayList<>();
         for (Map r : rows) {
@@ -297,18 +267,31 @@ public class DashboardService {
         java.time.Instant from = java.time.LocalDate.now(java.time.ZoneOffset.UTC)
                 .minusDays(win - 1L).atStartOfDay().toInstant(java.time.ZoneOffset.UTC);
 
-        Aggregation agg = newAggregation(
-                match(Criteria.where("project").is(project).and("executedAt").gte(java.util.Date.from(from))),
-                group("tool")
-                        .count().as("total")
-                        .sum(ConditionalOperators.when(Criteria.where("status").is("passed")).then(1).otherwise(0)).as("passed"),
-                project()
-                        .and("_id").as("tool")
-                        .and("total").as("total")
-                        .and("passed").as("passed")
-                        .and(ArithmeticOperators.Subtract.valueOf("total").subtract("passed")).as("failed"),
-                sort(Sort.by(Sort.Direction.DESC, "total"))
-        );
+        
+                Aggregation agg = newAggregation(
+                        match(Criteria.where("project").is(project)),
+
+                        // executedAt is a STRING in Mongo -> convert it to a real Date field
+                        addFields().addField("execDate")
+                                .withValue(DateOperators.DateFromString.fromString("$executedAt"))
+                                .build(),
+
+                        // Maintenant on filre avec execDate (real Date)
+                        match(Criteria.where("execDate").gte(java.util.Date.from(from))),
+
+                        group("tool")
+                                .count().as("total")
+                .sum(ConditionalOperators.when(Criteria.where("status").is("passed")).then(1).otherwise(0)).as("passed"),
+
+                        project()
+                                .and("_id").as("tool")
+                                .and("total").as("total")
+                                .and("passed").as("passed")
+                .and(ArithmeticOperators.Subtract.valueOf("total").subtract("passed")).as("failed"),
+
+                        sort(Sort.by(Sort.Direction.DESC, "total"))
+                );
+
         java.util.List<java.util.Map> rows = mongo.aggregate(agg, "test_cases", java.util.Map.class).getMappedResults();
         java.util.List<ToolStatDto> out = new java.util.ArrayList<>();
         for (java.util.Map r : rows) {
@@ -392,9 +375,46 @@ public class DashboardService {
         return out;
     }
 
+// H) Impact / Health by requirement (Feature Health Cards)
+public List<Map> statsByRequirement(String project, int days) {
+    int win = (days <= 0 || days > 365) ? 30 : days;
 
+    Instant from = LocalDate.now(ZoneOffset.UTC)
+            .minusDays(win - 1L)
+            .atStartOfDay()
+            .toInstant(ZoneOffset.UTC);
 
+    Aggregation agg = newAggregation(
+            match(Criteria.where("project").is(project)),
 
+            // executedAt is stored as ISO String in our seed -> convert to Date
+            addFields().addField("execDate")
+                    .withValue(DateOperators.DateFromString.fromString("$executedAt"))
+                    .build(),
+
+            match(Criteria.where("execDate").gte(Date.from(from))),
+
+            // requirements is an array -> unwind so we can group per requirement
+            unwind("requirements"),
+
+            group("requirements")
+                    .sum(ConditionalOperators.when(Criteria.where("status").is("passed"))
+                            .then(1).otherwise(0)).as("passed")
+                    .sum(ConditionalOperators.when(Criteria.where("status").is("failed"))
+                            .then(1).otherwise(0)).as("failed")
+                    .addToSet("tool").as("tools"),
+
+            project()
+                    .and("_id").as("requirement")
+                    .and("passed").as("passed")
+                    .and("failed").as("failed")
+                    .and("tools").as("tools"),
+
+            sort(Sort.by(Sort.Direction.DESC, "failed"))
+    );
+
+    return mongo.aggregate(agg, "test_cases", Map.class).getMappedResults();
+}
 //    ---------------------- taux de succès par type
 // ---------------------- taux de succès par type
 public List<Map> passrateByType(String project, int days, String status, String tool) {
@@ -404,21 +424,30 @@ public List<Map> passrateByType(String project, int days, String status, String 
 
     List<Criteria> filters = new ArrayList<>();
     filters.add(Criteria.where("project").is(project));
-    filters.add(Criteria.where("executedAt").gte(Date.from(from)));
     if (status != null && !status.isBlank()) filters.add(Criteria.where("status").is(status));
     if (tool != null && !tool.isBlank()) filters.add(Criteria.where("tool").is(tool));
 
-    Criteria match = new Criteria().andOperator(filters.toArray(new Criteria[0]));
+   Criteria baseMatch = new Criteria().andOperator(filters.toArray(new Criteria[0]));
+   Aggregation agg = newAggregation(
+        // 1) always match project first
+        match(Criteria.where("project").is(project)),
 
-    Aggregation agg = newAggregation(
-            match(match),
-            group("type")
-                    .sum(ConditionalOperators.when(Criteria.where("status").is("passed"))
-                            .then(1).otherwise(0)).as("passed")
-                    .count().as("total"),
-            project("passed", "total").and("_id").as("type"),
-            sort(Sort.by(Sort.Direction.DESC, "type"))
-    );
+        // 2) executedAt is STRING -> convert to Date
+        addFields().addField("execDate")
+                .withValue(DateOperators.DateFromString.fromString("$executedAt"))
+                .build(),
+
+        // 3) now apply the time window + optional filters
+        match(baseMatch),
+
+        // 4) group by type (UI/API)
+        group("type")
+                .sum(ConditionalOperators.when(Criteria.where("status").is("passed")).then(1).otherwise(0)).as("passed")
+                .count().as("total"),
+
+        project("passed", "total").and("_id").as("type"),
+        sort(Sort.by(Sort.Direction.DESC, "type"))
+);
 
     // NOTE: Map.class → returns List<Map>
     return mongo.aggregate(agg, "test_cases", Map.class).getMappedResults();
