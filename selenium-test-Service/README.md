@@ -2,56 +2,44 @@
 
 # Test Automation Framework
 
-TAF est un projet de R&amp;D de cadriciel d’automatisation de test
+Cadriciel d'automatisation de tests permettant l'utilisation de plusieurs outils (Selenium, Gatling, etc.) via une interface web unique.
 
+**Stack technique** : Java Spring Boot + Angular
 
-Il permet l'utilisation de plusieurs outils de tests (Selenium, Gatling, ...) à travers une interface web unique.
+## Démarrage rapide
 
-L'application côté serveur est une application Java utilisant Springboot.
-L'interface est une application web utilisant le framework Angular.
+**Prérequis** : Docker et Docker Compose
 
-## Builder et lancer le projet
-
-Pour lancer le projet, la méthode la plus simple est d'utiliser
-
-### Avec docker :
-
-- (Prérequis) Installez Docker ainsi que Docker Compose sur votre système
-- Exécutez la commande suivante :
 ```bash
-docker compose --env-file .docker_config.env up
+cd selenium-test-Service
+docker compose up
 ```
 
-### Sans docker :
+**Prérequis** : Pour forcer le re-build
 
-Il est aussi possible de lancer les applications côté serveur et côté client séparément. Cela n'est cependant pas recommandé, car cela est plus complexe, et le deviendra de plus en plus à mesure que de nouveaux services seront ajouté.
+```bash
+cd selenium-test-Service
+docker compose up --build --force-recreate
+```
 
-#### Backend
+### Accès
 
-**Prérequis**
-1. Installer Jmeter
-   Faire un download du ZIP ou TGZ et l'extraire dans n'importe quel dossier
-2. Installer Maven
+- **Frontend** : http://localhost:4200/home
+- **Container principal** : selenium-test-service
+- **Container Selenium** : selenium-1
 
-**Pour tester localement**
-1. Ouvrir le fichier `.env` sous la racine du projet et changer la valeur de la variable `JMETER_INSTALL_DIR` pour le chemin où jmeter a été installé. Par exemple: `JMETER_INSTALL_DIR=/Users/jean-francoisl/Downloads/apache-jmeter-5.6.3`
+## État du projet
 
-2. Lancer l'application SpringBoot en utilisant la vue Web VSCode `Sprint Boot Dashboard`
-La variable d'environnement devrait être loader.
+### Hiver 2026
 
-#### Frontend
-- Installez des dépendances avec `npm install`.
-- Lancez l'application avec la ligne de commande
-`npm start`.
+- Correction des fichiers de configuration (erreur HTTP 500)
+- Amélioration de la documentation
 
-**Autres services :**  
-Pour les autres services, vous pouvez vous référer au Wiki ou contacter les équipes directement.
+### Perspectives futures
 
-## Contribuer au projet
+Aucune pour le moment.
 
-La démarche pour contribuer au projet est disponible dans le document [CONTRIBUTING.md](./CONTRIBUTING.md).  
-La programmation en JS/TS et Java font usage de conventions précises disponibles dans le fichier [CONVENTIONS.md](./documentation/CONVENTIONS.md). La non-utilisation de ces normes pourrait mener à un refus de vos contributions.
+### Problèmes actuels
 
-## Contact
+Aucun.
 
-En cas de questions, vous pouvez rejoindre [le discord TAF](https://discord.gg/TYrqTdHEqk). Veilliez à ce qu'uniquement 1 ou 2 personnes de votre équipe le rejoigne afin de limiter le nombres de personnes et de faciliter la communication.

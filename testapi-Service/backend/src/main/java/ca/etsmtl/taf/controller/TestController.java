@@ -5,9 +5,12 @@ import ca.etsmtl.taf.payload.request.TestApiRequest;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/test")
+@SecurityRequirement(name = "bearerAuth")
 public class TestController {
   @GetMapping("/all")
   public String allAccess() {
